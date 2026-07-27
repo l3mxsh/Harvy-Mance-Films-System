@@ -14,6 +14,7 @@ use App\Http\Controllers\StaffScheduleController;
 use App\Http\Controllers\DownpaymentController;
 use App\Http\Controllers\PostProductionController;
 use App\Http\Controllers\StaffPostProductionController;
+use App\Http\Controllers\RescheduleController;
 use App\Http\Controllers\SettingsController;
 
 Route::get('/', [BookingController::class, 'index'])->name('home');
@@ -27,6 +28,7 @@ Route::middleware('auth:customer')->prefix('login')->name('customer.')->group(fu
     Route::get('/change-password', [CustomerAccountController::class, 'showChangePassword'])->name('change-password');
     Route::post('/change-password', [CustomerAccountController::class, 'changePassword'])->name('change-password.post');
     Route::get('/downpayment', [DownpaymentController::class, 'showForm'])->name('downpayment');
+    Route::post('/reschedule', [RescheduleController::class, 'store'])->name('reschedule.store');
     Route::post('/downpayment', [DownpaymentController::class, 'submit'])->name('downpayment.submit');
     Route::post('/downpayment/{downpayment}/resubmit', [DownpaymentController::class, 'resubmit'])->name('downpayment.resubmit');
     Route::get('/final-payment', [DownpaymentController::class, 'showFinalPaymentForm'])->name('final-payment');
@@ -99,6 +101,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/post-production/task/{task}/approve', [PostProductionController::class, 'approveTask'])->name('post-production.approve-task');
     Route::post('/admin/post-production/task/{task}/revision', [PostProductionController::class, 'requestRevision'])->name('post-production.request-revision');
     Route::post('/admin/post-production/{booking}/unlock', [PostProductionController::class, 'unlockDeliverables'])->name('post-production.unlock');
+
+    Route::post('/admin/reschedule/{rescheduleRequest}/approve', [RescheduleController::class, 'approve'])->name('reschedule.approve');
+    Route::post('/admin/reschedule/{rescheduleRequest}/reject', [RescheduleController::class, 'reject'])->name('reschedule.reject');
 
     Route::get('/admin/staff', [StaffController::class, 'index'])->name('staff.admin.index');
     Route::post('/admin/staff', [StaffController::class, 'store'])->name('staff.admin.store');

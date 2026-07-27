@@ -12,6 +12,7 @@ class SettingsController extends Controller
     public function index()
     {
         $autoDeleteDays = Setting::getValue('client_auto_delete_days', '30');
+        $rescheduleLeadTime = Setting::getValue('reschedule_lead_time_days', '5');
 
         $deliveredBookings = Booking::where('status', 'completed')
             ->where('deliverables_unlocked', true)
@@ -33,16 +34,18 @@ class SettingsController extends Controller
             ];
         })->sortBy('delete_at')->values();
 
-        return view('dashboard.settings', compact('autoDeleteDays', 'upcomingDeletions'));
+        return view('dashboard.settings', compact('autoDeleteDays', 'rescheduleLeadTime', 'upcomingDeletions'));
     }
 
     public function update(Request $request)
     {
         $validated = $request->validate([
             'client_auto_delete_days' => 'required|integer|in:7,14,30',
+            'reschedule_lead_time_days' => 'required|integer|in:5,6,7',
         ]);
 
         Setting::setValue('client_auto_delete_days', $validated['client_auto_delete_days']);
+        Setting::setValue('reschedule_lead_time_days', $validated['reschedule_lead_time_days']);
 
         return back()->with('success', 'Settings updated successfully.');
     }

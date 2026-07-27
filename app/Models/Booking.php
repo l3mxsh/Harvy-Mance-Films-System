@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\RescheduleRequest;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -38,6 +39,7 @@ class Booking extends Model
         'delivered_at',
         'notes',
         'terms_agreed',
+        'reschedule_used',
     ];
 
     protected $casts = [
@@ -48,6 +50,7 @@ class Booking extends Model
         'event_completed_at' => 'datetime',
         'delivered_at' => 'datetime',
         'deliverables_unlocked' => 'boolean',
+        'reschedule_used' => 'boolean',
     ];
 
     public function package(): BelongsTo
@@ -95,5 +98,15 @@ class Booking extends Model
     public function postProduction()
     {
         return $this->hasOne(PostProduction::class);
+    }
+
+    public function rescheduleRequests(): HasMany
+    {
+        return $this->hasMany(RescheduleRequest::class);
+    }
+
+    public function pendingReschedule()
+    {
+        return $this->hasOne(RescheduleRequest::class)->where('status', 'pending')->latestOfMany();
     }
 }

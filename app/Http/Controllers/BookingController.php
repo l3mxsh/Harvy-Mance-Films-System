@@ -318,7 +318,15 @@ class BookingController extends Controller
 
         $availableTeams = Team::with('members')->where('status', 'active')->get();
 
-        return view('dashboard.bookings', compact('bookings', 'availableTeams'));
+        $rescheduleRequests = \App\Models\RescheduleRequest::with(['booking.team', 'newTeam'])
+            ->whereHas('booking')
+            ->orderByRaw("CASE WHEN status = 'pending' THEN 0 ELSE 1 END")
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pendingRescheduleCount = $rescheduleRequests->where('status', 'pending')->count();
+
+        return view('dashboard.bookings', compact('bookings', 'availableTeams', 'rescheduleRequests', 'pendingRescheduleCount'));
     }
 
     public function reject(Request $request, Booking $booking)

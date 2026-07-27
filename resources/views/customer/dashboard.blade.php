@@ -679,6 +679,45 @@
                                 <i class="bi bi-credit-card me-2"></i>Submit Downpayment
                             </a>
                         @endif
+
+                        @php
+                            $leadTime = (int) \App\Models\Setting::getValue('reschedule_lead_time_days', 5);
+                            $daysToEvent = now()->diffInDays($booking->event_date, false);
+                            $canReschedule = in_array($booking->status, ['pending', 'approved', 'ongoing'])
+                                && $daysToEvent >= $leadTime;
+                            $pendingReschedule = $booking->pendingReschedule;
+                            $lastReschedule = $booking->rescheduleRequests()->latest()->first();
+                        @endphp
+
+                        @if(session('reschedule_error'))
+                            <div class="alert alert-danger py-2 small mb-0">
+                                <i class="bi bi-exclamation-triangle me-1"></i>{{ session('reschedule_error') }}
+                            </div>
+                        @endif
+
+                        @if($pendingReschedule)
+                            <div class="alert alert-warning py-2 small mb-0">
+                                <i class="bi bi-hourglass-split me-1"></i>Reschedule request pending admin review.
+                            </div>
+                        @elseif($lastReschedule && $lastReschedule->status === 'rejected')
+                            <div class="alert alert-danger py-2 small mb-0">
+                                <i class="bi bi-x-circle me-1"></i><strong>Reschedule Rejected:</strong> {{ $lastReschedule->rejection_reason }}
+                            </div>
+                            @if($canReschedule)
+                                <button class="btn btn-outline-warning btn-action" data-bs-toggle="modal" data-bs-target="#rescheduleModal">
+                                    <i class="bi bi-calendar-event me-2"></i>Request Reschedule
+                                </button>
+                            @endif
+                        @elseif($canReschedule)
+                            <button class="btn btn-outline-warning btn-action" data-bs-toggle="modal" data-bs-target="#rescheduleModal">
+                                <i class="bi bi-calendar-event me-2"></i>Request Reschedule
+                            </button>
+                        @elseif(in_array($booking->status, ['pending', 'approved', 'ongoing']))
+                            <button class="btn btn-outline-secondary btn-action" disabled title="Reschedule must be requested at least {{ $leadTime }} days before the event.">
+                                <i class="bi bi-calendar-x me-2"></i>Reschedule Unavailable
+                            </button>
+                        @endif
+
                         <a href="{{ route('customer.change-password') }}" class="btn btn-outline-dark btn-action">
                             <i class="bi bi-key me-2"></i>Change Password
                         </a>
@@ -701,6 +740,44 @@
     <footer class="client-footer mt-4">
         &copy; {{ date('Y') }} HarvyMance Films. All rights reserved.
     </footer>
+
+    {{-- RESCHEDULE MODAL --}}
+    <div class="modal fade" id="rescheduleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-calendar-event me-2"></i>Request Reschedule</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" action="{{ route('customer.reschedule.store') }}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="alert alert-info py-2 small mb-3">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Current event date: <strong>{{ $booking->event_date->format('M d, Y') }}</strong>.
+                            You have <strong>unlimited reschedules</strong> for this booking.
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">New Event Date <span class="text-danger">*</span></label>
+                            <input type="date" name="requested_date" class="form-control" required
+                                min="{{ now()->addDays($leadTime + 1)->format('Y-m-d') }}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">New Event Time <span class="text-danger">*</span></label>
+                            <input type="time" name="requested_time" class="form-control" required
+                                value="{{ $booking->event_time }}">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-warning fw-semibold">
+                            <i class="bi bi-send me-1"></i>Submit Request
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/client-dashboard.js') }}"></script>

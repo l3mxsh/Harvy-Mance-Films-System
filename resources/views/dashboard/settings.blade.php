@@ -55,6 +55,21 @@
                                     @enderror
                                 </div>
 
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">Reschedule Minimum Lead Time</label>
+                                    <p class="text-muted small mb-2">
+                                        Minimum number of days before the event date that a client can request a reschedule.
+                                    </p>
+                                    <select name="reschedule_lead_time_days" class="form-select">
+                                        <option value="5" {{ $rescheduleLeadTime == '5' ? 'selected' : '' }}>5 days</option>
+                                        <option value="6" {{ $rescheduleLeadTime == '6' ? 'selected' : '' }}>6 days</option>
+                                        <option value="7" {{ $rescheduleLeadTime == '7' ? 'selected' : '' }}>7 days</option>
+                                    </select>
+                                    @error('reschedule_lead_time_days')
+                                        <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                                 <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-save me-1"></i>Save Settings
                                 </button>
