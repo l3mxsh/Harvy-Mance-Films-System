@@ -1,0 +1,434 @@
+.table th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.badge.bg-light {
+    font-weight: 500;
+}
+
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-footer {
+    border-top: 1px solid #eee;
+}
+
+.text-purple {
+    color: #6f42c1 !important;
+}
+
+.bg-purple {
+    background-color: #6f42c1 !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #000;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.15);
+}
+
+.booking-hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff;
+    padding: 3rem 0;
+}
+
+.booking-hero h1 {
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+.booking-hero p {
+    opacity: 0.85;
+    font-size: 1.05rem;
+}
+
+.booking-nav {
+    background: #fff;
+    border-bottom: 1px solid #e9ecef;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0.75rem 0;
+}
+
+.stepper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.stepper-step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.stepper-step:hover {
+    background: #f8f9fa;
+}
+
+.stepper-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    background: #e9ecef;
+    color: #6c757d;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.stepper-step.active .stepper-number {
+    background: #1a1a2e;
+    color: #fff;
+}
+
+.stepper-step.completed .stepper-number {
+    background: #198754;
+    color: #fff;
+}
+
+.stepper-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #6c757d;
+    transition: color 0.2s ease;
+}
+
+.stepper-step.active .stepper-label {
+    color: #1a1a2e;
+    font-weight: 600;
+}
+
+.stepper-step.completed .stepper-label {
+    color: #198754;
+}
+
+.stepper-connector {
+    width: 40px;
+    height: 2px;
+    background: #e9ecef;
+    flex-shrink: 0;
+}
+
+.stepper-connector.completed {
+    background: #198754;
+}
+
+.step-content {
+    display: none;
+}
+
+.step-content.active {
+    display: block;
+}
+
+.package-card {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #fff;
+    position: relative;
+}
+
+.package-card:hover {
+    border-color: #1a1a2e;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.package-card.selected {
+    border-color: #1a1a2e;
+    background: #f8f9fa;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.package-card .check-indicator {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.package-card.selected .check-indicator {
+    background: #1a1a2e;
+    border-color: #1a1a2e;
+    color: #fff;
+}
+
+.package-card .package-price {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.package-card .service-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+}
+
+.package-card .service-list li {
+    padding: 0.2rem 0;
+    font-size: 0.88rem;
+    color: #495057;
+}
+
+.package-card .service-list li::before {
+    content: "\F272";
+    font-family: "bootstrap-icons";
+    margin-right: 0.4rem;
+    color: #198754;
+    font-size: 0.8rem;
+}
+
+.addon-card {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1rem;
+    transition: all 0.2s ease;
+    background: #fff;
+}
+
+.addon-card:hover {
+    border-color: #6c757d;
+}
+
+.addon-card.selected {
+    border-color: #1a1a2e;
+    background: #f8f9fa;
+}
+
+.addon-card .form-check-input:checked {
+    background-color: #1a1a2e;
+    border-color: #1a1a2e;
+}
+
+.price-summary {
+    background: #1a1a2e;
+    color: #fff;
+    border-radius: 12px;
+    padding: 1.25rem;
+    position: sticky;
+    top: 80px;
+}
+
+.price-summary .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.35rem 0;
+    font-size: 0.9rem;
+}
+
+.price-summary .summary-row.total {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 0.5rem;
+    padding-top: 0.65rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.summary-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.confirmation-section {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.confirmation-section h6 {
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #1a1a2e;
+}
+
+.confirmation-section .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem 0;
+    font-size: 0.9rem;
+}
+
+.confirmation-section .detail-label {
+    color: #6c757d;
+}
+
+.confirmation-section .detail-value {
+    font-weight: 500;
+    color: #212529;
+}
+
+.payment-summary-card {
+    background: #1a1a2e;
+    color: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.payment-summary-card .payment-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+}
+
+.payment-summary-card .payment-row.downpayment {
+    color: #ffc107;
+}
+
+.payment-summary-card .payment-row.balance {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 0.5rem;
+    padding-top: 0.65rem;
+    font-weight: 600;
+}
+
+.btn-next,
+.btn-back {
+    padding: 0.6rem 1.5rem;
+    font-weight: 500;
+}
+
+.btn-next {
+    background: #1a1a2e;
+    border-color: #1a1a2e;
+    color: #fff;
+}
+
+.btn-next:hover {
+    background: #16213e;
+    border-color: #16213e;
+    color: #fff;
+}
+
+.btn-back {
+    background: transparent;
+    border: 2px solid #dee2e6;
+    color: #495057;
+}
+
+.btn-back:hover {
+    border-color: #1a1a2e;
+    color: #1a1a2e;
+}
+
+.btn-submit-booking {
+    background: #198754;
+    border-color: #198754;
+    color: #fff;
+    padding: 0.7rem 2rem;
+    font-weight: 600;
+}
+
+.btn-submit-booking:hover {
+    background: #157347;
+    border-color: #146c43;
+    color: #fff;
+}
+
+.btn-submit-booking:disabled {
+    background: #6c757d;
+    border-color: #6c757d;
+}
+
+.date-available {
+    color: #198754;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.date-unavailable {
+    color: #dc3545;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.booking-navbar .navbar-brand {
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.booking-navbar .nav-link {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.booking-navbar .nav-link:hover {
+    color: #fff;
+}
+
+@media (max-width: 767.98px) {
+    .stepper {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    .stepper-connector {
+        display: none;
+    }
+
+    .stepper-step {
+        padding: 0.3rem 0.5rem;
+    }
+
+    .stepper-label {
+        font-size: 0.75rem;
+    }
+
+    .stepper-number {
+        width: 28px;
+        height: 28px;
+        font-size: 0.78rem;
+    }
+
+    .price-summary {
+        position: static;
+    }
+
+    .booking-hero h1 {
+        font-size: 1.5rem;
+    }
+
+    .package-card .package-price {
+        font-size: 1.1rem;
+    }
+}

@@ -1,0 +1,70 @@
+/* client-login.css */
+body.client-login-body {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.client-login-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    max-width: 440px;
+    width: 100%;
+}
+
+.client-login-header {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 2rem;
+    text-align: center;
+}
+
+.client-login-header h3 {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.client-login-header p {
+    opacity: 0.7;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.client-login-body {
+    padding: 2rem;
+}
+
+.client-login-body .form-control:focus {
+    border-color: #1a1a2e;
+    box-shadow: 0 0 0 0.2rem rgba(26, 26, 46, 0.15);
+}
+
+.btn-client-login {
+    background: #1a1a2e;
+    border: none;
+    padding: 0.7rem;
+    font-weight: 600;
+    width: 100%;
+    color: #fff;
+}
+
+.btn-client-login:hover {
+    background: #16213e;
+    color: #fff;
+}
+
+.client-login-footer {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+}
+
+.client-login-footer a {
+    color: #6c757d;
+    text-decoration: none;
+}
