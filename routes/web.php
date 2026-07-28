@@ -17,6 +17,7 @@ use App\Http\Controllers\StaffPostProductionController;
 use App\Http\Controllers\RescheduleController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\CancellationController;
+use App\Http\Controllers\OutsourcedStaffController;
 
 Route::get('/', [BookingController::class, 'index'])->name('home');
 
@@ -102,7 +103,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/admin/post-production/{postProduction}/notes', [PostProductionController::class, 'updateNotes'])->name('post-production.update-notes');
     Route::post('/admin/post-production/task/{task}/approve', [PostProductionController::class, 'approveTask'])->name('post-production.approve-task');
     Route::post('/admin/post-production/task/{task}/revision', [PostProductionController::class, 'requestRevision'])->name('post-production.request-revision');
+    Route::post('/admin/post-production/task/{task}/link', [PostProductionController::class, 'adminUpdateTaskLink'])->name('post-production.admin-link');
+    Route::post('/admin/post-production/task/{task}/outsourced-account', [PostProductionController::class, 'createOutsourcedAccount'])->name('post-production.outsourced-account');
     Route::post('/admin/post-production/{booking}/unlock', [PostProductionController::class, 'unlockDeliverables'])->name('post-production.unlock');
+
+    Route::post('/admin/outsourced-staff', [OutsourcedStaffController::class, 'store'])->name('outsourced-staff.store');
+    Route::put('/admin/outsourced-staff/{outsourcedStaff}', [OutsourcedStaffController::class, 'update'])->name('outsourced-staff.update');
+    Route::delete('/admin/outsourced-staff/{outsourcedStaff}', [OutsourcedStaffController::class, 'destroy'])->name('outsourced-staff.destroy');
 
     Route::post('/admin/reschedule/{rescheduleRequest}/approve', [RescheduleController::class, 'approve'])->name('reschedule.approve');
     Route::post('/admin/reschedule/{rescheduleRequest}/reject', [RescheduleController::class, 'reject'])->name('reschedule.reject');

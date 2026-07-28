@@ -18,6 +18,9 @@ class Staff extends Authenticatable
         'contact_number',
         'status',
         'last_login_at',
+        'is_outsourced',
+        'is_temporary',
+        'temp_expires_at',
     ];
 
     protected $hidden = [
@@ -28,8 +31,16 @@ class Staff extends Authenticatable
     {
         return [
             'last_login_at' => 'datetime',
+            'temp_expires_at' => 'datetime',
+            'is_outsourced' => 'boolean',
+            'is_temporary' => 'boolean',
             'password' => 'hashed',
         ];
+    }
+
+    public function isExpiredTemp(): bool
+    {
+        return $this->is_temporary && $this->temp_expires_at && now()->gt($this->temp_expires_at);
     }
 
     public function teams(): BelongsToMany

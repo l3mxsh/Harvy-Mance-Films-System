@@ -37,12 +37,15 @@ if ($identifier === '--all') {
     $bookings  = Booking::all();
     $payments  = Downpayment::all();
     $schedules = StaffSchedule::count();
+    $ppRecords = PostProduction::count();
+    $ppTasks   = PostProductionTask::count();
 
     echo "===========================================\n";
     echo "Customer accounts  : {$accounts->count()}\n";
     echo "Bookings           : {$bookings->count()}\n";
     echo "Payment records    : {$payments->count()}\n";
     echo "Staff schedules    : {$schedules}\n";
+    echo "Post-production    : {$ppRecords} record(s), {$ppTasks} task(s)\n";
     echo "===========================================\n";
 
     if ($accounts->isNotEmpty()) {
@@ -85,7 +88,14 @@ if ($identifier === '--all') {
             $dp->delete();
         }
 
-        // 4. Clean up any remaining orphaned records
+        // 4. Clean up orphaned post-production records (booking_id points to non-existent booking)
+        $orphanedPP = PostProduction::whereNotIn('booking_id', Booking::pluck('id'))->get();
+        foreach ($orphanedPP as $pp) {
+            PostProductionTask::where('post_production_id', $pp->id)->delete();
+            $pp->delete();
+        }
+
+        // 5. Clean up any remaining orphaned records
         CancellationRequest::whereDoesntHave('booking')->delete();
         RescheduleRequest::whereDoesntHave('booking')->delete();
         StaffSchedule::whereDoesntHave('booking')->delete();

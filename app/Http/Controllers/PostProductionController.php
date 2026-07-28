@@ -6,7 +6,10 @@ use App\Models\Booking;
 use App\Models\PostProduction;
 use App\Models\PostProductionTask;
 use App\Models\Staff;
+use App\Models\OutsourcedStaff;
+use App\Mail\OutsourcedStaffCredentialsEmail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PostProductionController extends Controller
 {
@@ -37,8 +40,9 @@ class PostProductionController extends Controller
         }
 
         $staff = Staff::where('status', 'active')->get();
+        $outsourcedStaff = OutsourcedStaff::orderBy('name')->get();
 
-        return view('dashboard.post-production-create', compact('booking', 'staff'));
+        return view('dashboard.post-production-create', compact('booking', 'staff', 'outsourcedStaff'));
     }
 
     public function store(Request $request, Booking $booking)
@@ -55,7 +59,9 @@ class PostProductionController extends Controller
             'expected_completion_date' => 'required|date|after:today',
             'notes' => 'nullable|string|max:2000',
             'tasks' => 'required|array|min:1',
-            'tasks.*.staff_id' => 'required|exists:staff,id',
+            'tasks.*.assignee_type' => 'required|in:inhouse,outsourced,admin',
+            'tasks.*.staff_id' => 'nullable|exists:staff,id',
+            'tasks.*.outsourced_staff_id' => 'nullable|exists:outsourced_staff,id',
             'tasks.*.task_type' => 'required|in:photo_editing,video_editing,both',
             'tasks.*.instructions' => 'nullable|string|max:2000',
         ]);
@@ -70,11 +76,12 @@ class PostProductionController extends Controller
 
         foreach ($validated['tasks'] as $taskData) {
             PostProductionTask::create([
-                'post_production_id' => $postProduction->id,
-                'staff_id' => $taskData['staff_id'],
-                'task_type' => $taskData['task_type'],
-                'instructions' => $taskData['instructions'] ?? null,
-                'status' => 'not_started',
+                'post_production_id'  => $postProduction->id,
+                'staff_id'            => $taskData['assignee_type'] === 'inhouse' ? ($taskData['staff_id'] ?? null) : null,
+                'outsourced_staff_id' => $taskData['assignee_type'] === 'outsourced' ? ($taskData['outsourced_staff_id'] ?? null) : null,
+                'task_type'           => $taskData['task_type'],
+                'instructions'        => $taskData['instructions'] ?? null,
+                'status'              => $taskData['assignee_type'] === 'admin' ? 'in_progress' : 'not_started',
                 'admin_review_status' => 'pending',
             ]);
         }
@@ -87,7 +94,7 @@ class PostProductionController extends Controller
 
     public function show(PostProduction $postProduction)
     {
-        $postProduction->load(['booking.package', 'booking.addons', 'booking.customerAccount', 'tasks.staff']);
+        $postProduction->load(['booking.package', 'booking.addons', 'booking.customerAccount', 'tasks.staff', 'tasks.outsourcedStaff']);
 
         $allApproved = $postProduction->tasks->count() > 0
             && $postProduction->tasks->every(fn($t) => $t->admin_review_status === 'approved');
@@ -191,6 +198,24 @@ class PostProductionController extends Controller
         return back()->with('success', 'Deliverables unlocked and client can download files.');
     }
 
+    public function adminUpdateTaskLink(Request $request, PostProductionTask $task)
+    {
+        $validated = $request->validate([
+            'deliverable_link' => 'required|url|max:2000',
+            'remarks'          => 'nullable|string|max:2000',
+        ]);
+
+        $task->update([
+            'deliverable_link'    => $validated['deliverable_link'],
+            'remarks'             => $validated['remarks'] ?? null,
+            'status'              => 'completed',
+            'completed_at'        => now(),
+            'admin_review_status' => 'pending',
+        ]);
+
+        return back()->with('success', 'Deliverable link saved.');
+    }
+
     private function checkAllApproved(PostProduction $postProduction): void
     {
         $allApproved = $postProduction->tasks->count() > 0
@@ -200,5 +225,60 @@ class PostProductionController extends Controller
             $postProduction->update(['status' => 'ready']);
             $postProduction->booking->update(['post_production_status' => 'ready']);
         }
+    }
+
+    public function createOutsourcedAccount(Request $request, PostProductionTask $task)
+    {
+        $validated = $request->validate([
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+        ]);
+
+        // Reuse existing staff record if email matches, otherwise create new temp account
+        $staff = Staff::where('email', $validated['email'])->first();
+        $plainPassword = \App\Http\Controllers\StaffController::generateTempPassword();
+
+        if ($staff) {
+            $staff->update([
+                'password'       => $plainPassword,
+                'is_outsourced'  => true,
+                'is_temporary'   => true,
+                'temp_expires_at'=> null,
+                'status'         => 'active',
+            ]);
+        } else {
+            $staff = Staff::create([
+                'name'           => $validated['name'],
+                'email'          => $validated['email'],
+                'password'       => $plainPassword,
+                'is_outsourced'  => true,
+                'is_temporary'   => true,
+                'temp_expires_at'=> null,
+                'status'         => 'active',
+            ]);
+        }
+
+        // Assign this task to the outsourced staff
+        $task->update(['staff_id' => $staff->id]);
+
+        try {
+            Mail::to($staff->email)->send(new OutsourcedStaffCredentialsEmail(
+                $staff->name,
+                $staff->email,
+                $plainPassword,
+                $task->postProduction->booking->booking_ref ?? 'N/A',
+                url('/staff/login'),
+            ));
+            $mailSent = true;
+        } catch (\Exception $e) {
+            $mailSent = false;
+        }
+
+        $msg = "Temporary account created for {$staff->name}.";
+        if (!$mailSent) {
+            $msg .= " (Email could not be sent — password: {$plainPassword})";
+        }
+
+        return back()->with('success', $msg);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Staff;
+use App\Models\OutsourcedStaff;
 use App\Mail\BookingCredentialsEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -32,8 +33,9 @@ class StaffController extends Controller
         $totalStaff = Staff::count();
         $activeStaff = Staff::where('status', 'active')->count();
         $inactiveStaff = Staff::where('status', 'inactive')->count();
+        $outsourcedStaff = OutsourcedStaff::orderBy('name')->get();
 
-        return view('dashboard.staff', compact('staff', 'totalStaff', 'activeStaff', 'inactiveStaff'));
+        return view('dashboard.staff', compact('staff', 'totalStaff', 'activeStaff', 'inactiveStaff', 'outsourcedStaff'));
     }
 
     public function store(Request $request)

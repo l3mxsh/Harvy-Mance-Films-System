@@ -108,7 +108,7 @@
                                                 @endif
                                             </div>
                                             <div class="small text-muted">
-                                                <i class="bi bi-person me-1"></i>{{ $task->staff->name ?? 'N/A' }}
+                                                <i class="bi bi-person me-1"></i>{{ $task->assigneeName() }}
                                             </div>
                                         </div>
                                     </div>
@@ -143,6 +143,61 @@
                                     @if($task->completed_at)
                                         <div class="small text-muted mb-2">
                                             Completed: {{ $task->completed_at->format('M d, Y g:i A') }}
+                                        </div>
+                                    @endif
+
+                                    {{-- OUTSOURCED TEMP ACCOUNT (only when outsourced staff assigned, no login yet) --}}
+                                    @if($task->outsourcedStaff && !$task->staff_id)
+                                        <div class="mt-2">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                data-bs-toggle="modal" data-bs-target="#outsourcedModal{{ $task->id }}">
+                                                <i class="bi bi-person-plus me-1"></i>Create Temporary Account for {{ $task->outsourcedStaff->name }}
+                                            </button>
+                                        </div>
+                                        <div class="modal fade" id="outsourcedModal{{ $task->id }}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form method="POST" action="{{ route('post-production.outsourced-account', $task->id) }}">
+                                                        @csrf
+                                                        <div class="modal-header">
+                                                            <h6 class="modal-title fw-bold"><i class="bi bi-person-plus me-2"></i>Create Temporary Staff Account</h6>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p class="text-muted small mb-3">A temporary login will be generated and emailed. Access expires automatically once all their tasks are done.</p>
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+                                                                <input type="text" name="name" class="form-control" required value="{{ $task->outsourcedStaff->name }}">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
+                                                                <input type="email" name="email" class="form-control" required placeholder="staff@email.com">
+                                                                <div class="form-text">Credentials will be sent to this email.</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                            <button type="submit" class="btn btn-dark"><i class="bi bi-send me-1"></i>Create & Send Credentials</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    {{-- ADMIN MANUAL LINK (admin-assigned or outsourced with no temp account yet) --}}
+                                    @if(!$task->staff_id && $task->admin_review_status !== 'approved')
+                                        <div class="mt-2">
+                                            <form method="POST" action="{{ route('post-production.admin-link', $task->id) }}" class="d-flex gap-2 align-items-center">
+                                                @csrf
+                                                <input type="url" name="deliverable_link" class="form-control form-control-sm"
+                                                    placeholder="Paste deliverable link..."
+                                                    value="{{ $task->deliverable_link }}"
+                                                    required>
+                                                <button type="submit" class="btn btn-sm btn-dark text-nowrap">
+                                                    <i class="bi bi-save me-1"></i>Save Link
+                                                </button>
+                                            </form>
                                         </div>
                                     @endif
 

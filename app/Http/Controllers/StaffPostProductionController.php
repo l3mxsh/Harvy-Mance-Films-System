@@ -37,6 +37,12 @@ class StaffPostProductionController extends Controller
             ])->withInput($request->only('email'));
         }
 
+        if ($staff->isExpiredTemp()) {
+            return back()->withErrors([
+                'email' => 'Your temporary access has expired.',
+            ])->withInput($request->only('email'));
+        }
+
         auth('staff')->login($staff);
         $staff->update(['last_login_at' => now()]);
 
@@ -104,6 +110,20 @@ class StaffPostProductionController extends Controller
         }
 
         $task->update($validated);
+
+        // Auto-expire temp account when all their tasks are done
+        if ($staff->is_temporary && $validated['status'] === 'completed') {
+            $pendingTasks = PostProductionTask::where('staff_id', $staff->id)
+                ->whereNotIn('status', ['completed'])
+                ->count();
+
+            if ($pendingTasks === 0) {
+                $staff->update([
+                    'temp_expires_at' => now(),
+                    'status' => 'inactive',
+                ]);
+            }
+        }
 
         return back()->with('success', 'Task updated successfully.');
     }

@@ -53,7 +53,7 @@ class CustomerAccountController extends Controller
     public function dashboard()
     {
         $account = auth('customer')->user();
-        $booking = Booking::with(['package.services', 'addons', 'items.inventoryItem', 'team.members', 'postProduction.tasks.staff'])
+        $booking = Booking::with(['package.services', 'addons', 'items.inventoryItem', 'team.members', 'team.outsourcedMembers', 'postProduction.tasks.staff'])
             ->findOrFail($account->booking_id);
 
         $latestDownpayment = $booking->latestDownpayment;

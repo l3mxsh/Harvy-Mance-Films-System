@@ -43,7 +43,7 @@
 
             {{-- ==================== SUMMARY CARDS ==================== --}}
             <div class="row g-3 mb-4">
-                <div class="col-lg-4 col-md-4 col-6">
+                <div class="col-lg-3 col-md-4 col-6">
                     <div class="card border-0 shadow-sm">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
@@ -51,14 +51,14 @@
                                     <i class="bi bi-people"></i>
                                 </div>
                                 <div class="ms-3">
-                                    <h6 class="text-muted mb-1">Total Staff</h6>
+                                    <h6 class="text-muted mb-1">Total In-House</h6>
                                     <h4 class="mb-0 fw-bold">{{ $totalStaff }}</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-6">
+                <div class="col-lg-3 col-md-4 col-6">
                     <div class="card border-0 shadow-sm">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-6">
+                <div class="col-lg-3 col-md-4 col-6">
                     <div class="card border-0 shadow-sm">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
@@ -83,6 +83,21 @@
                                 <div class="ms-3">
                                     <h6 class="text-muted mb-1">Inactive</h6>
                                     <h4 class="mb-0 fw-bold">{{ $inactiveStaff }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="summary-icon bg-warning bg-opacity-10 text-warning">
+                                    <i class="bi bi-person-badge"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1">Outsourced</h6>
+                                    <h4 class="mb-0 fw-bold">{{ $outsourcedStaff->count() }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -121,7 +136,63 @@
                 </div>
             </div>
 
-            {{-- ==================== STAFF TABLE ==================== --}}
+            {{-- ==================== OUTSOURCED STAFF TABLE ==================== --}}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 fw-bold"><i class="bi bi-person-badge me-2"></i>Outsourced Staff <span class="badge bg-warning text-dark ms-1">Record Only</span></h6>
+                    <button type="button" class="btn btn-sm btn-outline-warning" onclick="openCreateOutsourcedModal()">
+                        <i class="bi bi-plus-circle me-1"></i>Add Outsourced
+                    </button>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Contact</th>
+                                    <th>Notes</th>
+                                    <th>Added</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($outsourcedStaff as $os)
+                                    <tr>
+                                        <td class="fw-semibold">{{ $os->name }}</td>
+                                        <td>{{ $os->email ?? '—' }}</td>
+                                        <td>{{ $os->contact_number ?? '—' }}</td>
+                                        <td><span class="text-muted small">{{ $os->notes ?? '—' }}</span></td>
+                                        <td>{{ $os->created_at->format('M d, Y') }}</td>
+                                        <td class="text-center">
+                                            <div class="btn-group btn-group-sm">
+                                                <button class="btn btn-outline-secondary btn-sm"
+                                                    onclick="openEditOutsourcedModal('{{ $os->id }}', '{{ addslashes($os->name) }}', '{{ addslashes($os->email ?? '') }}', '{{ $os->contact_number }}', '{{ addslashes($os->notes ?? '') }}')">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm"
+                                                    onclick="openDeleteOutsourcedModal('{{ $os->id }}', '{{ addslashes($os->name) }}')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4 text-muted">
+                                            <i class="bi bi-person-badge fs-1 d-block mb-2"></i>
+                                            No outsourced staff records yet.
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ==================== IN-HOUSE STAFF TABLE ==================== --}}
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
                     <h6 class="mb-0 fw-bold"><i class="bi bi-people me-2"></i>All Staff</h6>
@@ -206,6 +277,105 @@
                         {{ $staff->links() }}
                     </div>
                 @endif
+            </div>
+        </div>
+    </div>
+
+    {{-- ==================== CREATE OUTSOURCED MODAL ==================== --}}
+    <div class="modal fade" id="createOutsourcedModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-person-badge me-2"></i>Add Outsourced Staff</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" action="{{ route('outsourced-staff.store') }}">
+                    @csrf
+                    <div class="modal-body">
+                        <p class="text-muted small mb-3">Record only — no login account. Used for shoot-day assignments and post-production tracking.</p>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control" required placeholder="Enter full name">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email Address</label>
+                            <input type="email" name="email" class="form-control" placeholder="e.g. staff@example.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Contact Number</label>
+                            <input type="text" name="contact_number" class="form-control" placeholder="e.g. 09XXXXXXXXX">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Notes</label>
+                            <input type="text" name="notes" class="form-control" placeholder="e.g. Photographer, Videographer...">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-warning"><i class="bi bi-check-lg me-1"></i>Add Record</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- ==================== EDIT OUTSOURCED MODAL ==================== --}}
+    <div class="modal fade" id="editOutsourcedModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-secondary text-white">
+                    <h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Edit Outsourced Staff</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" id="editOutsourcedForm">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" name="name" id="editOsName" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email Address</label>
+                            <input type="email" name="email" id="editOsEmail" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Contact Number</label>
+                            <input type="text" name="contact_number" id="editOsContact" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Notes</label>
+                            <input type="text" name="notes" id="editOsNotes" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-secondary"><i class="bi bi-check-lg me-1"></i>Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- ==================== DELETE OUTSOURCED MODAL ==================== --}}
+    <div class="modal fade" id="deleteOutsourcedModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="bi bi-trash me-2"></i>Delete Outsourced Staff</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" id="deleteOutsourcedForm">
+                    @csrf
+                    @method('DELETE')
+                    <div class="modal-body">
+                        <p>Delete record for <strong id="deleteOsName"></strong>? This cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Delete</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -464,6 +634,26 @@
             document.getElementById('deleteStaffName').textContent = name;
             document.getElementById('deleteStaffEmail').textContent = email;
             new bootstrap.Modal(document.getElementById('deleteModal')).show();
+        }
+
+        function openCreateOutsourcedModal() {
+            document.querySelector('#createOutsourcedModal form').reset();
+            new bootstrap.Modal(document.getElementById('createOutsourcedModal')).show();
+        }
+
+        function openEditOutsourcedModal(id, name, email, contact, notes) {
+            document.getElementById('editOutsourcedForm').action = '/admin/outsourced-staff/' + id;
+            document.getElementById('editOsName').value = name;
+            document.getElementById('editOsEmail').value = email || '';
+            document.getElementById('editOsContact').value = contact || '';
+            document.getElementById('editOsNotes').value = notes || '';
+            new bootstrap.Modal(document.getElementById('editOutsourcedModal')).show();
+        }
+
+        function openDeleteOutsourcedModal(id, name) {
+            document.getElementById('deleteOutsourcedForm').action = '/admin/outsourced-staff/' + id;
+            document.getElementById('deleteOsName').textContent = name;
+            new bootstrap.Modal(document.getElementById('deleteOutsourcedModal')).show();
         }
     </script>
 </body>

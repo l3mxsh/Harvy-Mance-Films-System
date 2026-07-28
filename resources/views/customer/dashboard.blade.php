@@ -633,12 +633,18 @@
                                 <span class="detail-label">Team</span>
                                 <span class="detail-value fw-bold text-primary">{{ $booking->team->name }}</span>
                             </div>
-                            @if($booking->team->members->count() > 0)
+                            @if($booking->team->members->count() > 0 || $booking->team->outsourcedMembers->count() > 0)
                                 <div class="mt-2">
                                     @foreach($booking->team->members as $member)
                                         <span class="team-member-chip">
                                             <span class="avatar">{{ strtoupper(substr($member->name, 0, 1)) }}</span>
                                             {{ $member->name }}
+                                        </span>
+                                    @endforeach
+                                    @foreach($booking->team->outsourcedMembers as $os)
+                                        <span class="team-member-chip" style="background:#fff3cd;color:#856404;border-color:#ffc107;">
+                                            <span class="avatar" style="background:#ffc107;color:#000;">{{ strtoupper(substr($os->name, 0, 1)) }}</span>
+                                            {{ $os->name }} <small>(OS)</small>
                                         </span>
                                     @endforeach
                                 </div>

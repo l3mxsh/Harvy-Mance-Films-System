@@ -118,30 +118,47 @@
                                 </button>
                             </div>
                             <div class="card-body" id="tasksContainer">
-                                @php $oldTasks = old('tasks', [['staff_id' => '', 'task_type' => '', 'instructions' => '']]); @endphp
+                        @php $oldTasks = old('tasks', [['assignee_type' => 'inhouse', 'staff_id' => '', 'outsourced_staff_id' => '', 'task_type' => '', 'instructions' => '']]); @endphp
                                 @foreach($oldTasks as $idx => $oldTask)
                                     <div class="task-entry border rounded p-3 mb-3" data-index="{{ $idx }}">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <h6 class="fw-bold text-primary mb-0">
-                                                <i class="bi bi-person-gear me-1"></i>Task #{{ $idx + 1 }}
-                                            </h6>
+                                            <h6 class="fw-bold text-primary mb-0"><i class="bi bi-person-gear me-1"></i>Task #{{ $idx + 1 }}</h6>
                                             <button type="button" class="btn btn-sm btn-outline-danger remove-task" style="display: {{ count($oldTasks) > 1 ? 'block' : 'none' }}">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
                                         <div class="row g-3">
-                                            <div class="col-md-4">
-                                                <label class="form-label fw-semibold small">Staff Member <span class="text-danger">*</span></label>
-                                                <select name="tasks[{{ $idx }}][staff_id]" class="form-select" required>
+                                            <div class="col-md-3">
+                                                <label class="form-label fw-semibold small">Assignee Type <span class="text-danger">*</span></label>
+                                                <select name="tasks[{{ $idx }}][assignee_type]" class="form-select assignee-type-select" required>
+                                                    <option value="inhouse" {{ ($oldTask['assignee_type'] ?? 'inhouse') === 'inhouse' ? 'selected' : '' }}>In-House Staff</option>
+                                                    <option value="outsourced" {{ ($oldTask['assignee_type'] ?? '') === 'outsourced' ? 'selected' : '' }}>Outsourced Staff</option>
+                                                    <option value="admin" {{ ($oldTask['assignee_type'] ?? '') === 'admin' ? 'selected' : '' }}>Admin (manual link)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 assignee-inhouse {{ ($oldTask['assignee_type'] ?? 'inhouse') !== 'inhouse' ? 'd-none' : '' }}">
+                                                <label class="form-label fw-semibold small">In-House Staff</label>
+                                                <select name="tasks[{{ $idx }}][staff_id]" class="form-select">
                                                     <option value="">-- Select staff --</option>
                                                     @foreach($staff as $s)
-                                                        <option value="{{ $s->id }}" {{ (old("tasks.{$idx}.staff_id") == $s->id) ? 'selected' : '' }}>
-                                                            {{ $s->name }}
-                                                        </option>
+                                                        <option value="{{ $s->id }}" {{ (old("tasks.{$idx}.staff_id") == $s->id) ? 'selected' : '' }}>{{ $s->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3 assignee-outsourced {{ ($oldTask['assignee_type'] ?? '') !== 'outsourced' ? 'd-none' : '' }}">
+                                                <label class="form-label fw-semibold small">Outsourced Staff</label>
+                                                <select name="tasks[{{ $idx }}][outsourced_staff_id]" class="form-select">
+                                                    <option value="">-- Select outsourced --</option>
+                                                    @foreach($outsourcedStaff as $os)
+                                                        <option value="{{ $os->id }}" {{ (old("tasks.{$idx}.outsourced_staff_id") == $os->id) ? 'selected' : '' }}>{{ $os->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 assignee-admin {{ ($oldTask['assignee_type'] ?? '') !== 'admin' ? 'd-none' : '' }}">
+                                                <label class="form-label fw-semibold small">Assigned To</label>
+                                                <input type="text" class="form-control" value="Admin" disabled>
+                                            </div>
+                                            <div class="col-md-3">
                                                 <label class="form-label fw-semibold small">Task Type <span class="text-danger">*</span></label>
                                                 <select name="tasks[{{ $idx }}][task_type]" class="form-select" required>
                                                     <option value="">-- Select type --</option>
@@ -150,11 +167,11 @@
                                                     <option value="both" {{ old("tasks.{$idx}.task_type") === 'both' ? 'selected' : '' }}>Both</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label class="form-label fw-semibold small">Instructions</label>
-                                                <input type="text" name="tasks[{{ $idx }}][instructions]"
-                                                       class="form-control" placeholder="Specific instructions for this task..."
-                                                       value="{{ old("tasks.{$idx}.instructions") }}">
+                                                <input type="text" name="tasks[{{ $idx }}][instructions]" class="form-control"
+                                                    placeholder="Specific instructions..."
+                                                    value="{{ old("tasks.{$idx}.instructions") }}">
                                             </div>
                                         </div>
                                     </div>
@@ -177,33 +194,67 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/sidebar.js') }}"></script>
     <script>
-        const staffOptions = @json($staff->map(fn($s) => ['id' => $s->id, 'name' => $s->name])->toArray());
+        const inHouseOptions = @json($staff->map(fn($s) => ['id' => $s->id, 'name' => $s->name])->toArray());
+        const outsourcedOptions = @json($outsourcedStaff->map(fn($s) => ['id' => $s->id, 'name' => $s->name])->toArray());
         let taskIndex = {{ count($oldTasks) }};
+
+        function buildInHouseOpts() {
+            return inHouseOptions.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+        }
+        function buildOutsourcedOpts() {
+            return outsourcedOptions.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+        }
+
+        function toggleAssigneeFields(select) {
+            const entry = select.closest('.task-entry');
+            entry.querySelector('.assignee-inhouse').classList.toggle('d-none', select.value !== 'inhouse');
+            entry.querySelector('.assignee-outsourced').classList.toggle('d-none', select.value !== 'outsourced');
+            entry.querySelector('.assignee-admin').classList.toggle('d-none', select.value !== 'admin');
+        }
+
+        document.getElementById('tasksContainer').addEventListener('change', function(e) {
+            if (e.target.classList.contains('assignee-type-select')) {
+                toggleAssigneeFields(e.target);
+            }
+        });
 
         document.getElementById('addTaskBtn').addEventListener('click', function() {
             const container = document.getElementById('tasksContainer');
             const idx = taskIndex++;
-            const staffOpts = staffOptions.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-
             const html = `
                 <div class="task-entry border rounded p-3 mb-3" data-index="${idx}">
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h6 class="fw-bold text-primary mb-0">
-                            <i class="bi bi-person-gear me-1"></i>Task #${idx + 1}
-                        </h6>
-                        <button type="button" class="btn btn-sm btn-outline-danger remove-task">
-                            <i class="bi bi-trash"></i>
-                        </button>
+                        <h6 class="fw-bold text-primary mb-0"><i class="bi bi-person-gear me-1"></i>Task #${idx + 1}</h6>
+                        <button type="button" class="btn btn-sm btn-outline-danger remove-task"><i class="bi bi-trash"></i></button>
                     </div>
                     <div class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label fw-semibold small">Staff Member <span class="text-danger">*</span></label>
-                            <select name="tasks[${idx}][staff_id]" class="form-select" required>
-                                <option value="">-- Select staff --</option>
-                                ${staffOpts}
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold small">Assignee Type <span class="text-danger">*</span></label>
+                            <select name="tasks[${idx}][assignee_type]" class="form-select assignee-type-select" required>
+                                <option value="inhouse" selected>In-House Staff</option>
+                                <option value="outsourced">Outsourced Staff</option>
+                                <option value="admin">Admin (manual link)</option>
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3 assignee-inhouse">
+                            <label class="form-label fw-semibold small">In-House Staff</label>
+                            <select name="tasks[${idx}][staff_id]" class="form-select">
+                                <option value="">-- Select staff --</option>
+                                ${buildInHouseOpts()}
+                            </select>
+                        </div>
+                        <div class="col-md-3 assignee-outsourced d-none">
+                            <label class="form-label fw-semibold small">Outsourced Staff</label>
+                            <select name="tasks[${idx}][outsourced_staff_id]" class="form-select">
+                                <option value="">-- Select outsourced --</option>
+                                ${buildOutsourcedOpts()}
+                            </select>
+                        </div>
+                        <div class="col-md-3 assignee-admin d-none">
+                            <label class="form-label fw-semibold small">Assigned To</label>
+                            <input type="text" class="form-control" value="Admin" disabled>
+                        </div>
+                        <div class="col-md-3">
                             <label class="form-label fw-semibold small">Task Type <span class="text-danger">*</span></label>
                             <select name="tasks[${idx}][task_type]" class="form-select" required>
                                 <option value="">-- Select type --</option>
@@ -212,14 +263,12 @@
                                 <option value="both">Both</option>
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="form-label fw-semibold small">Instructions</label>
-                            <input type="text" name="tasks[${idx}][instructions]"
-                                   class="form-control" placeholder="Specific instructions for this task...">
+                            <input type="text" name="tasks[${idx}][instructions]" class="form-control" placeholder="Specific instructions...">
                         </div>
                     </div>
-                </div>
-            `;
+                </div>`;
             container.insertAdjacentHTML('beforeend', html);
             updateRemoveButtons();
         });
@@ -234,8 +283,7 @@
         function updateRemoveButtons() {
             const entries = document.querySelectorAll('.task-entry');
             entries.forEach(entry => {
-                const btn = entry.querySelector('.remove-task');
-                btn.style.display = entries.length > 1 ? 'block' : 'none';
+                entry.querySelector('.remove-task').style.display = entries.length > 1 ? 'block' : 'none';
             });
         }
     </script>

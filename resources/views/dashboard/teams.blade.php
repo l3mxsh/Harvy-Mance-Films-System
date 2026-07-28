@@ -131,8 +131,13 @@
                                             @forelse($team->members as $member)
                                                 <span class="member-chip">{{ $member->name }}</span>
                                             @empty
-                                                <span class="text-muted fst-italic">No members</span>
                                             @endforelse
+                                            @foreach($team->outsourcedMembers as $os)
+                                                <span class="member-chip" style="background:#fff3cd;color:#856404;">{{ $os->name }} <small>(OS)</small></span>
+                                            @endforeach
+                                            @if($team->members->isEmpty() && $team->outsourcedMembers->isEmpty())
+                                                <span class="text-muted fst-italic">No members</span>
+                                            @endif
                                         </td>
                                         <td>
                                             @if($team->status === 'active')
@@ -145,7 +150,7 @@
                                         <td class="text-center">
                                             <div class="btn-group btn-group-sm">
                                                 <button class="btn btn-outline-secondary btn-sm" title="Edit"
-                                                    onclick="openEditModal('{{ $team->id }}', '{{ addslashes($team->name) }}', '{{ addslashes($team->description ?? '') }}', {!! json_encode($team->members->pluck('id')->toArray()) !!})">
+                                                    onclick="openEditModal('{{ $team->id }}', '{{ addslashes($team->name) }}', '{{ addslashes($team->description ?? '') }}', {!! json_encode($team->members->pluck('id')->toArray()) !!}, {!! json_encode($team->outsourcedMembers->pluck('id')->toArray()) !!})">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
                                                 <button class="btn btn-outline-{{ $team->status === 'active' ? 'warning' : 'success' }} btn-sm"
@@ -213,6 +218,21 @@
                                 @endforelse
                             </div>
                         </div>
+                        @if($allOutsourced->isNotEmpty())
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Outsourced Staff</label>
+                            <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                                @foreach($allOutsourced as $os)
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="outsourced_ids[]" value="{{ $os->id }}" id="create_os_{{ $os->id }}">
+                                        <label class="form-check-label" for="create_os_{{ $os->id }}">
+                                            {{ $os->name }} <small class="text-warning">(Outsourced)</small>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -256,6 +276,21 @@
                                 @endforeach
                             </div>
                         </div>
+                        @if($allOutsourced->isNotEmpty())
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Outsourced Staff</label>
+                            <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                                @foreach($allOutsourced as $os)
+                                    <div class="form-check">
+                                        <input class="form-check-input edit-outsourced-check" type="checkbox" name="outsourced_ids[]" value="{{ $os->id }}" id="edit_os_{{ $os->id }}">
+                                        <label class="form-check-label" for="edit_os_{{ $os->id }}">
+                                            {{ $os->name }} <small class="text-warning">(Outsourced)</small>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -321,12 +356,15 @@
             new bootstrap.Modal(document.getElementById('createModal')).show();
         }
 
-        function openEditModal(id, name, desc, memberIds) {
+        function openEditModal(id, name, desc, memberIds, outsourcedIds) {
             document.getElementById('editTeamForm').action = '/admin/team/' + id;
             document.getElementById('editTeamName').value = name;
             document.getElementById('editTeamDesc').value = desc;
             document.querySelectorAll('.edit-member-check').forEach(cb => {
                 cb.checked = memberIds.includes(parseInt(cb.value));
+            });
+            document.querySelectorAll('.edit-outsourced-check').forEach(cb => {
+                cb.checked = outsourcedIds.includes(parseInt(cb.value));
             });
             new bootstrap.Modal(document.getElementById('editModal')).show();
         }

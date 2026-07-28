@@ -13,6 +13,7 @@ class PostProductionTask extends Model
     protected $fillable = [
         'post_production_id',
         'staff_id',
+        'outsourced_staff_id',
         'task_type',
         'instructions',
         'status',
@@ -35,5 +36,17 @@ class PostProductionTask extends Model
     public function staff(): BelongsTo
     {
         return $this->belongsTo(Staff::class);
+    }
+
+    public function outsourcedStaff(): BelongsTo
+    {
+        return $this->belongsTo(OutsourcedStaff::class);
+    }
+
+    public function assigneeName(): string
+    {
+        if ($this->staff) return $this->staff->name;
+        if ($this->outsourcedStaff) return $this->outsourcedStaff->name . ' (Outsourced)';
+        return 'Admin';
     }
 }

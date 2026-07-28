@@ -28,7 +28,11 @@
     </div>
 
     <div class="container py-4">
-        <h5 class="fw-bold mb-4"><i class="bi bi-clipboard-data me-2"></i>My Post-Production Tasks</h5>
+        <h5 class="fw-bold mb-4"><i class="bi bi-clipboard-data me-2"></i>My Post-Production Tasks
+            @if($staff->is_temporary)
+                <span class="badge bg-warning text-dark ms-2" style="font-size:0.75rem;"><i class="bi bi-clock me-1"></i>Temporary Access</span>
+            @endif
+        </h5>
 
         <div class="row g-3 mb-4">
             <div class="col-md-3">

@@ -298,8 +298,14 @@
                             <select name="team_id" id="approveTeamSelect" class="form-select" required onchange="checkTeamAvailability()">
                                 <option value="">-- Select an available team --</option>
                                 @foreach($availableTeams as $team)
-                                    <option value="{{ $team->id }}" data-member-names="{{ $team->members->pluck('name')->implode(', ') }}">
-                                        {{ $team->name }} ({{ $team->members->count() }} members)
+                                    @php
+                                        $allNames = $team->members->pluck('name')
+                                            ->merge($team->outsourcedMembers->map(fn($os) => $os->name . ' (OS)'))
+                                            ->implode(', ');
+                                        $totalCount = $team->members->count() + $team->outsourcedMembers->count();
+                                    @endphp
+                                    <option value="{{ $team->id }}" data-member-names="{{ $allNames }}">
+                                        {{ $team->name }} ({{ $totalCount }} members)
                                     </option>
                                 @endforeach
                             </select>
@@ -384,8 +390,14 @@
                             <select name="team_id" id="rrApproveTeamSelect" class="form-select" required onchange="checkRescheduleTeamAvailability()">
                                 <option value="">-- Select a team --</option>
                                 @foreach($availableTeams as $team)
-                                    <option value="{{ $team->id }}" data-member-names="{{ $team->members->pluck('name')->implode(', ') }}">
-                                        {{ $team->name }} ({{ $team->members->count() }} members)
+                                    @php
+                                        $allNames = $team->members->pluck('name')
+                                            ->merge($team->outsourcedMembers->map(fn($os) => $os->name . ' (OS)'))
+                                            ->implode(', ');
+                                        $totalCount = $team->members->count() + $team->outsourcedMembers->count();
+                                    @endphp
+                                    <option value="{{ $team->id }}" data-member-names="{{ $allNames }}">
+                                        {{ $team->name }} ({{ $totalCount }} members)
                                     </option>
                                 @endforeach
                             </select>
@@ -467,7 +479,9 @@
 
             var memberNames = select.options[select.selectedIndex].getAttribute('data-member-names');
             membersList.innerHTML = memberNames.split(', ').map(function(n) {
-                return '<span class="badge bg-light text-dark border me-1 mb-1">' + n + '</span>';
+                var isOS = n.endsWith(' (OS)');
+                var label = isOS ? n.replace(' (OS)', '') : n;
+                return '<span class="badge me-1 mb-1 ' + (isOS ? 'bg-warning text-dark' : 'bg-light text-dark border') + '">' + label + (isOS ? ' <small>(OS)</small>' : '') + '</span>';
             }).join('');
             membersPreview.style.display = 'block';
 
@@ -531,10 +545,11 @@
                 return;
             }
 
-            var selectedOption = select.options[select.selectedIndex];
             var memberNames = selectedOption.getAttribute('data-member-names');
             membersList.innerHTML = memberNames.split(', ').map(function(name) {
-                return '<span class="badge bg-light text-dark border me-1 mb-1">' + name + '</span>';
+                var isOS = name.endsWith(' (OS)');
+                var label = isOS ? name.replace(' (OS)', '') : name;
+                return '<span class="badge me-1 mb-1 ' + (isOS ? 'bg-warning text-dark' : 'bg-light text-dark border') + '">' + label + (isOS ? ' <small>(OS)</small>' : '') + '</span>';
             }).join('');
             membersPreview.style.display = 'block';
 

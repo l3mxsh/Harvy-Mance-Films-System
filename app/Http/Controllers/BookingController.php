@@ -317,7 +317,7 @@ class BookingController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        $availableTeams = Team::with('members')->where('status', 'active')->get();
+        $availableTeams = Team::with('members', 'outsourcedMembers')->where('status', 'active')->get();
 
         $rescheduleRequests = \App\Models\RescheduleRequest::with(['booking.team', 'newTeam'])
             ->whereHas('booking')
