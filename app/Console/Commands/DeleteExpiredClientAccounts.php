@@ -7,7 +7,13 @@ use App\Models\CustomerAccount;
 use App\Models\Setting;
 use App\Models\Downpayment;
 use App\Models\PostProductionTask;
+use App\Models\StaffSchedule;
+use App\Models\RescheduleRequest;
+use App\Models\CancellationRequest;
+use App\Models\BookingItem;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class DeleteExpiredClientAccounts extends Command
 {
@@ -33,25 +39,44 @@ class DeleteExpiredClientAccounts extends Command
                 continue;
             }
 
-            $account = $booking->customerAccount;
+            DB::transaction(function () use ($booking, &$deletedCount) {
+                $account = $booking->customerAccount;
 
-            // Delete related data
-            PostProductionTask::whereHas('postProduction', fn($q) => $q->where('booking_id', $booking->id))->delete();
-            Downpayment::where('booking_id', $booking->id)->delete();
+                if ($booking->postProduction) {
+                    PostProductionTask::where('post_production_id', $booking->postProduction->id)->delete();
+                    $booking->postProduction->delete();
+                }
 
-            // Delete the customer account
-            $account->delete();
+                $downpayments = Downpayment::where('booking_id', $booking->id)->get();
+                foreach ($downpayments as $dp) {
+                    if ($dp->payment_proof && Storage::disk('public')->exists($dp->payment_proof)) {
+                        Storage::disk('public')->delete($dp->payment_proof);
+                    }
+                    $dp->delete();
+                }
 
-            $deletedCount++;
+                CancellationRequest::where('booking_id', $booking->id)->each(function ($c) {
+                    if ($c->refund_proof && Storage::disk('public')->exists($c->refund_proof)) {
+                        Storage::disk('public')->delete($c->refund_proof);
+                    }
+                    $c->delete();
+                });
 
-            $this->info("Deleted account for: {$booking->client_name} ({$booking->booking_ref})");
+                RescheduleRequest::where('booking_id', $booking->id)->delete();
+                StaffSchedule::where('booking_id', $booking->id)->delete();
+                BookingItem::where('booking_id', $booking->id)->delete();
+                $booking->addons()->detach();
+
+                $account->delete();
+                $deletedCount++;
+
+                $this->info("Deleted: {$booking->client_name} ({$booking->booking_ref})");
+            });
         }
 
-        if ($deletedCount === 0) {
-            $this->info('No expired client accounts found.');
-        } else {
-            $this->info("Successfully deleted {$deletedCount} client account(s).");
-        }
+        $this->info($deletedCount === 0
+            ? 'No expired client accounts found.'
+            : "Deleted {$deletedCount} client account(s).");
 
         return Command::SUCCESS;
     }

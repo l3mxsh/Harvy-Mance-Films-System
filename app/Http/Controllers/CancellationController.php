@@ -68,6 +68,7 @@ class CancellationController extends Controller
             ]);
             $booking->update(['status' => 'cancelled']);
             $booking->items()->update(['status' => 'cancelled']);
+            $booking->staffSchedules()->delete();
             return back()->with('success', 'Booking cancelled successfully.');
         }
 
@@ -119,6 +120,7 @@ class CancellationController extends Controller
 
         $cancellation->booking->update(['status' => 'cancelled']);
         $cancellation->booking->items()->update(['status' => 'cancelled']);
+        $cancellation->booking->staffSchedules()->delete();
 
         return back()->with('success', "Refund marked as processed for booking {$cancellation->booking->booking_ref}.");
     }

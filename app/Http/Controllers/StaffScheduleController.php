@@ -63,7 +63,7 @@ class StaffScheduleController extends Controller
     public function checkAvailability(Request $request)
     {
         $request->validate([
-            'team_id' => 'required|exists:teams,id',
+            'team_id'    => 'required|exists:teams,id',
             'event_date' => 'required|date',
         ]);
 
@@ -72,29 +72,25 @@ class StaffScheduleController extends Controller
 
         $unavailableMembers = [];
         foreach ($team->members as $member) {
-            $hasConflict = StaffSchedule::where('staff_id', $member->id)
-                ->where('event_date', $eventDate)
+            $conflict = StaffSchedule::where('staff_id', $member->id)
+                ->whereDate('event_date', $eventDate)
                 ->whereIn('status', ['assigned', 'confirmed'])
-                ->exists();
+                ->whereHas('booking', fn($q) => $q->whereNotIn('status', ['cancelled', 'rejected']))
+                ->with('booking')
+                ->first();
 
-            if ($hasConflict) {
-                $conflict = StaffSchedule::where('staff_id', $member->id)
-                    ->where('event_date', $eventDate)
-                    ->whereIn('status', ['assigned', 'confirmed'])
-                    ->with('booking')
-                    ->first();
-
+            if ($conflict) {
                 $unavailableMembers[] = [
-                    'id' => $member->id,
-                    'name' => $member->name,
+                    'id'          => $member->id,
+                    'name'        => $member->name,
                     'booking_ref' => $conflict->booking->booking_ref ?? 'N/A',
                 ];
             }
         }
 
         return response()->json([
-            'available' => empty($unavailableMembers),
-            'message' => empty($unavailableMembers)
+            'available'           => empty($unavailableMembers),
+            'message'             => empty($unavailableMembers)
                 ? 'All team members are available on this date.'
                 : 'Some team members have scheduling conflicts.',
             'unavailable_members' => $unavailableMembers,

@@ -153,6 +153,7 @@ class BookingController extends Controller
             $hasConflict = StaffSchedule::where('staff_id', $member->id)
                 ->where('event_date', $eventDate)
                 ->whereIn('status', ['assigned', 'confirmed'])
+                ->whereHas('booking', fn($q) => $q->whereNotIn('status', ['cancelled', 'rejected']))
                 ->exists();
 
             if ($hasConflict) {
