@@ -199,6 +199,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/sidebar.js') }}"></script>
     <script>
+        function openConfirmModal(id, ref, amount) {
+            openRefundModal(id, ref, amount);
+        }
         function openRefundModal(id, ref, amount) {
             document.getElementById('refundForm').action = '/admin/cancellations/' + id + '/approve';
             document.getElementById('refundBookingRef').textContent = ref;

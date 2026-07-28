@@ -706,6 +706,13 @@
                                     @if($cancellation->admin_notes)
                                         <br>{{ $cancellation->admin_notes }}
                                     @endif
+                                    @if($cancellation->refund_proof)
+                                        <br>
+                                        <button type="button" class="btn btn-sm btn-outline-success mt-2"
+                                            onclick="document.getElementById('refundProofImg').src='{{ Storage::url($cancellation->refund_proof) }}'; new bootstrap.Modal(document.getElementById('refundProofModal')).show()">
+                                            <i class="bi bi-file-earmark-image me-1"></i>View Refund Proof
+                                        </button>
+                                    @endif
                                 </div>
                             @elseif($cancellation->status === 'rejected')
                                 <div class="alert alert-danger py-2 small mb-0">
@@ -859,6 +866,21 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- REFUND PROOF MODAL --}}
+    <div class="modal fade" id="refundProofModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title"><i class="bi bi-file-earmark-image me-2"></i>Refund Proof</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center p-3">
+                    <img id="refundProofImg" src="" alt="Refund Proof" class="img-fluid rounded" style="max-height:500px;">
+                </div>
             </div>
         </div>
     </div>
