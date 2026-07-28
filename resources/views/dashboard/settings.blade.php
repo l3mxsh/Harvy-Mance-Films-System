@@ -70,6 +70,32 @@
                                     @enderror
                                 </div>
 
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">Refund Policy</label>
+                                    <p class="text-muted small mb-2">
+                                        Define refund tiers based on days before the event. The highest matching tier applies.
+                                    </p>
+                                    <div id="refundTiers">
+                                        @foreach($refundPolicy as $i => $tier)
+                                            <div class="d-flex gap-2 mb-2 refund-tier-row">
+                                                <div class="input-group input-group-sm" style="max-width:160px;">
+                                                    <input type="number" name="refund_tiers[{{ $i }}][days]" class="form-control" value="{{ $tier['days'] }}" min="0" placeholder="Days before">
+                                                    <span class="input-group-text">days</span>
+                                                </div>
+                                                <div class="input-group input-group-sm" style="max-width:130px;">
+                                                    <input type="number" name="refund_tiers[{{ $i }}][percent]" class="form-control" value="{{ $tier['percent'] }}" min="0" max="100" placeholder="%">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="this.closest('.refund-tier-row').remove()"><i class="bi bi-trash"></i></button>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary mt-1" onclick="addRefundTier()">
+                                        <i class="bi bi-plus me-1"></i>Add Tier
+                                    </button>
+                                    <div class="form-text">Example: 14 days → 100%, 7 days → 50%, 0 days → 0%</div>
+                                </div>
+
                                 <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-save me-1"></i>Save Settings
                                 </button>
@@ -136,6 +162,19 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/sidebar.js') }}"></script>
+    <script>
+        var tierCount = {{ count($refundPolicy) }};
+        function addRefundTier() {
+            var container = document.getElementById('refundTiers');
+            var row = document.createElement('div');
+            row.className = 'd-flex gap-2 mb-2 refund-tier-row';
+            row.innerHTML = '<div class="input-group input-group-sm" style="max-width:160px;"><input type="number" name="refund_tiers[' + tierCount + '][days]" class="form-control" min="0" placeholder="Days before"><span class="input-group-text">days</span></div>'
+                + '<div class="input-group input-group-sm" style="max-width:130px;"><input type="number" name="refund_tiers[' + tierCount + '][percent]" class="form-control" min="0" max="100" placeholder="%"><span class="input-group-text">%</span></div>'
+                + '<button type="button" class="btn btn-sm btn-outline-danger" onclick="this.closest(\'.refund-tier-row\').remove()"><i class="bi bi-trash"></i></button>';
+            container.appendChild(row);
+            tierCount++;
+        }
+    </script>
 </body>
 
 </html>

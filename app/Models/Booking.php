@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\RescheduleRequest;
+use App\Models\CancellationRequest;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -108,5 +109,10 @@ class Booking extends Model
     public function pendingReschedule()
     {
         return $this->hasOne(RescheduleRequest::class)->where('status', 'pending')->latestOfMany();
+    }
+
+    public function cancellationRequest(): HasOne
+    {
+        return $this->hasOne(CancellationRequest::class)->latestOfMany();
     }
 }

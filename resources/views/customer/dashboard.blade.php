@@ -681,6 +681,46 @@
                         @endif
 
                         @php
+                            $cancellation = $booking->cancellationRequest;
+                            $canCancel = in_array($booking->status, ['pending', 'approved', 'ongoing'])
+                                && (!$cancellation || $cancellation->status === 'rejected');
+                        @endphp
+
+                        @if($cancellation)
+                            @if($cancellation->status === 'pending')
+                                <div class="alert alert-warning py-2 small mb-0">
+                                    <i class="bi bi-hourglass-split me-1"></i><strong>Cancellation Pending:</strong>
+                                    @if($cancellation->refund_amount > 0)
+                                        Refund of ₱{{ number_format($cancellation->refund_amount, 2) }} ({{ $cancellation->refund_percentage }}%) is under review.
+                                    @else
+                                        No refund applicable. Awaiting admin confirmation.
+                                    @endif
+                                </div>
+                            @elseif($cancellation->status === 'refunded')
+                                <div class="alert alert-success py-2 small mb-0">
+                                    <i class="bi bi-check-circle me-1"></i><strong>Refunded:</strong>
+                                    ₱{{ number_format($cancellation->refund_amount, 2) }} has been processed.
+                                    @if($cancellation->refund_reference)
+                                        <br><span class="text-muted">Ref: {{ $cancellation->refund_reference }}</span>
+                                    @endif
+                                    @if($cancellation->admin_notes)
+                                        <br>{{ $cancellation->admin_notes }}
+                                    @endif
+                                </div>
+                            @elseif($cancellation->status === 'rejected')
+                                <div class="alert alert-danger py-2 small mb-0">
+                                    <i class="bi bi-x-circle me-1"></i><strong>Refund Rejected:</strong> {{ $cancellation->admin_notes }}
+                                </div>
+                            @endif
+                        @endif
+
+                        @if($canCancel)
+                            <button class="btn btn-outline-danger btn-action" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                                <i class="bi bi-x-circle me-2"></i>Cancel Booking
+                            </button>
+                        @endif
+
+                        @php
                             $leadTime = (int) \App\Models\Setting::getValue('reschedule_lead_time_days', 5);
                             $daysToEvent = now()->diffInDays($booking->event_date, false);
                             $canReschedule = in_array($booking->status, ['pending', 'approved', 'ongoing'])
@@ -688,7 +728,6 @@
                             $pendingReschedule = $booking->pendingReschedule;
                             $lastReschedule = $booking->rescheduleRequests()->latest()->first();
                         @endphp
-
                         @if(session('reschedule_error'))
                             <div class="alert alert-danger py-2 small mb-0">
                                 <i class="bi bi-exclamation-triangle me-1"></i>{{ session('reschedule_error') }}
@@ -740,6 +779,51 @@
     <footer class="client-footer mt-4">
         &copy; {{ date('Y') }} HarvyMance Films. All rights reserved.
     </footer>
+
+    {{-- CANCEL BOOKING MODAL --}}
+    @php
+        $daysUntilEvent = (int) now()->startOfDay()->diffInDays($booking->event_date->startOfDay(), false);
+        $refundPercent = \App\Http\Controllers\CancellationController::computeRefundPercentage($booking);
+        $amountPaidSoFar = $booking->downpayments()->where('status','verified')->sum('amount');
+        $estimatedRefund = round($amountPaidSoFar * ($refundPercent / 100), 2);
+    @endphp
+    <div class="modal fade" id="cancelModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-x-circle me-2"></i>Cancel Booking</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" action="{{ route('customer.cancellation.store') }}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="alert alert-{{ $refundPercent > 0 ? 'info' : 'warning' }} py-2 small mb-3">
+                            @if($refundPercent > 0)
+                                <i class="bi bi-info-circle me-1"></i>
+                                Based on the refund policy, you are eligible for a <strong>{{ $refundPercent }}% refund</strong>
+                                (≈ <strong>₱{{ number_format($estimatedRefund, 2) }}</strong>) since the event is {{ $daysUntilEvent }} day(s) away.
+                            @else
+                                <i class="bi bi-exclamation-triangle me-1"></i>
+                                <strong>No refund available.</strong> The event is {{ $daysUntilEvent }} day(s) away, which is within the no-refund window. You may still cancel.
+                            @endif
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Reason for Cancellation <span class="text-muted small">(optional)</span></label>
+                            <textarea name="reason" class="form-control" rows="3"
+                                placeholder="Let us know why you're cancelling..."></textarea>
+                        </div>
+                        <p class="text-danger small mb-0"><i class="bi bi-exclamation-triangle me-1"></i>This action cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go Back</button>
+                        <button type="submit" class="btn btn-danger fw-semibold">
+                            <i class="bi bi-x-circle me-1"></i>Confirm Cancellation
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     {{-- RESCHEDULE MODAL --}}
     <div class="modal fade" id="rescheduleModal" tabindex="-1" aria-hidden="true">

@@ -16,6 +16,7 @@ use App\Http\Controllers\PostProductionController;
 use App\Http\Controllers\StaffPostProductionController;
 use App\Http\Controllers\RescheduleController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\CancellationController;
 
 Route::get('/', [BookingController::class, 'index'])->name('home');
 
@@ -29,6 +30,7 @@ Route::middleware('auth:customer')->prefix('login')->name('customer.')->group(fu
     Route::post('/change-password', [CustomerAccountController::class, 'changePassword'])->name('change-password.post');
     Route::get('/downpayment', [DownpaymentController::class, 'showForm'])->name('downpayment');
     Route::post('/reschedule', [RescheduleController::class, 'store'])->name('reschedule.store');
+    Route::post('/cancel', [CancellationController::class, 'store'])->name('cancellation.store');
     Route::post('/downpayment', [DownpaymentController::class, 'submit'])->name('downpayment.submit');
     Route::post('/downpayment/{downpayment}/resubmit', [DownpaymentController::class, 'resubmit'])->name('downpayment.resubmit');
     Route::get('/final-payment', [DownpaymentController::class, 'showFinalPaymentForm'])->name('final-payment');
@@ -122,6 +124,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/schedule', [StaffScheduleController::class, 'index'])->name('staff-schedule.index');
     Route::get('/admin/schedule/calendar', [StaffScheduleController::class, 'calendar'])->name('staff-schedule.calendar');
     Route::post('/api/staff-schedule/check-availability', [StaffScheduleController::class, 'checkAvailability'])->name('staff-schedule.checkAvailability');
+
+    Route::get('/admin/cancellations', [CancellationController::class, 'adminIndex'])->name('cancellation.admin.index');
+    Route::post('/admin/cancellations/{cancellation}/approve', [CancellationController::class, 'approve'])->name('cancellation.approve');
+    Route::post('/admin/cancellations/{cancellation}/reject', [CancellationController::class, 'reject'])->name('cancellation.reject');
 
     Route::get('/admin/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::put('/admin/settings', [SettingsController::class, 'update'])->name('settings.update');

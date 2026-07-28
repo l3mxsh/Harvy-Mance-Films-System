@@ -63,6 +63,11 @@ $currentRoute = request()->route()->getName();
             </a>
         </li>
         <li>
+            <a href="{{ route('cancellation.admin.index') }}" class="{{ $currentRoute === 'cancellation.admin.index' ? 'active' : '' }}">
+                <i class="bi bi-x-circle"></i> Cancellations
+            </a>
+        </li>
+        <li>
             <a href="{{ url('/login') }}">
                 <i class="bi bi-person-badge"></i> Booking Monitoring
             </a>
