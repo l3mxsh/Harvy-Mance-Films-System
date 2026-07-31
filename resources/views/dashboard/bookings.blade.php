@@ -364,7 +364,7 @@
                         @endif
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-dark-soft" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary-dark" id="approveBtn" {{ $availableTeams->isEmpty() ? 'disabled' : '' }}>
                             <i class="bi bi-check-lg me-1"></i> Approve & Assign Team
                         </button>
@@ -405,6 +405,21 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- APPROVE RESULT MODAL --}}
+    <div class="modal fade" id="approveResultModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center py-4">
+                    <div id="approveResultIcon" class="fs-1 mb-2"></div>
+                    <p class="mb-0" id="approveResultMsg"></p>
+                </div>
+                <div class="modal-footer justify-content-center border-0 pt-0">
+                    <button type="button" class="btn btn-primary-dark rounded-pill px-4" data-bs-dismiss="modal" onclick="location.reload()">OK</button>
+                </div>
             </div>
         </div>
     </div>
@@ -451,7 +466,7 @@
                         <div id="rrAvailabilityResult" style="display:none;"></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-dark-soft" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary-dark" id="rrApproveBtn">
                             <i class="bi bi-check-lg me-1"></i>Approve & Assign Team
                         </button>
@@ -480,7 +495,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-dark-soft" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-danger"><i class="bi bi-x-lg me-1"></i>Reject</button>
                     </div>
                 </form>
@@ -612,7 +627,7 @@
                     <div class="text-muted small border-top pt-2">Submitted: <span id="viewCreatedAt">—</span></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-dark-soft" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

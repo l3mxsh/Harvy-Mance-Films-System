@@ -134,6 +134,62 @@ function formatPeso(amount) {
     return '\u20B1' + parseFloat(amount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+function showApproveResultModal(message, isSuccess) {
+    document.getElementById('approveResultMsg').textContent = message;
+    var icon = document.getElementById('approveResultIcon');
+    if (isSuccess) {
+        icon.className = 'fs-1 mb-2 text-success';
+        icon.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+    } else {
+        icon.className = 'fs-1 mb-2 text-danger';
+        icon.innerHTML = '<i class="bi bi-x-circle-fill"></i>';
+    }
+    new bootstrap.Modal(document.getElementById('approveResultModal')).show();
+}
+
+document.getElementById('approveForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var form = this;
+    var submitBtn = document.getElementById('approveBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Approving...';
+
+    fetch(form.action, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: new FormData(form)
+    })
+        .then(function (r) {
+            return r.json().then(function (data) {
+                return { ok: r.ok, data: data };
+            });
+        })
+        .then(function (res) {
+            var approveModalEl = document.getElementById('approveModal');
+            var approveModal = bootstrap.Modal.getInstance(approveModalEl) || new bootstrap.Modal(approveModalEl);
+            approveModal.hide();
+
+            if (res.ok && res.data.success) {
+                showApproveResultModal(res.data.success, true);
+            } else {
+                var msg = (res.data && (res.data.error || res.data.message)) || 'Could not approve the booking. Please try again.';
+                showApproveResultModal(msg, false);
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="bi bi-check-lg me-1"></i> Approve & Assign Team';
+        })
+        .catch(function () {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="bi bi-check-lg me-1"></i> Approve & Assign Team';
+            showApproveResultModal('Could not approve the booking. Please try again.', false);
+        });
+});
+
 var viewStatusBadges = {
     pending: 'bg-warning text-dark',
     approved: 'bg-success',

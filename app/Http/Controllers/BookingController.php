@@ -142,6 +142,9 @@ class BookingController extends Controller
     public function approve(Request $request, Booking $booking)
     {
         if ($booking->status !== 'pending') {
+            if ($request->expectsJson()) {
+                return response()->json(['error' => 'Only pending bookings can be approved.'], 422);
+            }
             return back()->with('error', 'Only pending bookings can be approved.');
         }
 
@@ -166,7 +169,11 @@ class BookingController extends Controller
         }
 
         if (!empty($unavailableMembers)) {
-            return back()->with('error', 'Cannot approve: ' . implode(', ', $unavailableMembers) . ' already have a booking on ' . $eventDate . '.');
+            $errorMessage = 'Cannot approve: ' . implode(', ', $unavailableMembers) . ' already have a booking on ' . $eventDate . '.';
+            if ($request->expectsJson()) {
+                return response()->json(['error' => $errorMessage], 422);
+            }
+            return back()->with('error', $errorMessage);
         }
 
         foreach ($team->members as $member) {
@@ -210,7 +217,11 @@ class BookingController extends Controller
             // Mail may fail in log driver; continue anyway
         }
 
-        return back()->with('success', "Booking {$booking->booking_ref} approved. Team {$team->name} assigned. Credentials sent to {$booking->client_email}.");
+        $message = "Booking approved. {$team->name} assigned. Login credentials sent to {$booking->client_email}.";
+        if ($request->expectsJson()) {
+            return response()->json(['success' => $message]);
+        }
+        return back()->with('success', $message);
     }
 
     public function checkEmail(Request $request)
