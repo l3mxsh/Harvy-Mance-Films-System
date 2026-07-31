@@ -338,7 +338,7 @@ class BookingController extends Controller
 
     public function adminIndex()
     {
-        $bookings = Booking::with(['package', 'addons', 'team', 'latestDownpayment', 'postProduction'])
+        $bookings = Booking::with(['package.services', 'addons', 'team', 'latestDownpayment', 'postProduction'])
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 

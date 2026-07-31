@@ -605,6 +605,35 @@ body {
     border-radius: 12px;
 }
 
+/* ---------------- Tabs / pills ---------------- */
+.nav-pills {
+    gap: 0.35rem;
+}
+
+.nav-pills .nav-link {
+    color: var(--ink-soft);
+    font-weight: 500;
+    font-size: 0.875rem;
+    border-radius: var(--radius-pill);
+    padding: 0.5rem 1.1rem;
+    transition: var(--ease);
+}
+
+.nav-pills .nav-link:hover {
+    color: var(--ink);
+    background: var(--canvas);
+}
+
+.nav-pills .nav-link.active {
+    color: #fff;
+    background: var(--ink);
+    font-weight: 500;
+}
+
+.nav-pills .nav-link .badge {
+    vertical-align: middle;
+}
+
 /* ---------------- Alerts / status ---------------- */
 .alert-soft {
     border-radius: var(--radius-md);
