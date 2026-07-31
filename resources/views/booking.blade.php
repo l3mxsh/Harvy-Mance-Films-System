@@ -13,38 +13,20 @@
 
 <body class="bg-light">
 
-    <nav class="navbar navbar-expand-lg booking-navbar" style="background: #1a1a2e;">
-        <div class="container">
-            <a class="navbar-brand text-white" href="{{ url('/') }}">
-                <i class="bi bi-camera-video me-2"></i>HarvyMance Films
+    <nav class="navbar booking-navbar shadow-sm">
+        <div class="container d-flex align-items-center justify-content-between px-4">
+            <a href="{{ url('/') }}">
+                <img src="{{ asset('storage/images/Black Logo.png') }}" alt="HarvyMance Films" height="42">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#bookingNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="bookingNav">
-                <ul class="navbar-nav ms-auto">
-                    @auth
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/dashboard') }}">
-                                <i class="bi bi-speedometer2 me-1"></i> Dashboard
-                            </a>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('customer.login') }}">
-                                <i class="bi bi-box-arrow-in-right me-1"></i> Login
-                            </a>
-                        </li>
-                    @endauth
-                </ul>
-            </div>
+            @guest
+                <a href="{{ route('customer.login') }}" class="btn btn-dark btn-login">Login</a>
+            @endguest
         </div>
     </nav>
 
-    <div class="booking-hero text-center">
+    <div class="booking-hero">
         <div class="container">
-            <h1><i class="bi bi-camera-video me-2"></i>Book Your Event</h1>
-            <p class="mb-0">Capture every moment with our professional photography and videography services</p>
+            <h1 class="booking-hero-title">Book Your Event</h1>
         </div>
     </div>
 

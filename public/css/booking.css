@@ -35,19 +35,17 @@
 }
 
 .booking-hero {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    color: #fff;
-    padding: 3rem 0;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    padding: 2rem 0;
+    text-align: center;
 }
 
-.booking-hero h1 {
+.booking-hero-title {
+    font-size: 1.6rem;
     font-weight: 700;
-    font-size: 2rem;
-}
-
-.booking-hero p {
-    opacity: 0.85;
-    font-size: 1.05rem;
+    color: #1a1a2e;
+    margin: 0;
 }
 
 .booking-nav {
@@ -56,7 +54,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    padding: 0.75rem 0;
+    padding: 0.85rem 0;
 }
 
 .stepper {
@@ -382,18 +380,20 @@
     font-weight: 500;
 }
 
-.booking-navbar .navbar-brand {
-    font-weight: 700;
-    font-size: 1.2rem;
+.booking-navbar {
+    background: #ffffff;
+    min-height: 70px;
 }
 
-.booking-navbar .nav-link {
+.btn-login {
+    border-radius: 8px;
+    padding: 0.45rem 1.25rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.85);
+    transition: opacity 0.2s ease;
 }
 
-.booking-navbar .nav-link:hover {
-    color: #fff;
+.btn-login:hover {
+    opacity: 0.85;
 }
 
 @media (max-width: 767.98px) {
@@ -424,8 +424,8 @@
         position: static;
     }
 
-    .booking-hero h1 {
-        font-size: 1.5rem;
+    .booking-hero-title {
+        font-size: 1.3rem;
     }
 
     .package-card .package-price {
