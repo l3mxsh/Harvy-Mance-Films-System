@@ -47,13 +47,6 @@
 
     <main class="container booking-main" style="padding-top: 2rem;">
 
-        @if(session('success'))
-            <div class="alert alert-soft alert-soft-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-
         <div class="row justify-content-center">
             <div class="col-lg-9">
 

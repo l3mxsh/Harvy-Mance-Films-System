@@ -222,11 +222,12 @@
                             <label class="form-label">Email Address <span class="req">*</span></label>
                             <input type="email" class="form-control" name="client_email" id="clientEmail"
                                    value="{{ $user ? $user->email : old('client_email', '') }}" required>
+                            <div id="emailStatus" class="mt-1"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Contact Number <span class="req">*</span></label>
                             <input type="text" class="form-control" name="client_phone" id="clientPhone"
-                                   value="{{ old('client_phone', '') }}" placeholder="e.g. 09171234567" required>
+                                   value="{{ old('client_phone', '') }}" placeholder="e.g. 0912-345-6789" maxlength="13" inputmode="numeric" required>
                         </div>
                         <div class="col-12">
                             <label class="form-label">Additional Notes / Special Requests</label>

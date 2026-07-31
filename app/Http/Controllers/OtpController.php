@@ -30,9 +30,21 @@ class OtpController extends Controller
         if ($otp) {
             $secondsSince = now()->diffInSeconds($otp->created_at);
             if ($secondsSince < 60) {
+                $waitSeconds = (int) ceil(60 - $secondsSince);
+                $waitMinutes = floor($waitSeconds / 60);
+                $waitSecs = $waitSeconds % 60;
+
+                if ($waitMinutes > 0 && $waitSecs > 0) {
+                    $waitText = $waitMinutes . ' minute' . ($waitMinutes > 1 ? 's' : '') . ' and ' . $waitSecs . ' second' . ($waitSecs > 1 ? 's' : '');
+                } elseif ($waitMinutes > 0) {
+                    $waitText = $waitMinutes . ' minute' . ($waitMinutes > 1 ? 's' : '');
+                } else {
+                    $waitText = $waitSecs . ' second' . ($waitSecs > 1 ? 's' : '');
+                }
+
                 return response()->json([
                     'success' => false,
-                    'message' => 'Please wait ' . (60 - $secondsSince) . ' seconds before requesting a new code.',
+                    'message' => 'Please wait ' . $waitText . ' before requesting a new code.',
                 ]);
             }
         }

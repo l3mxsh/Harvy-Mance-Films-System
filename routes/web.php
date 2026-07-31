@@ -57,6 +57,7 @@ Route::post('/booking', [BookingController::class, 'store'])->name('booking.stor
 Route::get('/booking/status/{bookingRef}', [BookingController::class, 'status'])->name('booking.status');
 Route::get('/api/booking/check-date', [BookingController::class, 'checkDate'])->name('booking.checkDate');
 Route::get('/api/booking/check-inventory', [BookingController::class, 'checkInventory'])->name('booking.checkInventory');
+Route::get('/api/booking/check-email', [BookingController::class, 'checkEmail'])->name('booking.checkEmail');
 
 Route::post('/api/otp/generate', [OtpController::class, 'generate'])->name('otp.generate');
 Route::post('/api/otp/verify', [OtpController::class, 'verify'])->name('otp.verify');

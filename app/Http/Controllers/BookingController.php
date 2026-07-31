@@ -43,7 +43,7 @@ class BookingController extends Controller
             'addon_ids.*' => 'exists:addons,id',
             'client_name' => 'required|string|max:255',
             'client_email' => 'required|email|max:255',
-            'client_phone' => 'required|string|max:50',
+            'client_phone' => ['required', 'regex:/^09\d{2}-\d{3}-\d{4}$/'],
             'event_type' => 'required|string|max:100',
             'event_date' => 'required|date|after:today',
             'event_time' => 'required|string',
@@ -65,6 +65,10 @@ class BookingController extends Controller
 
         if (!$otp) {
             return back()->withErrors(['otp' => 'Email verification is required. Please verify your email first.'])->withInput();
+        }
+
+        if ($this->emailHasActiveAccount($validated['client_email'])) {
+            return back()->withErrors(['client_email' => 'This email already has an active account. Please log in instead of making a new booking.'])->withInput();
         }
 
         $package = Package::with('inventory')->findOrFail($validated['package_id']);
@@ -207,6 +211,27 @@ class BookingController extends Controller
         }
 
         return back()->with('success', "Booking {$booking->booking_ref} approved. Team {$team->name} assigned. Credentials sent to {$booking->client_email}.");
+    }
+
+    public function checkEmail(Request $request)
+    {
+        $email = trim((string) $request->input('email'));
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return response()->json(['exists' => false]);
+        }
+
+        $exists = $this->emailHasActiveAccount($email);
+
+        return response()->json([
+            'exists' => $exists,
+            'message' => 'This email already has an active account. Please log in instead of making a new booking.',
+        ]);
+    }
+
+    private function emailHasActiveAccount(string $email): bool
+    {
+        return CustomerAccount::whereRaw('LOWER(client_email) = ?', [strtolower($email)])->exists();
     }
 
     public function checkDate(Request $request)

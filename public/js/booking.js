@@ -3,6 +3,7 @@ let selectedPackageId = null;
 let selectedPackageData = null;
 let selectedAddonIds = [];
 let dateCheckTimeout = null;
+let emailExists = false;
 
 function selectPackage(el) {
     document.querySelectorAll('.package-card').forEach(function(card) {
@@ -270,8 +271,16 @@ function validateStep(step) {
             showValidationAlert('Please enter a valid email address.');
             return false;
         }
+        if (emailExists) {
+            showValidationAlert('This email already has an active account. Please log in instead of making a new booking.');
+            return false;
+        }
         if (!phone) {
             showValidationAlert('Please enter your contact number.');
+            return false;
+        }
+        if (!isValidPhone(phone)) {
+            showValidationAlert('Please enter a valid contact number in the format 0912-345-6789.');
             return false;
         }
         return true;
@@ -307,6 +316,56 @@ function validateStep(step) {
 
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPhone(phone) {
+    return /^09\d{2}-\d{3}-\d{4}$/.test(phone);
+}
+
+function checkEmailExists() {
+    var emailInput = document.getElementById('clientEmail');
+    var email = emailInput.value.trim();
+    var statusDiv = document.getElementById('emailStatus');
+
+    if (!email || !isValidEmail(email)) {
+        emailExists = false;
+        emailInput.classList.remove('is-invalid');
+        if (statusDiv) statusDiv.innerHTML = '';
+        return;
+    }
+
+    fetch('/api/booking/check-email?email=' + encodeURIComponent(email))
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            emailExists = data.exists;
+            if (data.exists) {
+                emailInput.classList.add('is-invalid');
+                if (statusDiv) statusDiv.innerHTML = '<span class="text-danger small"><i class="bi bi-exclamation-triangle me-1"></i>' + data.message + '</span>';
+            } else {
+                emailInput.classList.remove('is-invalid');
+                if (statusDiv) statusDiv.innerHTML = '';
+            }
+        })
+        .catch(function() {
+            emailExists = false;
+        });
+}
+
+function formatPhoneInput(input) {
+    var digits = input.value.replace(/\D/g, '').slice(0, 11);
+    var formatted = '';
+
+    if (digits.length > 0) {
+        if (digits.length <= 4) {
+            formatted = digits;
+        } else if (digits.length <= 7) {
+            formatted = digits.slice(0, 4) + '-' + digits.slice(4);
+        } else {
+            formatted = digits.slice(0, 4) + '-' + digits.slice(4, 7) + '-' + digits.slice(7);
+        }
+    }
+
+    input.value = formatted;
 }
 
 function showValidationAlert(message) {
@@ -593,4 +652,23 @@ document.addEventListener('DOMContentLoaded', function() {
     var style = document.createElement('style');
     style.textContent = '@keyframes fadeInOut { 0% { opacity: 0; transform: translateY(-10px); } 10% { opacity: 1; transform: translateY(0); } 80% { opacity: 1; } 100% { opacity: 0; } }';
     document.head.appendChild(style);
+
+    var clientPhone = document.getElementById('clientPhone');
+    if (clientPhone) {
+        clientPhone.addEventListener('input', function() {
+            formatPhoneInput(this);
+        });
+    }
+
+    var clientEmail = document.getElementById('clientEmail');
+    if (clientEmail) {
+        var emailCheckTimeout = null;
+        clientEmail.addEventListener('input', function() {
+            if (emailCheckTimeout) clearTimeout(emailCheckTimeout);
+            emailCheckTimeout = setTimeout(checkEmailExists, 400);
+        });
+        if (clientEmail.value.trim()) {
+            checkEmailExists();
+        }
+    }
 });
