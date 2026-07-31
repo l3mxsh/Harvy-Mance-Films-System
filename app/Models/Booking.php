@@ -93,7 +93,9 @@ class Booking extends Model
 
     public function latestDownpayment()
     {
-        return $this->hasOne(Downpayment::class)->latestOfMany();
+        return $this->hasOne(Downpayment::class)
+            ->where('payment_type', 'downpayment')
+            ->latestOfMany();
     }
 
     public function postProduction()

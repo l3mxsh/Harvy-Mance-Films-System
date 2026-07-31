@@ -3,6 +3,7 @@ tooltipTriggerList.map(function (el) { return new bootstrap.Tooltip(el); });
 
 var currentEventDate = '';
 var rrCurrentDate = '';
+var currentBookingId = null;
 
 function openRescheduleApproveModal(rrId, bookingRef, clientName, newDate, newTime) {
     document.getElementById('rescheduleApproveForm').action = '/admin/reschedule/' + rrId + '/approve';
@@ -78,6 +79,7 @@ function openApproveModal(bookingId, bookingRef, clientName, eventDate) {
     document.getElementById('teamMembersPreview').style.display = 'none';
     document.getElementById('availabilityResult').style.display = 'none';
     currentEventDate = eventDate;
+    currentBookingId = bookingId;
     new bootstrap.Modal(document.getElementById('approveModal')).show();
 }
 
@@ -147,12 +149,44 @@ function showApproveResultModal(message, isSuccess) {
     new bootstrap.Modal(document.getElementById('approveResultModal')).show();
 }
 
+function refreshApprovedRow(bookingId, teamName) {
+    var payload = window.viewPayloads && window.viewPayloads[bookingId];
+    if (payload) {
+        payload.status = 'approved';
+        payload.team_name = teamName || payload.team_name;
+    }
+
+    var badge = document.getElementById('status-badge-' + bookingId);
+    if (badge) {
+        badge.className = 'badge bg-success';
+        badge.textContent = 'Approved';
+    }
+
+    var payment = document.getElementById('payment-cell-' + bookingId);
+    if (payment) {
+        payment.innerHTML = '<span class="badge bg-info text-white"><i class="bi bi-clock me-1"></i>Awaiting</span>';
+    }
+
+    var actions = document.getElementById('actions-cell-' + bookingId);
+    if (actions) {
+        actions.innerHTML = '<div class="d-flex gap-2 justify-content-center flex-wrap">'
+            + '<small class="text-success text-muted fst-italic align-self-center">Approved</small>'
+            + '<button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" title="View Details" onclick="openViewModal(window.viewPayloads[' + bookingId + '])">'
+            + '<i class="bi bi-eye"></i>'
+            + '</button>'
+            + '</div>';
+    }
+}
+
 document.getElementById('approveForm').addEventListener('submit', function (e) {
     e.preventDefault();
     var form = this;
     var submitBtn = document.getElementById('approveBtn');
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Approving...';
+
+    var teamSelect = document.getElementById('approveTeamSelect');
+    var teamName = (teamSelect.selectedOptions && teamSelect.selectedOptions[0]) ? teamSelect.selectedOptions[0].textContent.trim() : '';
 
     fetch(form.action, {
         method: 'POST',
@@ -174,6 +208,7 @@ document.getElementById('approveForm').addEventListener('submit', function (e) {
             approveModal.hide();
 
             if (res.ok && res.data.success) {
+                refreshApprovedRow(currentBookingId, teamName);
                 showApproveResultModal(res.data.success, true);
             } else {
                 var msg = (res.data && (res.data.error || res.data.message)) || 'Could not approve the booking. Please try again.';

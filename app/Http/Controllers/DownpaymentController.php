@@ -44,7 +44,7 @@ class DownpaymentController extends Controller
 
         $booking->update(['payment_status' => 'payment_submitted']);
 
-        return redirect()->route('customer.downpayment')
+        return redirect()->route('customer.dashboard')
             ->with('success', 'Payment proof submitted successfully! Awaiting admin verification.');
     }
 
@@ -83,7 +83,7 @@ class DownpaymentController extends Controller
 
         $booking->update(['payment_status' => 'payment_submitted']);
 
-        return redirect()->route('customer.downpayment')
+        return redirect()->route('customer.dashboard')
             ->with('success', 'Payment proof resubmitted successfully! Awaiting admin verification.');
     }
 
@@ -124,7 +124,7 @@ class DownpaymentController extends Controller
             'submitted_at' => now(),
         ]);
 
-        return redirect()->route('customer.final-payment')
+        return redirect()->route('customer.dashboard')
             ->with('success', 'Final payment proof submitted successfully! Awaiting admin verification.');
     }
 
@@ -157,7 +157,7 @@ class DownpaymentController extends Controller
             'verified_at' => null,
         ]);
 
-        return redirect()->route('customer.final-payment')
+        return redirect()->route('customer.dashboard')
             ->with('success', 'Final payment resubmitted successfully! Awaiting admin verification.');
     }
 

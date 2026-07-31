@@ -26,19 +26,6 @@
         </div>
 
         <div class="container-fluid p-4">
-            @if(session('success'))
-                <div class="alert alert-soft alert-soft-success alert-dismissible fade show" role="alert">
-                    <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
-            @if(session('error'))
-                <div class="alert alert-soft alert-soft-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
-
             {{-- TABS --}}
             <ul class="nav nav-pills mb-4" id="bookingTabs">
                 <li class="nav-item">
@@ -190,7 +177,7 @@
             default => 'bg-secondary',
         };
                                             @endphp
-                                            <span class="badge {{ $badgeClass }}">{{ ucfirst($booking->status) }}</span>
+                                            <span class="badge {{ $badgeClass }}" id="status-badge-{{ $booking->id }}">{{ ucfirst($booking->status) }}</span>
                                             @if($booking->status === 'rejected' && $booking->rejection_reason)
                                                 <button class="btn btn-link btn-sm p-0 text-danger text-decoration-none"
                                                     data-bs-toggle="tooltip" data-bs-placement="top"
@@ -199,7 +186,7 @@
                                                 </button>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td id="payment-cell-{{ $booking->id }}">
                                             @php $dp = $booking->latestDownpayment; @endphp
                                             @if($dp)
                                                 @if($dp->status === 'pending')
@@ -218,7 +205,7 @@
                                                 <span class="text-muted fst-italic">—</span>
                                             @endif
                                         </td>
-                                        <td class="text-center">
+                                        <td class="text-center" id="actions-cell-{{ $booking->id }}">
                                             @php
         $viewPayload = [
             'booking_ref' => $booking->booking_ref,
@@ -288,7 +275,7 @@
                                                     @endif
                                                 @endif
                                                 <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill"
-                                                    title="View Details" onclick='openViewModal(@json($viewPayload))'>
+                                                    title="View Details" onclick='window.viewPayloads = window.viewPayloads || {}; window.viewPayloads[{{ $booking->id }}] = @json($viewPayload); openViewModal(window.viewPayloads[{{ $booking->id }}])'>
                                                     <i class="bi bi-eye"></i>
                                                 </button>
                                             </div>
@@ -418,7 +405,7 @@
                     <p class="mb-0" id="approveResultMsg"></p>
                 </div>
                 <div class="modal-footer justify-content-center border-0 pt-0">
-                    <button type="button" class="btn btn-primary-dark rounded-pill px-4" data-bs-dismiss="modal" onclick="location.reload()">OK</button>
+                    <button type="button" class="btn btn-primary-dark rounded-pill px-4" data-bs-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
@@ -636,6 +623,37 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/sidebar.js') }}"></script>
     <script src="{{ asset('js/admin-bookings.js') }}"></script>
+
+    {{-- FLASH TOASTS --}}
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="flashToasts" style="z-index: 1080;">
+        @if(session('success'))
+            <div class="toast align-items-center text-bg-success border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="toast align-items-center text-bg-danger border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        @endif
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('#flashToasts .toast').forEach(function (el) {
+                new bootstrap.Toast(el, { delay: 4000 }).show();
+            });
+        });
+    </script>
 </body>
 
 </html>

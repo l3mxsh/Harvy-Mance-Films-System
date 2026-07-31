@@ -1,42 +1,6 @@
-/* client-dashboard.css */
-body.client-dashboard-body {
-    background: #f0f2f5;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+/* client-dashboard.css - customer dashboard helpers (booking.css is the base) */
 
-.client-topnav {
-    background: #1a1a2e;
-    color: #fff;
-    padding: 0.75rem 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.client-topnav .brand {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #fff;
-    text-decoration: none;
-}
-
-.client-topnav .brand:hover { color: #fff; }
-
-/* Overview Cards */
-.overview-card {
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-}
-
-.overview-card .card-body { padding: 1.25rem; }
-
-.overview-icon {
-    width: 48px; height: 48px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
-}
-
-/* Status Timeline */
+/* Timeline */
 .timeline {
     position: relative;
     padding: 0;
@@ -51,7 +15,7 @@ body.client-dashboard-body {
     top: 0;
     bottom: 0;
     width: 2px;
-    background: #dee2e6;
+    background: #e9ecef;
 }
 
 .timeline-item {
@@ -77,8 +41,8 @@ body.client-dashboard-body {
 }
 
 .timeline-dot.completed { background: #198754; }
-.timeline-dot.active { background: #0d6efd; box-shadow: 0 0 0 4px rgba(13,110,253,0.25); }
-.timeline-dot.pending { background: #dee2e6; color: #adb5bd; }
+.timeline-dot.active { background: #111111; box-shadow: 0 0 0 4px rgba(17, 17, 17, 0.12); }
+.timeline-dot.pending { background: #e9ecef; color: #adb5bd; }
 
 .timeline-content h6 {
     font-size: 0.9rem;
@@ -93,23 +57,14 @@ body.client-dashboard-body {
 }
 
 .timeline-item.completed .timeline-content h6 { color: #198754; }
-.timeline-item.active .timeline-content h6 { color: #0d6efd; }
+.timeline-item.active .timeline-content h6 { color: #111111; }
 .timeline-item.pending .timeline-content h6 { color: #adb5bd; }
 
-/* Section Cards */
-.section-card {
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-}
-
-.section-card .card-header {
-    border-radius: 12px 12px 0 0 !important;
-}
-
+/* Detail rows */
 .detail-row {
     display: flex;
     justify-content: space-between;
+    gap: 1rem;
     padding: 8px 0;
     border-bottom: 1px solid #f0f2f5;
 }
@@ -119,6 +74,7 @@ body.client-dashboard-body {
 .detail-label {
     color: #6c757d;
     font-size: 0.85rem;
+    flex-shrink: 0;
 }
 
 .detail-value {
@@ -127,15 +83,16 @@ body.client-dashboard-body {
     text-align: right;
 }
 
-/* Team Members */
+/* Team member chips */
 .team-member-chip {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 4px 12px;
-    border-radius: 20px;
-    background: #e8f5e9;
-    color: #2e7d32;
+    border-radius: 999px;
+    background: #f4f4f4;
+    border: 1px solid #e9ecef;
+    color: #111111;
     font-size: 0.8rem;
     font-weight: 500;
     margin: 2px 2px;
@@ -145,7 +102,7 @@ body.client-dashboard-body {
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: #198754;
+    background: #111111;
     color: #fff;
     display: flex;
     align-items: center;
@@ -154,71 +111,143 @@ body.client-dashboard-body {
     font-weight: 700;
 }
 
-/* Payment rows */
-.payment-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-    font-size: 0.85rem;
+.team-member-chip.os-chip {
+    background: #fff3cd;
+    border-color: #ffc107;
+    color: #856404;
 }
 
-.payment-row.total-row {
-    border-top: 2px solid #1a1a2e;
-    margin-top: 4px;
-    padding-top: 8px;
-    font-weight: 700;
+.team-member-chip.os-chip .avatar {
+    background: #ffc107;
+    color: #000;
 }
 
 /* Post-production progress */
 .progress-track {
     height: 8px;
-    border-radius: 4px;
+    border-radius: 999px;
     background: #e9ecef;
     overflow: hidden;
 }
 
 .progress-track .bar {
     height: 100%;
-    border-radius: 4px;
+    border-radius: 999px;
     transition: width 0.5s ease;
 }
 
-/* Client action buttons */
+/* Payment rows */
+.payment-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 0.875rem;
+}
+
+/* Sticky right column - keeps Payment/Team/Actions in view while the
+   left column scrolls, so there's no awkward empty space at the bottom. */
+.sticky-side {
+    position: sticky;
+    top: 24px;
+    align-self: flex-start;
+}
+
+/* Action buttons - uniform pill height so stacked buttons line up */
 .btn-action {
-    border-radius: 8px;
-    padding: 0.6rem 1.2rem;
-    font-weight: 600;
-    font-size: 0.85rem;
+    width: 100%;
+    min-height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Footer */
-.client-footer {
-    background: #1a1a2e;
-    color: rgba(255,255,255,0.7);
-    padding: 1.5rem;
-    text-align: center;
-    font-size: 0.8rem;
-}
-
-/* Password page */
-.client-pw-card {
-    max-width: 440px;
-    margin: 3rem auto;
+/* Payment proof image preview (downpayment modal) */
+.image-preview-wrapper {
+    position: relative;
+    width: 100%;
+    border: 1px solid var(--line);
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    overflow: hidden;
+    background: #f8f9fa;
+    padding: 8px;
 }
 
-.client-pw-card .card-header {
-    background: #1a1a2e;
+.image-preview-wrapper img {
+    display: block;
+    width: 100%;
+    max-height: 150px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.btn-remove-preview {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.6);
     color: #fff;
-    border-radius: 12px 12px 0 0 !important;
-    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: background 0.2s;
+}
+
+.btn-remove-preview:hover {
+    background: rgba(220, 53, 69, 0.9);
+}
+
+/* Rejection reason box */
+.rejection-reason-box {
+    background: #f8d7da;
+    border: 1px solid #f5c2c7;
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+}
+
+.rejection-reason-box p {
+    color: #842029;
+}
+
+/* Scrollbar (mirrors sidebar.css) for scrollable modal bodies */
+.modal-dialog-scrollable .modal-body {
+    scrollbar-width: thin;
+    scrollbar-color: #d4d7dc transparent;
+}
+
+.modal-dialog-scrollable .modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-dialog-scrollable .modal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-dialog-scrollable .modal-body::-webkit-scrollbar-thumb {
+    background: #d4d7dc;
+    border-radius: 999px;
+}
+
+.modal-dialog-scrollable .modal-body::-webkit-scrollbar-thumb:hover {
+    background: #c0c4c9;
+}
+
+@media (max-width: 991.98px) {
+    .sticky-side {
+        position: static;
+        top: auto;
+    }
 }
 
 @media (max-width: 767.98px) {
     .timeline::before { left: 14px; }
     .timeline-item { padding-left: 40px; }
     .timeline-dot { left: 4px; width: 20px; height: 20px; }
-    .detail-row { flex-direction: column; }
+    .detail-row { flex-direction: column; gap: 0; }
     .detail-value { text-align: left; margin-top: 2px; }
 }

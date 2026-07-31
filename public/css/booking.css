@@ -660,6 +660,10 @@ body {
     border-left: 3px solid #ffc107;
 }
 
+.alert-soft-info {
+    border-left: 3px solid #0dcaf0;
+}
+
 .date-available {
     color: #198754;
     font-size: 0.8rem;
@@ -690,6 +694,7 @@ body {
 
 .modal-body {
     padding: 1.5rem;
+    overflow-y: auto;
 }
 
 .modal-footer {
