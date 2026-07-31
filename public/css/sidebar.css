@@ -1,105 +1,201 @@
+/* ============================================================
+   HarvyMance Films — Admin Sidebar
+   White-first design system (matches booking.blade.php)
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+    --ink: #111111;
+    --ink-soft: #6c757d;
+    --line: #e9ecef;
+    --surface: #ffffff;
+    --canvas: #fafafa;
+    --radius-md: 16px;
+    --radius-pill: 999px;
+    --ease: all 0.2s ease;
+}
+
+body {
+    font-family:
+        "Inter",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    background: var(--canvas);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------- Sidebar shell ---------------- */
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
     width: 260px;
     height: 100vh;
-    background: #1a1a2e;
-    color: #fff;
+    background: var(--surface);
+    color: var(--ink);
     display: flex;
     flex-direction: column;
     z-index: 1040;
+    border-right: 1px solid var(--line);
     transition: transform 0.3s ease;
 }
 
 .sidebar-header {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 1.25rem 1.25rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--line);
+}
+
+.sidebar-brand {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.sidebar-close {
+    position: absolute;
+    top: 50%;
+    right: 1.25rem;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: #fff;
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: var(--ease);
+}
+
+.sidebar-close:hover {
+    color: var(--ink);
+    border-color: #ced4da;
 }
 
 .sidebar-user {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 1.25rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--line);
 }
 
 .user-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #e94560;
+    background: var(--ink);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1rem;
     flex-shrink: 0;
 }
 
 .user-info {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
     overflow: hidden;
 }
 
 .user-name {
     font-weight: 600;
     font-size: 0.9rem;
+    color: var(--ink);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .user-role {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
     width: fit-content;
-    margin-top: 2px;
+    flex-shrink: 0;
+    color: var(--ink-soft);
+    background: var(--canvas);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    padding: 0.1rem 0.6rem;
 }
 
+/* ---------------- Nav ---------------- */
 .sidebar-nav {
     list-style: none;
-    padding: 0.75rem 0;
+    padding: 0.75rem;
     margin: 0;
     flex: 1;
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #d4d7dc transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+    background: #d4d7dc;
+    border-radius: var(--radius-pill);
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+    background: #c0c4c9;
 }
 
 .sidebar-nav li a {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.7rem 1.25rem;
-    color: rgba(255, 255, 255, 0.7);
+    padding: 0.65rem 0.9rem;
+    color: #495057;
     text-decoration: none;
-    font-size: 0.9rem;
-    transition: all 0.2s;
+    font-size: 0.875rem;
+    border-radius: var(--radius-md);
+    transition: var(--ease);
+    margin-bottom: 0.15rem;
 }
 
 .sidebar-nav li a:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.08);
+    color: var(--ink);
+    background: var(--canvas);
 }
 
 .sidebar-nav li a.active {
     color: #fff;
-    background: #e94560;
-    border-right: 3px solid #fff;
+    background: var(--ink);
+    font-weight: 500;
 }
 
 .sidebar-nav li a i {
-    font-size: 1.1rem;
-    width: 1.5rem;
+    font-size: 1rem;
+    width: 1.25rem;
     text-align: center;
+    flex-shrink: 0;
 }
 
+/* ---------------- Footer ---------------- */
 .sidebar-footer {
     padding: 1rem 1.25rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--line);
 }
 
 .btn-logout {
@@ -110,16 +206,17 @@
     padding: 0.6rem 0;
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--ink-soft);
     font-size: 0.9rem;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: var(--ease);
 }
 
 .btn-logout:hover {
-    color: #e94560;
+    color: #dc3545;
 }
 
+/* ---------------- Overlay / content / topnav ---------------- */
 .sidebar-overlay {
     display: none;
     position: fixed;
@@ -132,37 +229,34 @@
     display: block;
 }
 
-/* Content area offset */
 .sidebar-content {
     margin-left: 260px;
     min-height: 100vh;
     transition: margin-left 0.3s ease;
 }
 
-/* Top navbar inside content */
 .sidebar-topnav {
     position: sticky;
     top: 0;
     z-index: 1030;
     background: #fff;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid var(--line);
     padding: 0.75rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-/* Toggle button for mobile */
 .sidebar-toggle {
     display: none;
     background: none;
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #333;
+    color: var(--ink);
 }
 
-/* Responsive */
+/* ---------------- Responsive ---------------- */
 @media (max-width: 991.98px) {
     .sidebar {
         transform: translateX(-100%);

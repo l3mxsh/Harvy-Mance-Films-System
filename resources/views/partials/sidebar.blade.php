@@ -4,16 +4,10 @@ $currentRoute = request()->route()->getName();
 
 <nav id="sidebar" class="sidebar">
     <div class="sidebar-header">
-        <h5 class="text-white mb-0">HarvyMance Films</h5>
-        <button id="sidebarClose" class="btn btn-sm btn-outline-light d-lg-none">&times;</button>
-    </div>
-
-    <div class="sidebar-user">
-        <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
-        <div class="user-info">
-            <span class="user-name">{{ Auth::user()->name }}</span>
-            <span class="user-role badge bg-secondary">{{ Auth::user()->role }}</span>
-        </div>
+        <a href="{{ url('/') }}" class="sidebar-brand d-inline-flex align-items-center">
+            <img src="{{ asset('storage/images/Black Logo.png') }}" alt="HarvyMance Films" height="32">
+        </a>
+        <button id="sidebarClose" class="sidebar-close d-lg-none" aria-label="Close">&times;</button>
     </div>
 
     <ul class="sidebar-nav">
@@ -83,6 +77,14 @@ $currentRoute = request()->route()->getName();
             </a>
         </li>
     </ul>
+
+    <div class="sidebar-user">
+        <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+        <div class="user-info">
+            <span class="user-name">{{ Auth::user()->name }}</span>
+            <span class="user-role">{{ Auth::user()->role }}</span>
+        </div>
+    </div>
 
     <div class="sidebar-footer">
         <form method="POST" action="{{ route('logout') }}">
