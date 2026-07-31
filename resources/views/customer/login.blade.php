@@ -4,60 +4,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Monitoring Login - HarvyMance Films</title>
+    <title>Login - HarvyMance Films</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/booking.css') }}">
     <link rel="stylesheet" href="{{ asset('css/client-login.css') }}">
 </head>
 
-<body class="client-login-body">
-    <div class="client-login-card">
-        <div class="client-login-header">
-            <h3><i class="bi bi-camera-video me-2"></i>HarvyMance Films</h3>
-            <p>Booking Monitoring Login</p>
+<body>
+
+    {{-- ==================== NAVBAR ==================== --}}
+    <nav class="navbar booking-navbar">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="{{ url('/') }}" class="d-inline-flex align-items-center">
+                <img src="{{ asset('storage/images/Black Logo.png') }}" alt="HarvyMance Films" height="34">
+            </a>
+            <a href="{{ url('/') }}" class="btn btn-primary-dark btn-sm-pill btn-login">
+                Book Now
+            </a>
         </div>
-        <div class="client-login-body">
-            @if(session('success'))
-                <div class="alert alert-success py-2">{{ session('success') }}</div>
-            @endif
+    </nav>
 
-            <form method="POST" action="{{ route('customer.login.post') }}">
-                @csrf
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Control Number</label>
-                    <input type="text" class="form-control @error('control_number') is-invalid @enderror"
-                           name="control_number" value="{{ old('control_number') }}"
-                           placeholder="e.g. BKG-2026-00001" required autofocus>
-                    @error('control_number')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="mb-4">
-                    <label class="form-label fw-semibold">Password</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control @error('password') is-invalid @enderror"
-                               name="password" id="password" placeholder="Enter your password" required>
-                        <button class="btn btn-outline-secondary" type="button" onclick="togglePw()">
-                            <i class="bi bi-eye" id="pwToggleIcon"></i>
-                        </button>
-                        @error('password')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+    {{-- ==================== HERO ==================== --}}
+    <main class="container booking-main">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-5 col-xl-4">
+
+                @if(session('success'))
+                    <div class="alert alert-soft alert-soft-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
-                </div>
-                <button type="submit" class="btn btn-client-login">
-                    <i class="bi bi-box-arrow-in-right me-1"></i> Log In
-                </button>
-            </form>
+                @endif
 
-            <div class="client-login-footer">
-                <a href="{{ url('/') }}">
-                    <i class="bi bi-arrow-left me-1"></i> Back to Home
-                </a>
+                @if($errors->any())
+                    <div class="alert alert-soft alert-soft-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <ul class="mb-0 mt-1">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
+
+                <section class="surface-card">
+                    <div class="text-center mb-4 login-header">
+                        <h1 class="section-title fs-4">Login</h1>
+                        <p class="section-sub">Log in to monitor your booking, payments, and deliverables.</p>
+                    </div>
+
+                    <form method="POST" action="{{ route('customer.login.post') }}">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="form-label">Control Number</label>
+                            <input type="text" class="form-control @error('control_number') is-invalid @enderror"
+                                   name="control_number" value="{{ old('control_number') }}"
+                                   placeholder="e.g. BKG-2026-00001" required autofocus>
+                            @error('control_number')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                       name="password" id="password" placeholder="Enter your password" required>
+                                <button class="btn login-pw-toggle" type="button" onclick="togglePw()">
+                                    <i class="bi bi-eye" id="pwToggleIcon"></i>
+                                </button>
+                            </div>
+                            @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-primary-dark w-100">
+                            Log In
+                        </button>
+                    </form>
+
+                    <p class="summary-note">
+                        Don't have an account yet?
+                        <a href="{{ url('/') }}" class="text-decoration-none"><strong>Book your event</strong></a>.
+                    </p>
+                </section>
             </div>
         </div>
-    </div>
+    </main>
 
+    {{-- ==================== FOOTER ==================== --}}
+    <footer class="booking-footer">
+        <div class="container text-center">
+            <small>&copy; {{ date('Y') }} HarvyMance Films. All rights reserved.</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function togglePw() {
             var input = document.getElementById('password');
