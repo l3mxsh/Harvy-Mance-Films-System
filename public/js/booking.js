@@ -108,15 +108,21 @@ function updatePriceSummary() {
 
     document.getElementById('summaryTotal').textContent = formatPeso(total);
 
-    // Step 2 & 3 summaries
+    // Step 2 & 3 summaries (elements may not exist if sidebar was removed)
     if (selectedPackageData) {
-        document.getElementById('summary2PackageName').textContent = selectedPackageData.name;
-        document.getElementById('summary3PackageName').textContent = selectedPackageData.name;
+        var s2pkg = document.getElementById('summary2PackageName');
+        var s3pkg = document.getElementById('summary3PackageName');
+        if (s2pkg) s2pkg.textContent = selectedPackageData.name;
+        if (s3pkg) s3pkg.textContent = selectedPackageData.name;
     }
-    document.getElementById('summary2AddonsCount').textContent = selectedAddonIds.length + ' items';
-    document.getElementById('summary3AddonsCount').textContent = selectedAddonIds.length + ' items';
-    document.getElementById('summary2Total').textContent = formatPeso(total);
-    document.getElementById('summary3Total').textContent = formatPeso(total);
+    var s2addons = document.getElementById('summary2AddonsCount');
+    var s3addons = document.getElementById('summary3AddonsCount');
+    var s2total = document.getElementById('summary2Total');
+    var s3total = document.getElementById('summary3Total');
+    if (s2addons) s2addons.textContent = selectedAddonIds.length + ' items';
+    if (s3addons) s3addons.textContent = selectedAddonIds.length + ' items';
+    if (s2total) s2total.textContent = formatPeso(total);
+    if (s3total) s3total.textContent = formatPeso(total);
 
     // Step 4 confirmation
     updateConfirmationSummary(packagePrice, addonsTotal, total, addonNames);
@@ -418,7 +424,10 @@ function startOtpVerification() {
     document.getElementById('otpEmailDisplay').textContent = email;
     document.getElementById('otpInput').value = '';
     document.getElementById('otpError').style.display = 'none';
+    document.getElementById('otpError').textContent = '';
     document.getElementById('otpSuccess').style.display = 'none';
+    document.getElementById('otpSuccess').textContent = '';
+    document.getElementById('otpVerifyBtn').disabled = true;
 
     fetch('/api/otp/generate', {
         method: 'POST',
@@ -517,6 +526,7 @@ function verifyOtp() {
         } else {
             document.getElementById('otpError').textContent = data.message;
             document.getElementById('otpError').style.display = 'block';
+            document.getElementById('otpSuccess').style.display = 'none';
             document.getElementById('otpInput').value = '';
             document.getElementById('otpInput').focus();
             document.getElementById('otpVerifyBtn').disabled = false;
@@ -529,6 +539,7 @@ function verifyOtp() {
     .catch(function() {
         document.getElementById('otpError').textContent = 'Verification failed. Please try again.';
         document.getElementById('otpError').style.display = 'block';
+        document.getElementById('otpSuccess').style.display = 'none';
         document.getElementById('otpVerifyBtn').disabled = false;
     });
 }
