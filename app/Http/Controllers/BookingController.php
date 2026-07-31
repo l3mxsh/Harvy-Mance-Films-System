@@ -186,7 +186,7 @@ class BookingController extends Controller
             ]);
         }
 
-        $controlNumber = CustomerAccountController::generateControlNumber();
+        $controlNumber = $booking->booking_ref;
         $tempPassword = CustomerAccountController::generateTempPassword();
 
         $account = CustomerAccount::create([

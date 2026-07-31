@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class CustomerAccountController extends Controller
 {
@@ -103,19 +104,11 @@ class CustomerAccountController extends Controller
 
     public static function generateControlNumber(): string
     {
-        $year = date('Y');
-        $last = CustomerAccount::where('control_number', 'like', "BKG-{$year}-%")
-            ->orderByDesc('control_number')
-            ->first();
+        do {
+            $controlNumber = 'HMF-' . now()->format('ymd') . '-' . strtoupper(Str::random(4));
+        } while (CustomerAccount::where('control_number', $controlNumber)->exists());
 
-        if ($last) {
-            $lastNum = (int) substr($last->control_number, -5);
-            $nextNum = $lastNum + 1;
-        } else {
-            $nextNum = 1;
-        }
-
-        return 'BKG-' . $year . '-' . str_pad($nextNum, 5, '0', STR_PAD_LEFT);
+        return $controlNumber;
     }
 
     public static function generateTempPassword(): string
