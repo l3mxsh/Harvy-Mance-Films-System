@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 
 class CustomerAccountController extends Controller
@@ -29,8 +30,12 @@ class CustomerAccountController extends Controller
         $account = CustomerAccount::where('control_number', $request->control_number)->first();
 
         if (!$account || !Hash::check($request->password, $account->password)) {
+            $maxAttempts = 5;
+            $key = md5('customer-login' . $request->ip());
+            $remaining = RateLimiter::retriesLeft($key, $maxAttempts);
+
             return back()->withErrors([
-                'control_number' => 'Invalid control number or password.',
+                'control_number' => "Invalid credentials. You have {$remaining} attempts remaining.",
             ])->withInput($request->only('control_number'));
         }
 

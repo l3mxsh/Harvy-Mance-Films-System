@@ -17,16 +17,7 @@
 <body>
 
     {{-- ==================== NAVBAR ==================== --}}
-    <nav class="navbar booking-navbar">
-        <div class="container d-flex align-items-center justify-content-between">
-            <a href="{{ url('/') }}" class="d-inline-flex align-items-center">
-                <img src="{{ asset('storage/images/Black Logo.png') }}" alt="HarvyMance Films" height="34">
-            </a>
-            <a href="{{ url('/') }}" class="btn btn-primary-dark btn-sm-pill btn-login">
-                Book Now
-            </a>
-        </div>
-    </nav>
+    @include('partials.auth-navbar')
 
     <main class="container booking-main">
         <div class="row justify-content-center">
@@ -78,11 +69,7 @@
     </main>
 
     {{-- ==================== FOOTER ==================== --}}
-    <footer class="booking-footer">
-        <div class="container text-center">
-            <small>&copy; {{ date('Y') }} HarvyMance Films. All rights reserved.</small>
-        </div>
-    </footer>
+    @include('partials.auth-footer')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>

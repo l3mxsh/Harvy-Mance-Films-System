@@ -17,16 +17,7 @@
 <body>
 
     {{-- ==================== NAVBAR ==================== --}}
-    <nav class="navbar booking-navbar">
-        <div class="container d-flex align-items-center justify-content-between">
-            <a href="{{ url('/') }}" class="d-inline-flex align-items-center">
-                <img src="{{ asset('storage/images/Black Logo.png') }}" alt="HarvyMance Films" height="34">
-            </a>
-            <a href="{{ url('/') }}" class="btn btn-primary-dark btn-sm-pill btn-login">
-                Book Now
-            </a>
-        </div>
-    </nav>
+    @include('partials.auth-navbar')
 
     {{-- ==================== HERO ==================== --}}
     <main class="container booking-main">
@@ -36,18 +27,6 @@
                 @if(session('success'))
                     <div class="alert alert-soft alert-soft-success alert-dismissible fade show" role="alert">
                         <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                @endif
-
-                @if($errors->any())
-                    <div class="alert alert-soft alert-soft-danger alert-dismissible fade show" role="alert">
-                        <i class="bi bi-exclamation-triangle me-2"></i>
-                        <ul class="mb-0 mt-1">
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 @endif
@@ -63,8 +42,8 @@
                         <div class="mb-3">
                             <label class="form-label">Control Number</label>
                             <input type="text" class="form-control @error('control_number') is-invalid @enderror"
-                                   name="control_number" value="{{ old('control_number') }}"
-                                   placeholder="e.g. BKG-2026-00001" required autofocus>
+                                name="control_number" value="{{ old('control_number') }}"
+                                placeholder="e.g. HMF-XXXXXX-YXXX" required autofocus>
                             @error('control_number')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -73,7 +52,7 @@
                             <label class="form-label">Password</label>
                             <div class="input-group">
                                 <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                       name="password" id="password" placeholder="Enter your password" required>
+                                    name="password" id="password" placeholder="Enter your password" required>
                                 <button class="btn login-pw-toggle" type="button" onclick="togglePw()">
                                     <i class="bi bi-eye" id="pwToggleIcon"></i>
                                 </button>
@@ -97,11 +76,7 @@
     </main>
 
     {{-- ==================== FOOTER ==================== --}}
-    <footer class="booking-footer">
-        <div class="container text-center">
-            <small>&copy; {{ date('Y') }} HarvyMance Films. All rights reserved.</small>
-        </div>
-    </footer>
+    @include('partials.auth-footer')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>

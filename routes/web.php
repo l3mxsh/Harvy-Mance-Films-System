@@ -22,7 +22,7 @@ use App\Http\Controllers\OutsourcedStaffController;
 Route::get('/', [BookingController::class, 'index'])->name('home');
 
 Route::get('/login', [CustomerAccountController::class, 'showLogin'])->name('customer.login');
-Route::post('/login', [CustomerAccountController::class, 'login'])->name('customer.login.post');
+Route::post('/login', [CustomerAccountController::class, 'login'])->middleware('throttle:customer-login')->name('customer.login.post');
 Route::post('/login/logout', [CustomerAccountController::class, 'logout'])->name('customer.logout');
 
 Route::middleware('auth:customer')->prefix('login')->name('customer.')->group(function () {

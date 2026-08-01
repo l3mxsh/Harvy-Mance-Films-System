@@ -18,3 +18,30 @@
 .login-header .section-sub {
     font-size: 0.8rem;
 }
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main.booking-main {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+main.booking-main > .row {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+footer.booking-footer {
+    flex-shrink: 0;
+}
