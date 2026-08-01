@@ -23,9 +23,9 @@ Route::get('/', [BookingController::class, 'index'])->name('home');
 
 Route::get('/login', [CustomerAccountController::class, 'showLogin'])->name('customer.login');
 Route::post('/login', [CustomerAccountController::class, 'login'])->middleware('throttle:customer-login')->name('customer.login.post');
-Route::post('/login/logout', [CustomerAccountController::class, 'logout'])->name('customer.logout');
+Route::post('/logout', [CustomerAccountController::class, 'logout'])->name('customer.logout');
 
-Route::middleware('auth:customer')->prefix('login')->name('customer.')->group(function () {
+Route::middleware('auth:customer')->name('customer.')->group(function () {
     Route::get('/dashboard', [CustomerAccountController::class, 'dashboard'])->name('dashboard');
     Route::get('/change-password', [CustomerAccountController::class, 'showChangePassword'])->name('change-password');
     Route::post('/change-password', [CustomerAccountController::class, 'changePassword'])->name('change-password.post');
@@ -64,9 +64,9 @@ Route::post('/api/otp/verify', [OtpController::class, 'verify'])->name('otp.veri
 Route::post('/api/otp/resend', [OtpController::class, 'resend'])->name('otp.resend');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/admin/dashboard', function () {
         return view('dashboard/dashboard');
-    })->name('dashboard');
+    })->name('admin.dashboard');
 
     Route::get('/package', [PackageController::class, 'index'])->name('package');
     Route::post('/package', [PackageController::class, 'store'])->name('package.store');

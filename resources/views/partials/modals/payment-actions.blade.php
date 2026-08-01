@@ -14,7 +14,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success rounded-pill">
+                    <button type="submit" id="verifyPaymentBtn" class="btn btn-success rounded-pill">
                         <i class="bi bi-check-lg me-1"></i> Verify Payment
                     </button>
                 </div>
@@ -49,7 +49,7 @@
                     <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">
                         <i class="bi bi-arrow-left me-1"></i> Cancel
                     </button>
-                    <button type="submit" class="btn btn-danger rounded-pill">
+                    <button type="submit" id="rejectPaymentBtn" class="btn btn-danger rounded-pill">
                         <i class="bi bi-x-lg me-1"></i> Reject Payment
                     </button>
                 </div>

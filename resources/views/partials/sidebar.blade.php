@@ -1,5 +1,6 @@
 @php
 $currentRoute = request()->route()->getName();
+$pendingPaymentsCount = \App\Models\Downpayment::where('status', 'pending')->count();
 @endphp
 
 <nav id="sidebar" class="sidebar">
@@ -12,7 +13,7 @@ $currentRoute = request()->route()->getName();
 
     <ul class="sidebar-nav">
         <li>
-            <a href="{{ route('dashboard') }}" class="{{ $currentRoute === 'dashboard' ? 'active' : '' }}">
+            <a href="{{ route('admin.dashboard') }}" class="{{ $currentRoute === 'admin.dashboard' ? 'active' : '' }}">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
         </li>
@@ -34,6 +35,9 @@ $currentRoute = request()->route()->getName();
         <li>
             <a href="{{ route('payment-verification.index') }}" class="{{ str_starts_with($currentRoute, 'payment-verification') ? 'active' : '' }}">
                 <i class="bi bi-credit-card"></i> Payment Verification
+                @if($pendingPaymentsCount > 0)
+                    <span class="badge bg-danger ms-auto">{{ $pendingPaymentsCount }}</span>
+                @endif
             </a>
         </li>
         <li>

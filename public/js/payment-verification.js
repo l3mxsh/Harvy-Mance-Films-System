@@ -131,3 +131,15 @@ function openRejectModal(downpaymentId, bookingRef) {
     document.getElementById('rejection_reason').value = '';
     new bootstrap.Modal(document.getElementById('rejectModal')).show();
 }
+
+document.getElementById('verifyForm').addEventListener('submit', function () {
+    var submitBtn = document.getElementById('verifyPaymentBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Verifying...';
+});
+
+document.getElementById('rejectForm').addEventListener('submit', function () {
+    var submitBtn = document.getElementById('rejectPaymentBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Rejecting...';
+});

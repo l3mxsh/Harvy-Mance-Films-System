@@ -6,7 +6,6 @@ use App\Models\Booking;
 use App\Models\Downpayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class DownpaymentController extends Controller
 {
@@ -66,19 +65,15 @@ class DownpaymentController extends Controller
             'amount' => 'required|numeric|min:0.01',
         ]);
 
-        if ($downpayment->payment_proof && Storage::disk('public')->exists($downpayment->payment_proof)) {
-            Storage::disk('public')->delete($downpayment->payment_proof);
-        }
-
         $path = $request->file('payment_proof')->store('downpayment-proofs', 'public');
 
-        $downpayment->update([
+        Downpayment::create([
+            'booking_id' => $booking->id,
+            'payment_type' => 'downpayment',
             'amount' => $validated['amount'],
             'payment_proof' => $path,
             'status' => 'pending',
-            'rejection_reason' => null,
             'submitted_at' => now(),
-            'verified_at' => null,
         ]);
 
         $booking->update(['payment_status' => 'payment_submitted']);
@@ -142,19 +137,15 @@ class DownpaymentController extends Controller
             'amount' => 'required|numeric|min:0.01',
         ]);
 
-        if ($downpayment->payment_proof && Storage::disk('public')->exists($downpayment->payment_proof)) {
-            Storage::disk('public')->delete($downpayment->payment_proof);
-        }
-
         $path = $request->file('payment_proof')->store('final-payment-proofs', 'public');
 
-        $downpayment->update([
+        Downpayment::create([
+            'booking_id' => $booking->id,
+            'payment_type' => 'final',
             'amount' => $validated['amount'],
             'payment_proof' => $path,
             'status' => 'pending',
-            'rejection_reason' => null,
             'submitted_at' => now(),
-            'verified_at' => null,
         ]);
 
         return redirect()->route('customer.dashboard')
