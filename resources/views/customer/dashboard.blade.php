@@ -22,21 +22,7 @@
             <a href="{{ route('customer.dashboard') }}" class="d-inline-flex align-items-center">
                 <img src="{{ asset('storage/images/Black Logo.png') }}" alt="HarvyMance Films" height="34">
             </a>
-            <div class="dropdown">
-                <button class="btn btn-outline-dark-soft btn-sm-pill dropdown-toggle" data-bs-toggle="dropdown">
-                    <i class="bi bi-person me-1"></i>{{ $account->client_name }}
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                    <li><a class="dropdown-item" href="{{ route('customer.change-password') }}"><i class="bi bi-key me-2"></i>Change Password</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <form method="POST" action="{{ route('customer.logout') }}">
-                            @csrf
-                            <button class="dropdown-item text-danger"><i class="bi bi-box-arrow-left me-2"></i>Logout</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
+            <span class="fw-semibold">{{ $account->client_name }}</span>
         </div>
     </nav>
 
@@ -351,12 +337,6 @@
                             </div>
                         </div>
 
-                        @if($postProduction->expected_completion_date)
-                            <div class="detail-row">
-                                <span class="detail-label">Expected Completion</span>
-                                <span class="detail-value">{{ $postProduction->expected_completion_date->format('M d, Y') }}</span>
-                            </div>
-                        @endif
                         @if($postProduction->progress_notes)
                             <div class="detail-row">
                                 <span class="detail-label">Latest Update</span>
@@ -381,15 +361,21 @@
                         @if($deliverablesReady && $hasFinalPayment)
                             <div class="row g-2">
                                 @foreach($ppTasks->where('admin_review_status', 'approved') as $task)
-                                    <div class="col-md-6">
-                                        <div class="border rounded p-3 h-100">
-                                            <div class="d-flex align-items-center gap-2 mb-2">
-                                                <span class="badge bg-dark">{{ str_replace('_', ' ', ucfirst($task->task_type)) }}</span>
-                                                <span class="badge bg-success"><i class="bi bi-check-lg me-1"></i>Ready</span>
+                                    <div class="col-12">
+                                        <div class="border rounded p-3 h-100 d-flex flex-column">
+                                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                                <span class="fw-semibold">{{ $task->task_type === 'both' ? 'Photos and Videos' : str_replace('_', ' ', ucfirst($task->task_type)) }}</span>
+                                                <span class="small text-success fw-semibold"><i class="bi bi-check-circle me-1"></i>Ready to download</span>
                                             </div>
-                                            <a href="{{ $task->deliverable_link }}" target="_blank" class="btn btn-sm btn-primary-dark rounded-pill w-100">
+                                            <a href="{{ $task->deliverable_link }}" target="_blank" class="btn btn-primary-dark rounded-pill w-100">
                                                 <i class="bi bi-download me-1"></i>Download
                                             </a>
+                                            @if($postProduction->expected_completion_date)
+                                                <div class="d-flex align-items-center justify-content-between small text-muted border-top mt-3 pt-2">
+                                                    <span>Expected Completion</span>
+                                                    <span class="fw-semibold text-dark">{{ $postProduction->expected_completion_date->format('M d, Y') }}</span>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 @endforeach

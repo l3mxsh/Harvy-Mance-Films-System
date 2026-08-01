@@ -33,7 +33,7 @@
                     <p class="text-danger small mb-0"><i class="bi bi-exclamation-triangle me-1"></i>This action cannot be undone.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-dark-soft rounded-pill" data-bs-dismiss="modal">Go Back</button>
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Go Back</button>
                     <button type="submit" class="btn btn-danger rounded-pill">
                         <i class="bi bi-x-circle me-1"></i>Confirm Cancellation
                     </button>

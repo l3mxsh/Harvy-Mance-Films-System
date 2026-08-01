@@ -137,10 +137,10 @@
     {{-- PROCESS REFUND MODAL --}}
     <div class="modal fade" id="refundModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header bg-success text-white">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h5 class="modal-title"><i class="bi bi-check-circle me-2"></i>Process Refund</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="POST" id="refundForm" enctype="multipart/form-data">
                     @csrf
@@ -161,8 +161,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Mark as Refunded</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success rounded-pill"><i class="bi bi-check-lg me-1"></i>Mark as Refunded</button>
                     </div>
                 </form>
             </div>
@@ -172,10 +172,10 @@
     {{-- REJECT REFUND MODAL --}}
     <div class="modal fade" id="rejectRefundModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header bg-danger text-white">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h5 class="modal-title"><i class="bi bi-x-circle me-2"></i>Reject Refund Request</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="POST" id="rejectRefundForm">
                     @csrf
@@ -188,8 +188,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger"><i class="bi bi-x-lg me-1"></i>Reject</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger rounded-pill"><i class="bi bi-x-lg me-1"></i>Reject</button>
                     </div>
                 </form>
             </div>

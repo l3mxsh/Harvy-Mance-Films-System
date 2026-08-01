@@ -52,7 +52,7 @@
                         </span>
                     @endif
                     @if($allApproved && $isFullyPaid && $postProduction->status !== 'delivered')
-                        <button type="button" class="btn btn-success rounded-2" data-bs-toggle="modal" data-bs-target="#unlockModal">
+                        <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#unlockModal">
                             <i class="bi bi-unlock me-1"></i>Unlock Deliverables
                         </button>
                     @endif
@@ -183,9 +183,9 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-outline-dark-soft btn-radius-sm"
+                                                            <button type="button" class="btn btn-outline-dark rounded-pill"
                                                                 data-bs-dismiss="modal">Cancel</button>
-                                                            <button type="submit" class="btn btn-primary-dark btn-radius-sm"><i
+                                                            <button type="submit" class="btn btn-dark rounded-pill"><i
                                                                     class="bi bi-send me-1"></i>Create & Send Credentials</button>
                                                         </div>
                                                     </form>
@@ -247,9 +247,9 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-outline-dark-soft btn-radius-sm"
+                                                            <button type="button" class="btn btn-outline-dark rounded-pill"
                                                                 data-bs-dismiss="modal">Cancel</button>
-                                                            <button type="submit" class="btn btn-danger rounded-2">Submit
+                                                            <button type="submit" class="btn btn-danger rounded-pill">Submit
                                                                 Revision</button>
                                                         </div>
                                                     </form>
@@ -279,7 +279,7 @@
                         <textarea name="notes" rows="4" class="form-control mb-3"
                             placeholder="Add production notes...">{{ $postProduction->notes }}</textarea>
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-outline-dark-soft btn-radius-sm px-4">
+                            <button type="submit" class="btn btn-outline-dark rounded-pill px-4">
                                 Save Notes
                             </button>
                         </div>

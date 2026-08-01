@@ -88,8 +88,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-dark-soft rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary-dark rounded-pill" id="fp_submitBtn">
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-dark rounded-pill" id="fp_submitBtn">
                         <i class="bi bi-send me-1"></i>{{ $fpIsRejected ? 'Resubmit Payment Proof' : 'Submit Payment Proof' }}
                     </button>
                 </div>

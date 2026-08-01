@@ -215,9 +215,9 @@
                 <form id="packageForm" method="POST">
                     @csrf
                     <input type="hidden" name="_method" id="formMethod" value="POST">
-                    <div class="modal-header bg-dark text-white">
+                    <div class="modal-header">
                         <h5 class="modal-title" id="packageModalTitle">Add Package</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
                         <div class="row g-3">
@@ -287,8 +287,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-dark" id="packageSubmitBtn">Save Package</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-dark rounded-pill" id="packageSubmitBtn">Save Package</button>
                     </div>
                 </form>
             </div>
@@ -299,9 +299,9 @@
     <div class="modal fade" id="viewPackageModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header bg-info text-white">
+                <div class="modal-header">
                     <h5 class="modal-title">Package Details</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
@@ -332,7 +332,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -345,9 +345,9 @@
                 <form id="deletePackageForm" method="POST">
                     @csrf
                     @method('DELETE')
-                    <div class="modal-header bg-danger text-white">
+                    <div class="modal-header">
                         <h5 class="modal-title">Confirm Delete</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body text-center py-4">
                         <i class="bi bi-exclamation-triangle text-danger fs-1"></i>
@@ -355,8 +355,8 @@
                         <small class="text-muted">This action cannot be undone.</small>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger rounded-pill">Delete</button>
                     </div>
                 </form>
             </div>
@@ -372,9 +372,9 @@
                 <form id="addonForm" method="POST">
                     @csrf
                     <input type="hidden" name="_method" id="addonFormMethod" value="POST">
-                    <div class="modal-header bg-dark text-white">
+                    <div class="modal-header">
                         <h5 class="modal-title" id="addonModalTitle">Add Add-On</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
                         <div class="row g-3">
@@ -432,8 +432,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-dark" id="addonSubmitBtn">Save Add-On</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-dark rounded-pill" id="addonSubmitBtn">Save Add-On</button>
                     </div>
                 </form>
             </div>
@@ -444,9 +444,9 @@
     <div class="modal fade" id="viewAddonModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header bg-info text-white">
+                <div class="modal-header">
                     <h5 class="modal-title">Add-On Details</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
@@ -473,7 +473,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -486,9 +486,9 @@
                 <form id="deleteAddonForm" method="POST">
                     @csrf
                     @method('DELETE')
-                    <div class="modal-header bg-danger text-white">
+                    <div class="modal-header">
                         <h5 class="modal-title">Confirm Delete</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body text-center py-4">
                         <i class="bi bi-exclamation-triangle text-danger fs-1"></i>
@@ -496,8 +496,8 @@
                         <small class="text-muted">This action cannot be undone.</small>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger rounded-pill">Delete</button>
                     </div>
                 </form>
             </div>

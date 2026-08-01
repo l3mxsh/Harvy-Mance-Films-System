@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-warning rounded-pill"><i class="bi bi-check-lg me-1"></i>Add Record</button>
                 </div>
             </form>
@@ -66,8 +66,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary-dark rounded-pill"><i class="bi bi-check-lg me-1"></i>Update</button>
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-dark rounded-pill"><i class="bi bi-check-lg me-1"></i>Update</button>
                 </div>
             </form>
         </div>
@@ -89,7 +89,7 @@
                     <p>Delete record for <strong id="deleteOsName"></strong>? This cannot be undone.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-danger rounded-pill"><i class="bi bi-trash me-1"></i>Delete</button>
                 </div>
             </form>
@@ -116,7 +116,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -165,8 +165,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary-dark rounded-pill"><i class="bi bi-check-lg me-1"></i> Create Staff</button>
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-dark rounded-pill"><i class="bi bi-check-lg me-1"></i> Create Staff</button>
                 </div>
             </form>
         </div>
@@ -240,7 +240,7 @@
                                 </button>
                             </div>
                         </div>
-                        <button type="button" id="editEmailPwBtn" class="btn btn-sm btn-dark rounded-3 w-100">
+                        <button type="button" id="editEmailPwBtn" class="btn btn-dark rounded-pill w-100">
                           Email New Password
                         </button>
                     </div>
@@ -252,7 +252,7 @@
                 <form method="POST" id="editGenerateForm">
                     @csrf
                     <p class="text-muted small">Generate a random temporary password and email it to this staff member.</p>
-                    <button type="submit" class="btn btn-sm btn-warning rounded-2">
+                    <button type="submit" class="btn btn-warning rounded-pill">
                         <i class="bi bi-envelope me-1"></i> Generate & Email Temporary Password
                     </button>
                 </form>
@@ -264,8 +264,8 @@
             </form>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-dark-soft btn-radius-sm" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" form="editForm" class="btn btn-primary-dark btn-radius-sm">
+                <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" form="editForm" class="btn btn-dark rounded-pill">
                     <i class="bi bi-check-lg me-1"></i> Update Staff
                 </button>
             </div>
@@ -292,7 +292,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-danger rounded-pill"><i class="bi bi-trash me-1"></i> Delete Permanently</button>
                 </div>
             </form>
@@ -352,8 +352,8 @@
                         @endif
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary-dark rounded-pill"><i class="bi bi-check-lg me-1"></i> Create Team</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-dark rounded-pill"><i class="bi bi-check-lg me-1"></i> Create Team</button>
                     </div>
                 </form>
             </div>
@@ -410,8 +410,8 @@
                         @endif
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary-dark rounded-pill"><i class="bi bi-check-lg me-1"></i> Update Team</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-dark rounded-pill"><i class="bi bi-check-lg me-1"></i> Update Team</button>
                     </div>
                 </form>
             </div>
@@ -430,7 +430,7 @@
                     @csrf
                     <div class="modal-body"><p id="toggleTeamMessage"></p></div>
                     <div class="modal-footer">
-                        <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn" id="toggleTeamBtn">Confirm</button>
                     </div>
                 </form>
@@ -457,7 +457,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-danger rounded-pill"><i class="bi bi-trash me-1"></i> Delete Team</button>
                     </div>
                 </form>

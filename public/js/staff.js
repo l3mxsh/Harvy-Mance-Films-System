@@ -151,7 +151,7 @@ function openEditTeamModal(id, name, desc, memberIds, outsourcedIds) {
 
 function openToggleTeamModal(id, name, status) {
     var isDeactivating = status === 'active';
-    document.getElementById('toggleTeamHeader').className = 'modal-header ' + (isDeactivating ? 'bg-warning text-dark' : 'bg-success text-white');
+    document.getElementById('toggleTeamHeader').className = 'modal-header';
     document.getElementById('toggleTeamTitle').innerHTML = isDeactivating
         ? '<i class="bi bi-pause-circle me-2"></i>Deactivate Team'
         : '<i class="bi bi-play-circle me-2"></i>Activate Team';

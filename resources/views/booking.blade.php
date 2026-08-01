@@ -196,7 +196,7 @@
                         </aside>
 
                         <div class="d-flex justify-content-end step-actions">
-                            <button type="button" class="btn btn-primary-dark" onclick="goToStep(2)" id="step1Next">
+                            <button type="button" class="btn btn-dark rounded-pill" onclick="goToStep(2)" id="step1Next">
                                 Continue <i class="bi bi-arrow-right ms-1"></i>
                             </button>
                         </div>
@@ -238,10 +238,10 @@
                 </section>
 
                 <div class="step-actions d-flex justify-content-between gap-3">
-                    <button type="button" class="btn btn-outline-dark-soft" onclick="goToStep(1)">
+                    <button type="button" class="btn btn-outline-dark rounded-pill" onclick="goToStep(1)">
                         <i class="bi bi-arrow-left me-1"></i> Back
                     </button>
-                    <button type="button" class="btn btn-primary-dark" onclick="goToStep(3)">
+                    <button type="button" class="btn btn-dark rounded-pill" onclick="goToStep(3)">
                         Continue <i class="bi bi-arrow-right ms-1"></i>
                     </button>
                 </div>
@@ -308,10 +308,10 @@
                 </div>
 
                 <div class="step-actions d-flex justify-content-between gap-3">
-                    <button type="button" class="btn btn-outline-dark-soft" onclick="goToStep(2)">
+                    <button type="button" class="btn btn-outline-dark rounded-pill" onclick="goToStep(2)">
                         <i class="bi bi-arrow-left me-1"></i> Back
                     </button>
-                    <button type="button" class="btn btn-primary-dark" onclick="goToStep(4)">
+                    <button type="button" class="btn btn-dark rounded-pill" onclick="goToStep(4)">
                         Continue <i class="bi bi-arrow-right ms-1"></i>
                     </button>
                 </div>
@@ -427,10 +427,10 @@
                 </section>
 
                 <div class="step-actions d-flex justify-content-between gap-3">
-                    <button type="button" class="btn btn-outline-dark-soft" onclick="goToStep(3)">
+                    <button type="button" class="btn btn-outline-dark rounded-pill" onclick="goToStep(3)">
                         <i class="bi bi-arrow-left me-1"></i> Back
                     </button>
-                    <button type="button" class="btn btn-primary-dark" id="submitBookingBtn" disabled onclick="startOtpVerification()">
+                    <button type="button" class="btn btn-dark rounded-pill" id="submitBookingBtn" disabled onclick="startOtpVerification()">
                         <i class="bi bi-shield-lock me-1"></i> Verify &amp; Submit Booking
                     </button>
                 </div>
@@ -482,8 +482,8 @@
 
                 </div>
                 <div class="modal-footer justify-content-between" id="otpFooter" style="display:none;">
-                    <button type="button" class="btn btn-outline-dark-soft" onclick="cancelOtp()">Cancel</button>
-                    <button type="button" class="btn btn-primary-dark" id="otpVerifyBtn" onclick="verifyOtp()">Verify</button>
+                    <button type="button" class="btn btn-outline-dark rounded-pill" onclick="cancelOtp()">Cancel</button>
+                    <button type="button" class="btn btn-dark rounded-pill" id="otpVerifyBtn" onclick="verifyOtp()">Verify</button>
                 </div>
             </div>
         </div>
@@ -520,7 +520,7 @@
                     <p>HarvyMance Films is not liable for events beyond our control, including natural disasters, power outages, or other force majeure events.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary-dark" data-bs-dismiss="modal">I Understand</button>
+                    <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">I Understand</button>
                 </div>
             </div>
         </div>

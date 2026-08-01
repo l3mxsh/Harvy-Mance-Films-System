@@ -12,8 +12,8 @@
                         <p class="text-muted small mb-0">Unlock deliverables for the client? They will be able to download the approved files immediately.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-dark-soft btn-radius-sm" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success rounded-2">
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success rounded-pill">
                             Unlock
                         </button>
                     </div>

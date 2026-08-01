@@ -170,8 +170,8 @@
                         </section>
 
                         <div class="d-flex gap-2 mb-4 justify-content-end">
-                            <a href="{{ route('post-production.index') }}" class="btn btn-outline-dark-soft btn-radius-sm px-4">Cancel</a>
-                            <button type="submit" class="btn btn-primary-dark btn-radius-sm">
+                            <a href="{{ route('post-production.index') }}" class="btn btn-outline-dark rounded-pill px-4">Cancel</a>
+                            <button type="submit" class="btn btn-dark rounded-pill">
                                 <i class="bi bi-play-circle me-1"></i>Start Post-Production
                             </button>
                         </div>

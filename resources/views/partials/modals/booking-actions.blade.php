@@ -47,8 +47,8 @@
                     @endif
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary-dark" id="approveBtn" {{ $availableTeams->isEmpty() ? 'disabled' : '' }}>
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-dark rounded-pill" id="approveBtn" {{ $availableTeams->isEmpty() ? 'disabled' : '' }}>
                         <i class="bi bi-check-lg me-1"></i> Approve & Assign Team
                     </button>
                 </div>
@@ -80,10 +80,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm border-secondary rounded-pill p-2" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">
                         Cancel
                     </button>
-                    <button type="submit" id="rejectBtn" class="btn btn-sm btn-danger rounded-pill p-2">
+                    <button type="submit" id="rejectBtn" class="btn btn-danger rounded-pill">
                         Reject Booking
                     </button>
                 </div>
@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-success rounded-pill" id="completeBtn">
                         <i class="bi bi-check-lg me-1"></i> Complete Booking
                     </button>
@@ -163,8 +163,8 @@
                     <div id="rrAvailabilityResult" style="display:none;"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary-dark" id="rrApproveBtn">
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-dark rounded-pill" id="rrApproveBtn">
                         <i class="bi bi-check-lg me-1"></i>Approve & Assign Team
                     </button>
                 </div>
@@ -192,8 +192,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger"><i class="bi bi-x-lg me-1"></i>Reject</button>
+                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger rounded-pill"><i class="bi bi-x-lg me-1"></i>Reject</button>
                 </div>
             </form>
         </div>

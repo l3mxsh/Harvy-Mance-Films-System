@@ -187,10 +187,10 @@
     {{-- CREATE TEAM MODAL --}}
     <div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header bg-primary text-white">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h5 class="modal-title"><i class="bi bi-people me-2"></i>Create Team</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="POST" action="{{ route('team.store') }}">
                     @csrf
@@ -235,8 +235,8 @@
                         @endif
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i> Create Team</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-dark rounded-pill"><i class="bi bi-check-lg me-1"></i> Create Team</button>
                     </div>
                 </form>
             </div>
@@ -246,10 +246,10 @@
     {{-- EDIT TEAM MODAL --}}
     <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header bg-secondary text-white">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Edit Team</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="POST" id="editTeamForm">
                     @csrf
@@ -293,8 +293,8 @@
                         @endif
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-secondary"><i class="bi bi-check-lg me-1"></i> Update Team</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-dark rounded-pill"><i class="bi bi-check-lg me-1"></i> Update Team</button>
                     </div>
                 </form>
             </div>
@@ -304,7 +304,7 @@
     {{-- TOGGLE STATUS MODAL --}}
     <div class="modal fade" id="toggleStatusModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
+            <div class="modal-content">
                 <div class="modal-header" id="toggleStatusHeader">
                     <h5 class="modal-title" id="toggleStatusTitle"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -313,8 +313,8 @@
                     @csrf
                     <div class="modal-body"><p id="toggleStatusMessage"></p></div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn" id="toggleStatusBtn">Confirm</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn rounded-pill" id="toggleStatusBtn">Confirm</button>
                     </div>
                 </form>
             </div>
@@ -324,10 +324,10 @@
     {{-- DELETE TEAM MODAL --}}
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header bg-danger text-white">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h5 class="modal-title"><i class="bi bi-trash me-2"></i>Delete Team</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="POST" id="deleteForm">
                     @csrf
@@ -340,8 +340,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i> Delete Team</button>
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger rounded-pill"><i class="bi bi-trash me-1"></i> Delete Team</button>
                     </div>
                 </form>
             </div>
@@ -371,14 +371,14 @@
 
         function openToggleStatusModal(id, name, status) {
             var isDeactivating = status === 'active';
-            document.getElementById('toggleStatusHeader').className = 'modal-header ' + (isDeactivating ? 'bg-warning' : 'bg-success');
+            document.getElementById('toggleStatusHeader').className = 'modal-header';
             document.getElementById('toggleStatusTitle').innerHTML = isDeactivating
                 ? '<i class="bi bi-pause-circle me-2"></i>Deactivate Team'
                 : '<i class="bi bi-play-circle me-2"></i>Activate Team';
             document.getElementById('toggleStatusMessage').innerHTML = isDeactivating
                 ? 'Deactivate <strong>' + name + '</strong>? It cannot be assigned to new bookings while inactive.'
                 : 'Activate <strong>' + name + '</strong>? It will be available for booking assignments.';
-            document.getElementById('toggleStatusBtn').className = 'btn ' + (isDeactivating ? 'btn-warning' : 'btn-success');
+            document.getElementById('toggleStatusBtn').className = 'btn ' + (isDeactivating ? 'btn-warning' : 'btn-success') + ' rounded-pill';
             document.getElementById('toggleStatusForm').action = '/admin/team/' + id + '/toggle-status';
             new bootstrap.Modal(document.getElementById('toggleStatusModal')).show();
         }
