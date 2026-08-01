@@ -301,83 +301,52 @@
                             $deliverablesReady = $booking->deliverables_unlocked;
                         @endphp
 
-                        @if($totalTasks > 0)
-                            @php
-                                $ppSteps = [
-                                    ['key' => 'editing',       'label' => 'Editing Started',      'icon' => 'bi-pencil-square'],
-                                    ['key' => 'in_progress',   'label' => 'In Progress',           'icon' => 'bi-arrow-repeat'],
-                                    ['key' => 'quality_check', 'label' => 'Quality Check',         'icon' => 'bi-shield-check'],
-                                    ['key' => 'ready',         'label' => 'Ready for Delivery',    'icon' => 'bi-check2-all'],
-                                    ['key' => 'delivered',     'label' => 'Delivered',             'icon' => 'bi-box-seam'],
-                                ];
-                                $ppKeys = collect($ppSteps)->pluck('key')->toArray();
-                                $ppCurrent = $postProduction->status;
-                                $ppIdx = array_search($ppCurrent, $ppKeys);
-                                if ($ppIdx === false) $ppIdx = 0;
-                                $ppPercent = round(($ppIdx / (count($ppSteps) - 1)) * 100);
-                            @endphp
-
-                            <div class="progress-track mb-3">
-                                <div class="bar bg-dark" style="width: {{ $ppPercent }}%"></div>
-                            </div>
-                            <div class="row g-2 mb-4">
-                                @foreach($ppSteps as $ppIdx2 => $pp)
-                                    @php
-                                        $ppState = 'text-muted';
-                                        if ($ppIdx2 < $ppIdx) $ppState = 'text-success fw-bold';
-                                        elseif ($ppIdx2 === $ppIdx) $ppState = 'text-dark fw-bold';
-                                    @endphp
-                                    <div class="col text-center">
-                                        <i class="bi {{ $pp['icon'] }} {{ $ppState }}" style="font-size:1.2rem;"></i>
-                                        <div class="small {{ $ppState }}">{{ $pp['label'] }}</div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-
                         <div class="row g-3 mb-3">
                             <div class="col-md-3 col-6">
-                                <div class="detail-row">
-                                    <span class="detail-label">Status</span>
-                                    <span class="detail-value">
+                                <div class="summary-card h-100 text-center">
+                                    <div class="small text-muted mb-1">Status</div>
+                                    <div>
                                         @if($postProduction->status === 'delivered')
-                                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Delivered</span>
+                                            <span class="badge bg-success rounded-pill"><i class="bi bi-check-circle me-1"></i>Delivered</span>
                                         @elseif($postProduction->status === 'ready')
-                                            <span class="badge bg-info"><i class="bi bi-hourglass me-1"></i>Ready</span>
+                                            <span class="badge bg-info rounded-pill"><i class="bi bi-hourglass me-1"></i>Ready</span>
                                         @else
-                                            <span class="badge bg-warning text-dark"><i class="bi bi-arrow-repeat me-1"></i>In Progress</span>
+                                            <span class="badge bg-warning text-dark rounded-pill"><i class="bi bi-arrow-repeat me-1"></i>In Progress</span>
                                         @endif
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3 col-6">
-                                <div class="detail-row">
-                                    <span class="detail-label">Tasks</span>
-                                    <span class="detail-value">{{ $approvedTasks }}/{{ $totalTasks }} approved</span>
+                                <div class="summary-card h-100 text-center">
+                                    <div class="small text-muted mb-1">Tasks</div>
+                                    <div>
+                                        <span class="fw-semibold">{{ $approvedTasks }}/{{ $totalTasks }}</span>
+                                        <span class="text-muted small"> approved</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3 col-6">
-                                <div class="detail-row">
-                                    <span class="detail-label">File Access</span>
-                                    <span class="detail-value">
+                                <div class="summary-card h-100 text-center">
+                                    <div class="small text-muted mb-1">File Access</div>
+                                    <div>
                                         @if($deliverablesReady && $hasFinalPayment)
-                                            <span class="badge bg-success"><i class="bi bi-unlock me-1"></i>Unlocked</span>
+                                            <span class="badge bg-success rounded-pill"><i class="bi bi-unlock me-1"></i>Unlocked</span>
                                         @else
-                                            <span class="badge bg-secondary"><i class="bi bi-lock me-1"></i>Locked</span>
+                                            <span class="badge bg-secondary rounded-pill"><i class="bi bi-lock me-1"></i>Locked</span>
                                         @endif
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3 col-6">
-                                <div class="detail-row">
-                                    <span class="detail-label">Payment</span>
-                                    <span class="detail-value">
+                                <div class="summary-card h-100 text-center">
+                                    <div class="small text-muted mb-1">Payment</div>
+                                    <div>
                                         @if($hasFinalPayment)
-                                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Fully Paid</span>
+                                            <span class="badge bg-success rounded-pill"><i class="bi bi-check-circle me-1"></i>Fully Paid</span>
                                         @else
-                                            <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Balance Due</span>
+                                            <span class="badge bg-danger rounded-pill"><i class="bi bi-x-circle me-1"></i>Balance Due</span>
                                         @endif
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -396,12 +365,12 @@
                         @endif
 
                         @if(!$deliverablesReady && $allApproved && $hasFinalPayment)
-                            <div class="alert alert-soft alert-soft-info py-2 mb-3 mt-2">
+                            <div class="alert alert-soft py-2 mb-3 mt-2">
                                 <i class="bi bi-info-circle me-1"></i>Your deliverables are ready. Waiting for admin to unlock files.
                             </div>
                         @elseif(!$deliverablesReady && $allApproved && !$hasFinalPayment)
-                            <div class="alert alert-soft alert-soft-warning py-2 mb-3 mt-2">
-                                <i class="bi bi-exclamation-triangle me-1"></i>Please complete your remaining balance first. Deliverables will be available for download after your final payment is verified and approved by admin.
+                            <div class="alert alert-soft py-2 mb-3 mt-2">
+                                <i class="bi bi-info-circle me-1"></i>Please settle your remaining balance to unlock your deliverables.
                             </div>
                         @elseif(!$allApproved)
                             <div class="alert alert-soft alert-soft-warning py-2 mb-3 mt-2">

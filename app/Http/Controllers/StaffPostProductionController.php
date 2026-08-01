@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PostProductionTask;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 
 class StaffPostProductionController extends Controller
 {
@@ -23,11 +24,24 @@ class StaffPostProductionController extends Controller
             'password' => 'required|string',
         ]);
 
+        $key = md5('staff_login' . $request->ip());
+        $maxAttempts = 5;
+        $decaySeconds = 60;
+
+        if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
+            $seconds = RateLimiter::availableIn($key);
+            return back()->withErrors([
+                'email' => 'Too many login attempts. Please try again in ' . max(1, ceil($seconds / 60)) . ' minute(s).',
+            ])->onlyInput('email');
+        }
+
         $staff = \App\Models\Staff::where('email', $request->email)->first();
 
         if (!$staff || !Hash::check($request->password, $staff->password)) {
+            RateLimiter::hit($key, $decaySeconds);
+            $remaining = RateLimiter::retriesLeft($key, $maxAttempts);
             return back()->withErrors([
-                'email' => 'Invalid email or password.',
+                'email' => "Invalid email or password. You have {$remaining} attempts remaining.",
             ])->withInput($request->only('email'));
         }
 
@@ -42,6 +56,8 @@ class StaffPostProductionController extends Controller
                 'email' => 'Your temporary access has expired.',
             ])->withInput($request->only('email'));
         }
+
+        RateLimiter::clear($key);
 
         auth('staff')->login($staff);
         $staff->update(['last_login_at' => now()]);
