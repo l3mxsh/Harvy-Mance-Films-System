@@ -7,7 +7,7 @@ use App\Models\PostProduction;
 use App\Models\PostProductionTask;
 use App\Models\Staff;
 use App\Models\OutsourcedStaff;
-use App\Mail\OutsourcedStaffCredentialsEmail;
+use App\Mail\StaffCredentialsEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -262,12 +262,11 @@ class PostProductionController extends Controller
         $task->update(['staff_id' => $staff->id]);
 
         try {
-            Mail::to($staff->email)->send(new OutsourcedStaffCredentialsEmail(
+            Mail::to($staff->email)->send(new StaffCredentialsEmail(
                 $staff->name,
                 $staff->email,
                 $plainPassword,
-                $task->postProduction->booking->booking_ref ?? 'N/A',
-                url('/staff/login'),
+                $task->postProduction->booking->booking_ref ?? null,
             ));
             $mailSent = true;
         } catch (\Exception $e) {

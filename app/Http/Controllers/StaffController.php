@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Staff;
 use App\Models\OutsourcedStaff;
-use App\Mail\BookingCredentialsEmail;
+use App\Mail\StaffCredentialsEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -14,7 +14,22 @@ class StaffController extends Controller
 {
     public function index(Request $request)
     {
+        $tab = $request->query('tab', 'all');
+
+        $totalStaff = Staff::count();
+        $activeStaff = Staff::where('status', 'active')->count();
+        $inactiveStaff = Staff::where('status', 'inactive')->count();
+        $outsourcedStaff = OutsourcedStaff::orderBy('name')->get();
+
+        if ($tab === 'outsourced') {
+            return view('dashboard.staff', compact('outsourcedStaff', 'totalStaff', 'activeStaff', 'inactiveStaff', 'tab'));
+        }
+
         $query = Staff::query();
+
+        if ($tab === 'in-house') {
+            $query->where('is_outsourced', false);
+        }
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -30,12 +45,18 @@ class StaffController extends Controller
 
         $staff = $query->latest()->paginate(10)->withQueryString();
 
-        $totalStaff = Staff::count();
-        $activeStaff = Staff::where('status', 'active')->count();
-        $inactiveStaff = Staff::where('status', 'inactive')->count();
-        $outsourcedStaff = OutsourcedStaff::orderBy('name')->get();
+        if ($request->ajax()) {
+            $rowsHtml = view('dashboard.partials.staff-rows', compact('staff'))->render();
+            $paginationHtml = $staff->hasPages() ? $staff->links()->render() : '';
 
-        return view('dashboard.staff', compact('staff', 'totalStaff', 'activeStaff', 'inactiveStaff', 'outsourcedStaff'));
+            return response()->json([
+                'rows' => $rowsHtml,
+                'pagination' => $paginationHtml,
+                'total' => $staff->total(),
+            ]);
+        }
+
+        return view('dashboard.staff', compact('staff', 'outsourcedStaff', 'totalStaff', 'activeStaff', 'inactiveStaff', 'tab'));
     }
 
     public function store(Request $request)
@@ -94,11 +115,10 @@ class StaffController extends Controller
 
         try {
             Mail::to($staff->email)->send(
-                new BookingCredentialsEmail(
+                new StaffCredentialsEmail(
                     $staff->name,
-                    'STAFF',
-                    $tempPassword,
-                    'Staff Account'
+                    $staff->email,
+                    $tempPassword
                 )
             );
         } catch (\Exception $e) {
