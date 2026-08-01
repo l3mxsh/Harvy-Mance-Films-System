@@ -4,6 +4,7 @@ let selectedPackageData = null;
 let selectedAddonIds = [];
 let dateCheckTimeout = null;
 let emailExists = false;
+let emailExistsMessage = '';
 
 function selectPackage(el) {
     document.querySelectorAll('.package-card').forEach(function(card) {
@@ -272,7 +273,7 @@ function validateStep(step) {
             return false;
         }
         if (emailExists) {
-            showValidationAlert('This email already has an active account. Please log in instead of making a new booking.');
+            showValidationAlert(emailExistsMessage || 'This email is already used in an existing booking.');
             return false;
         }
         if (!phone) {
@@ -329,6 +330,7 @@ function checkEmailExists() {
 
     if (!email || !isValidEmail(email)) {
         emailExists = false;
+        emailExistsMessage = '';
         emailInput.classList.remove('is-invalid');
         if (statusDiv) statusDiv.innerHTML = '';
         return;
@@ -338,6 +340,7 @@ function checkEmailExists() {
         .then(function(response) { return response.json(); })
         .then(function(data) {
             emailExists = data.exists;
+            emailExistsMessage = data.message || '';
             if (data.exists) {
                 emailInput.classList.add('is-invalid');
                 if (statusDiv) statusDiv.innerHTML = '<span class="text-danger small"><i class="bi bi-exclamation-triangle me-1"></i>' + data.message + '</span>';
@@ -348,6 +351,7 @@ function checkEmailExists() {
         })
         .catch(function() {
             emailExists = false;
+            emailExistsMessage = '';
         });
 }
 

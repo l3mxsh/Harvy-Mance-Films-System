@@ -42,20 +42,6 @@
 
     <main class="container py-4">
 
-        @if(session('success'))
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    showResultModal(@json(session('success')), true);
-                });
-            </script>
-        @elseif(session('error'))
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    showResultModal(@json(session('error')), false);
-                });
-            </script>
-        @endif
-
         @if($daysUntilDeletion !== null)
             @if($daysUntilDeletion <= 3)
                 <div class="alert alert-soft alert-soft-danger d-flex align-items-center" role="alert">
@@ -694,7 +680,6 @@
     @include('customer.partials.cancel-modal')
     @include('customer.partials.reschedule-modal')
     @include('customer.partials.refund-proof-modal')
-    @include('customer.partials.result-modal')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/client-downpayment.js') }}"></script>
@@ -707,6 +692,37 @@
             });
         </script>
     @endif
+
+    {{-- FLASH TOASTS --}}
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="flashToasts" style="z-index: 1080;">
+        @if(session('success'))
+            <div class="toast align-items-center text-bg-success border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="toast align-items-center text-bg-danger border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        @endif
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('#flashToasts .toast').forEach(function (el) {
+                new bootstrap.Toast(el, { delay: 4000 }).show();
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -178,13 +178,6 @@
         };
                                             @endphp
                                             <span class="badge {{ $badgeClass }}" id="status-badge-{{ $booking->id }}">{{ ucfirst($booking->status) }}</span>
-                                            @if($booking->status === 'rejected' && $booking->rejection_reason)
-                                                <button class="btn btn-link btn-sm p-0 text-danger text-decoration-none"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    title="{{ $booking->rejection_reason }}">
-                                                    <i class="bi bi-info-circle"></i>
-                                                </button>
-                                            @endif
                                         </td>
                                         <td id="payment-cell-{{ $booking->id }}">
                                             @php $dp = $booking->latestDownpayment; @endphp

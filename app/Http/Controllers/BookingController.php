@@ -12,6 +12,7 @@ use App\Models\StaffSchedule;
 use App\Models\Team;
 use App\Models\Otp;
 use App\Mail\BookingCredentialsEmail;
+use App\Mail\BookingRejectedEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -67,8 +68,9 @@ class BookingController extends Controller
             return back()->withErrors(['otp' => 'Email verification is required. Please verify your email first.'])->withInput();
         }
 
-        if ($this->emailHasActiveAccount($validated['client_email'])) {
-            return back()->withErrors(['client_email' => 'This email already has an active account. Please log in instead of making a new booking.'])->withInput();
+        $emailUsage = $this->emailUsage($validated['client_email']);
+        if ($emailUsage['blocked']) {
+            return back()->withErrors(['client_email' => $emailUsage['message']])->withInput();
         }
 
         $package = Package::with('inventory')->findOrFail($validated['package_id']);
@@ -232,17 +234,37 @@ class BookingController extends Controller
             return response()->json(['exists' => false]);
         }
 
-        $exists = $this->emailHasActiveAccount($email);
+        $usage = $this->emailUsage($email);
 
         return response()->json([
-            'exists' => $exists,
-            'message' => 'This email already has an active account. Please log in instead of making a new booking.',
+            'exists' => $usage['blocked'],
+            'message' => $usage['message'],
         ]);
     }
 
-    private function emailHasActiveAccount(string $email): bool
+    private function emailUsage(string $email): array
     {
-        return CustomerAccount::whereRaw('LOWER(client_email) = ?', [strtolower($email)])->exists();
+        $email = strtolower(trim($email));
+
+        if (CustomerAccount::whereRaw('LOWER(client_email) = ?', [$email])->exists()) {
+            return [
+                'blocked' => true,
+                'message' => 'This email already has an active account. Please log in instead of making a new booking.',
+            ];
+        }
+
+        $hasPendingBooking = Booking::whereRaw('LOWER(client_email) = ?', [$email])
+            ->where('status', 'pending')
+            ->exists();
+
+        if ($hasPendingBooking) {
+            return [
+                'blocked' => true,
+                'message' => 'You already have a booking in review. Please wait for the admin to review your previous booking.',
+            ];
+        }
+
+        return ['blocked' => false, 'message' => ''];
     }
 
     public function checkDate(Request $request)
@@ -382,6 +404,18 @@ class BookingController extends Controller
         ]);
 
         $booking->items()->update(['status' => 'cancelled']);
+
+        try {
+            Mail::to($booking->client_email)->send(
+                new BookingRejectedEmail(
+                    $booking->client_name,
+                    $booking->booking_ref,
+                    $booking->rejection_reason
+                )
+            );
+        } catch (\Exception $e) {
+            // Mail may fail in log driver; continue anyway
+        }
 
         return back()->with('success', "Booking {$booking->booking_ref} has been rejected.");
     }

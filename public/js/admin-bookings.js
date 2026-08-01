@@ -136,17 +136,32 @@ function formatPeso(amount) {
     return '\u20B1' + parseFloat(amount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-function showApproveResultModal(message, isSuccess) {
-    document.getElementById('approveResultMsg').textContent = message;
-    var icon = document.getElementById('approveResultIcon');
-    if (isSuccess) {
-        icon.className = 'fs-1 mb-2 text-success';
-        icon.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
-    } else {
-        icon.className = 'fs-1 mb-2 text-danger';
-        icon.innerHTML = '<i class="bi bi-x-circle-fill"></i>';
+function showApproveToast(message, isSuccess) {
+    var container = document.getElementById('flashToasts');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'flashToasts';
+        container.className = 'toast-container position-fixed top-0 end-0 p-3';
+        container.style.zIndex = '1080';
+        document.body.appendChild(container);
     }
-    new bootstrap.Modal(document.getElementById('approveResultModal')).show();
+
+    var toast = document.createElement('div');
+    toast.className = 'toast align-items-center border-0 ' + (isSuccess ? 'text-bg-success' : 'text-bg-danger');
+    toast.setAttribute('role', 'alert');
+    toast.innerHTML = '<div class="d-flex">'
+        + '<div class="toast-body"><i class="bi ' + (isSuccess ? 'bi-check-circle' : 'bi-exclamation-triangle') + ' me-2"></i>' + message + '</div>'
+        + '<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>'
+        + '</div>';
+
+    container.appendChild(toast);
+
+    var bsToast = new bootstrap.Toast(toast, { delay: 4000 });
+    bsToast.show();
+
+    toast.addEventListener('hidden.bs.toast', function () {
+        toast.remove();
+    });
 }
 
 function refreshApprovedRow(bookingId, teamName) {
@@ -209,10 +224,10 @@ document.getElementById('approveForm').addEventListener('submit', function (e) {
 
             if (res.ok && res.data.success) {
                 refreshApprovedRow(currentBookingId, teamName);
-                showApproveResultModal(res.data.success, true);
+                showApproveToast(res.data.success, true);
             } else {
                 var msg = (res.data && (res.data.error || res.data.message)) || 'Could not approve the booking. Please try again.';
-                showApproveResultModal(msg, false);
+                showApproveToast(msg, false);
             }
 
             submitBtn.disabled = false;
@@ -221,7 +236,7 @@ document.getElementById('approveForm').addEventListener('submit', function (e) {
         .catch(function () {
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="bi bi-check-lg me-1"></i> Approve & Assign Team';
-            showApproveResultModal('Could not approve the booking. Please try again.', false);
+            showApproveToast('Could not approve the booking. Please try again.', false);
         });
 });
 
@@ -338,3 +353,9 @@ function openRejectModal(bookingId, bookingRef, clientName) {
     document.getElementById('rejection_reason').value = '';
     new bootstrap.Modal(document.getElementById('rejectModal')).show();
 }
+
+document.getElementById('rejectForm').addEventListener('submit', function (e) {
+    var submitBtn = document.getElementById('rejectBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Rejecting...';
+});
