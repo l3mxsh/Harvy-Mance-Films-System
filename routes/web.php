@@ -92,7 +92,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/booking/{booking}/reject', [BookingController::class, 'reject'])->name('booking.reject');
 
     Route::get('/admin/payment-verification', [DownpaymentController::class, 'adminIndex'])->name('payment-verification.index');
-    Route::get('/admin/payment-verification/{downpayment}', [DownpaymentController::class, 'adminShow'])->name('payment-verification.show');
     Route::post('/admin/payment-verification/{downpayment}/verify', [DownpaymentController::class, 'adminVerify'])->name('payment-verification.verify');
     Route::post('/admin/payment-verification/{downpayment}/reject', [DownpaymentController::class, 'adminReject'])->name('payment-verification.reject');
 

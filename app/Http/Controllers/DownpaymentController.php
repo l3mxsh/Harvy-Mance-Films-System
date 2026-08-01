@@ -163,7 +163,9 @@ class DownpaymentController extends Controller
 
     public function adminIndex()
     {
-        $downpayments = Downpayment::with(['booking.package'])
+        $downpayments = Downpayment::query()
+            ->with(['booking.package.services', 'booking.addons', 'booking.team'])
+            ->when(request('status'), fn ($query, $status) => $query->where('status', $status))
             ->orderBy('submitted_at', 'desc')
             ->paginate(15);
 
@@ -177,13 +179,6 @@ class DownpaymentController extends Controller
         ];
 
         return view('dashboard.payment-verification', compact('downpayments', 'stats'));
-    }
-
-    public function adminShow(Downpayment $downpayment)
-    {
-        $downpayment->load(['booking.package', 'booking.addons', 'booking.team.members']);
-
-        return view('dashboard.payment-details', compact('downpayment'));
     }
 
     public function adminVerify(Downpayment $downpayment)
