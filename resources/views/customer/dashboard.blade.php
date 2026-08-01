@@ -28,24 +28,16 @@
 
     <main class="container py-4">
 
-        @if($daysUntilDeletion !== null)
-            @if($daysUntilDeletion <= 3)
-                <div class="alert alert-soft alert-soft-danger d-flex align-items-center" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
-                    <div>
-                        <strong>Account Deletion Warning:</strong> Your account will be automatically deleted in <strong>{{ $daysUntilDeletion }} day(s)</strong>.
-                        Please download all your deliverables before then.
-                    </div>
+        @if($daysUntilDeletion !== null && $deleteAt !== null)
+            @php
+                $bannerTitle = $daysUntilDeletion <= 3 ? 'Final Warning' : ($daysUntilDeletion <= 7 ? 'Access Ending Soon' : 'Download Window');
+            @endphp
+            <div class="download-window-banner my-2">
+                <div class="fw-semibold">{{ $bannerTitle }}</div>
+                <div class="small">
+                    You have access to your deliverables until <strong>{{ $deleteAt->format('M d, Y') }}</strong> ({{ $daysUntilDeletion }} day(s) left). After this date, your account will be archived and you can no longer log in.
                 </div>
-            @elseif($daysUntilDeletion <= 7)
-                <div class="alert alert-soft alert-soft-warning d-flex align-items-center" role="alert">
-                    <i class="bi bi-clock-history me-3 fs-4"></i>
-                    <div>
-                        <strong>Reminder:</strong> Your account will be automatically deleted in <strong>{{ $daysUntilDeletion }} day(s)</strong> after delivery.
-                        Make sure to download your files.
-                    </div>
-                </div>
-            @endif
+            </div>
         @endif
 
         {{-- ==================== HEADER ==================== --}}
@@ -493,34 +485,6 @@
                     @endif
                 </section>
 
-                {{-- ASSIGNED TEAM --}}
-                @if($booking->team)
-                    <section class="surface-card mb-4">
-                        <div class="section-head">
-                            <h2 class="section-title"><i class="bi bi-people me-2"></i>Assigned Team</h2>
-                        </div>
-                        <div class="mb-2">
-                            <span class="fw-semibold">{{ $booking->team->name }}</span>
-                        </div>
-                        @if($booking->team->members->count() > 0 || $booking->team->outsourcedMembers->count() > 0)
-                            <div>
-                                @foreach($booking->team->members as $member)
-                                    <span class="team-member-chip">
-                                        <span class="avatar">{{ strtoupper(substr($member->name, 0, 1)) }}</span>
-                                        {{ $member->name }}
-                                    </span>
-                                @endforeach
-                                @foreach($booking->team->outsourcedMembers as $os)
-                                    <span class="team-member-chip os-chip">
-                                        <span class="avatar">{{ strtoupper(substr($os->name, 0, 1)) }}</span>
-                                        {{ $os->name }} <small>(OS)</small>
-                                    </span>
-                                @endforeach
-                            </div>
-                        @endif
-                    </section>
-                @endif
-
                 {{-- ACTIONS --}}
                 @php
                     $cancellation = $booking->cancellationRequest;
@@ -617,6 +581,34 @@
                         </form>
                     </div>
                 </section>
+
+                {{-- ASSIGNED TEAM --}}
+                @if($booking->team)
+                    <section class="surface-card mb-4">
+                        <div class="section-head">
+                            <h2 class="section-title"><i class="bi bi-people me-2"></i>Assigned Team</h2>
+                        </div>
+                        <div class="mb-2">
+                            <span class="fw-semibold">{{ $booking->team->name }}</span>
+                        </div>
+                        @if($booking->team->members->count() > 0 || $booking->team->outsourcedMembers->count() > 0)
+                            <div>
+                                @foreach($booking->team->members as $member)
+                                    <span class="team-member-chip">
+                                        <span class="avatar">{{ strtoupper(substr($member->name, 0, 1)) }}</span>
+                                        {{ $member->name }}
+                                    </span>
+                                @endforeach
+                                @foreach($booking->team->outsourcedMembers as $os)
+                                    <span class="team-member-chip os-chip">
+                                        <span class="avatar">{{ strtoupper(substr($os->name, 0, 1)) }}</span>
+                                        {{ $os->name }} <small>(OS)</small>
+                                    </span>
+                                @endforeach
+                            </div>
+                        @endif
+                    </section>
+                @endif
 
             </div>
         </div>

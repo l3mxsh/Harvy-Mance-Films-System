@@ -29,6 +29,12 @@ class CustomerAccountController extends Controller
 
         $account = CustomerAccount::where('control_number', $request->control_number)->first();
 
+        if ($account && $account->archived_at) {
+            return back()->withErrors([
+                'control_number' => 'This account has expired and is no longer active. Please contact us to request access again.',
+            ])->withInput($request->only('control_number'));
+        }
+
         if (!$account || !Hash::check($request->password, $account->password)) {
             $maxAttempts = 5;
             $key = md5('customer-login' . $request->ip());
@@ -59,7 +65,14 @@ class CustomerAccountController extends Controller
     public function dashboard()
     {
         $account = auth('customer')->user();
-        $booking = Booking::with(['package.services', 'addons', 'items.inventoryItem', 'team.members', 'team.outsourcedMembers', 'postProduction.tasks.staff'])
+
+        if ($account->archived_at) {
+            auth('customer')->logout();
+            return redirect()->route('customer.login')
+                ->withErrors(['control_number' => 'This account has expired and is no longer active. Please contact us to request access again.']);
+        }
+
+        $booking = Booking::with(['package.services', 'addons', 'team.members', 'team.outsourcedMembers', 'postProduction.tasks.staff'])
             ->findOrFail($account->booking_id);
 
         $latestDownpayment = $booking->latestDownpayment;
@@ -70,13 +83,14 @@ class CustomerAccountController extends Controller
 
         $autoDeleteDays = null;
         $daysUntilDeletion = null;
+        $deleteAt = null;
         if ($booking->deliverables_unlocked && $booking->delivered_at) {
             $autoDeleteDays = (int) Setting::getValue('client_auto_delete_days', '30');
             $deleteAt = $booking->delivered_at->copy()->addDays($autoDeleteDays);
-            $daysUntilDeletion = max(0, (int) now()->diffInDays($deleteAt, false));
+            $daysUntilDeletion = max(0, (int) round(now()->diffInDays($deleteAt, false)));
         }
 
-        return view('customer.dashboard', compact('account', 'booking', 'latestDownpayment', 'remainingBalance', 'hasFinalPayment', 'daysUntilDeletion'));
+        return view('customer.dashboard', compact('account', 'booking', 'latestDownpayment', 'remainingBalance', 'hasFinalPayment', 'daysUntilDeletion', 'deleteAt'));
     }
 
     public function showChangePassword()

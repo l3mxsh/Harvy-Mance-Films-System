@@ -246,7 +246,9 @@ class BookingController extends Controller
     {
         $email = strtolower(trim($email));
 
-        if (CustomerAccount::whereRaw('LOWER(client_email) = ?', [$email])->exists()) {
+        if (CustomerAccount::whereRaw('LOWER(client_email) = ?', [$email])
+            ->whereNull('archived_at')
+            ->exists()) {
             return [
                 'blocked' => true,
                 'message' => 'This email already has an active account. Please log in instead of making a new booking.',

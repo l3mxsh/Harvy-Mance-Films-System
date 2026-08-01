@@ -806,6 +806,20 @@ body {
     border-left: 3px solid #0dcaf0;
 }
 
+/* Download window banner */
+.download-window-banner {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 0.875rem;
+}
+
+.download-window-banner .fw-semibold {
+    margin-bottom: 0.3rem;
+}
+
 /* Info panel */
 .info-box {
     display: flex;

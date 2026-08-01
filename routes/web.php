@@ -138,4 +138,5 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::put('/admin/settings', [SettingsController::class, 'update'])->name('settings.update');
+    Route::post('/admin/settings/archived/{account}/restore', [SettingsController::class, 'restore'])->name('settings.archived.restore');
 });

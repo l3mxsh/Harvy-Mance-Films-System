@@ -18,6 +18,7 @@ class CustomerAccount extends Authenticatable
         'booking_id',
         'must_change_password',
         'last_login_at',
+        'archived_at',
     ];
 
     protected $hidden = [
@@ -29,8 +30,19 @@ class CustomerAccount extends Authenticatable
         return [
             'must_change_password' => 'boolean',
             'last_login_at' => 'datetime',
+            'archived_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->whereNull('archived_at');
+    }
+
+    public function isArchived(): bool
+    {
+        return $this->archived_at !== null;
     }
 
     public function booking()

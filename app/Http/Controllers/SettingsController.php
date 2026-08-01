@@ -22,24 +22,40 @@ class SettingsController extends Controller
         $deliveredBookings = Booking::where('status', 'completed')
             ->where('deliverables_unlocked', true)
             ->whereNotNull('delivered_at')
-            ->with('customerAccount')
+            ->with(['customerAccount' => fn ($q) => $q->whereNull('archived_at')])
             ->get()
             ->filter(fn($b) => $b->customerAccount);
 
         $upcomingDeletions = $deliveredBookings->map(function ($booking) use ($autoDeleteDays) {
             $deliveredAt = $booking->delivered_at;
             $deleteAt = $deliveredAt->copy()->addDays((int) $autoDeleteDays);
-            $daysRemaining = max(0, $deleteAt->diffInDays(now(), false));
+            $daysRemaining = max(0, (int) round(now()->diffInDays($deleteAt, false)));
 
             return [
                 'booking' => $booking,
                 'delivered_at' => $deliveredAt,
                 'delete_at' => $deleteAt,
-                'days_remaining' => abs($daysRemaining),
+                'days_remaining' => $daysRemaining,
             ];
         })->sortBy('delete_at')->values();
 
-        return view('dashboard.settings', compact('autoDeleteDays', 'rescheduleLeadTime', 'upcomingDeletions', 'refundPolicy'));
+        $archivedAccounts = CustomerAccount::whereNotNull('archived_at')
+            ->with('booking')
+            ->orderByDesc('archived_at')
+            ->get();
+
+        return view('dashboard.settings', compact('autoDeleteDays', 'rescheduleLeadTime', 'upcomingDeletions', 'archivedAccounts', 'refundPolicy'));
+    }
+
+    public function restore(string $account)
+    {
+        $account = CustomerAccount::findOrFail($account);
+
+        if ($account->archived_at) {
+            $account->update(['archived_at' => null]);
+        }
+
+        return back()->with('success', "Account for {$account->client_name} has been restored.");
     }
 
     public function update(Request $request)

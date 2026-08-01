@@ -41,9 +41,9 @@
                                 @method('PUT')
 
                                 <div class="mb-4">
-                                    <label class="form-label fw-bold">Client Account Auto-Deletion</label>
+                                    <label class="form-label fw-bold">Client Account Auto-Archiving</label>
                                     <p class="text-muted small mb-2">
-                                        After a booking is delivered, the client's account will be automatically deleted after the selected number of days.
+                                        After a booking is delivered, the client's account will be automatically archived after the selected number of days, removing them from the active client list.
                                     </p>
                                     <select name="client_auto_delete_days" class="form-select">
                                         <option value="7" {{ $autoDeleteDays == '7' ? 'selected' : '' }}>7 days</option>
@@ -107,7 +107,7 @@
                 <div class="col-lg-6">
                     <div class="card border-0 shadow-sm">
                         <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
-                            <h6 class="mb-0 fw-bold"><i class="bi bi-clock-history me-2"></i>Upcoming Account Deletions</h6>
+                            <h6 class="mb-0 fw-bold"><i class="bi bi-clock-history me-2"></i>Upcoming Account Archiving</h6>
                             <span class="badge bg-secondary">{{ $upcomingDeletions->count() }} account(s)</span>
                         </div>
                         <div class="card-body p-0">
@@ -155,6 +155,65 @@
                             @endif
                         </div>
                     </div>
+                </div>
+            </div>
+
+            {{-- ==================== ARCHIVED CLIENTS ==================== --}}
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 fw-bold"><i class="bi bi-archive me-2"></i>Archived Client Accounts</h6>
+                    <span class="badge bg-secondary">{{ $archivedAccounts->count() }} account(s)</span>
+                </div>
+                <div class="card-body p-0">
+                    @if($archivedAccounts->isEmpty())
+                        <div class="text-center py-5 text-muted">
+                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                            No archived client accounts.
+                        </div>
+                    @else
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Client</th>
+                                        <th>Booking Ref</th>
+                                        <th>Delivered</th>
+                                        <th>Archived</th>
+                                        <th>Days Since Archive</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($archivedAccounts as $archived)
+                                        <tr>
+                                            <td>
+                                                <div>{{ $archived->client_name }}</div>
+                                                <small class="text-muted">{{ $archived->client_email }}</small>
+                                            </td>
+                                            <td><code>{{ $archived->booking?->booking_ref }}</code></td>
+                                            <td>{{ $archived->booking?->delivered_at?->format('M d, Y') ?? '—' }}</td>
+                                            <td>{{ $archived->archived_at->format('M d, Y') }}</td>
+                                            <td>
+                                                @if((int) round($archived->archived_at->diffInDays(now())) === 0)
+                                                    <span class="badge bg-secondary">Today</span>
+                                                @else
+                                                    <span class="badge bg-secondary">{{ (int) round($archived->archived_at->diffInDays(now())) }} day(s)</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-end">
+                                                <form method="POST" action="{{ route('settings.archived.restore', $archived->id) }}" class="d-inline">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-outline-dark rounded-pill" onclick="return confirm('Restore this client account?')">
+                                                        <i class="bi bi-arrow-counterclockwise me-1"></i>Restore
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
