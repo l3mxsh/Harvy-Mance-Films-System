@@ -13,11 +13,33 @@ use Illuminate\Support\Facades\Mail;
 
 class PostProductionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $postProductions = PostProduction::with(['booking.package', 'tasks.staff'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
+        $query = PostProduction::with(['booking.package', 'tasks.staff']);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('booking', function ($q) use ($search) {
+                $q->where('booking_ref', 'like', "%{$search}%")
+                  ->orWhere('client_name', 'like', "%{$search}%")
+                  ->orWhere('event_type', 'like', "%{$search}%");
+            });
+        }
+
+        $postProductions = $query->orderBy('created_at', 'desc')
+            ->paginate(15)
+            ->withQueryString();
+
+        if ($request->ajax()) {
+            $rowsHtml = view('dashboard.partials.post-production-rows', compact('postProductions'))->render();
+            $paginationHtml = $postProductions->hasPages() ? $postProductions->links()->render() : '';
+
+            return response()->json([
+                'rows' => $rowsHtml,
+                'pagination' => $paginationHtml,
+                'total' => $postProductions->total(),
+            ]);
+        }
 
         $stats = [
             'total' => PostProduction::count(),

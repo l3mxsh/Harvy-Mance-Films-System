@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Staff;
 use App\Models\OutsourcedStaff;
+use App\Models\Team;
 use App\Mail\StaffCredentialsEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +21,30 @@ class StaffController extends Controller
         $activeStaff = Staff::where('status', 'active')->count();
         $inactiveStaff = Staff::where('status', 'inactive')->count();
         $outsourcedStaff = OutsourcedStaff::orderBy('name')->get();
+
+        if ($tab === 'teams') {
+            $query = Team::with('members', 'outsourcedMembers');
+
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('description', 'like', "%{$search}%");
+                });
+            }
+
+            if ($request->filled('status')) {
+                $query->where('status', $request->status);
+            }
+
+            $teams = $query->latest()->paginate(10)->withQueryString();
+            $allStaff = Staff::where('status', 'active')->orderBy('name')->get();
+            $allOutsourced = OutsourcedStaff::orderBy('name')->get();
+            $totalTeams = Team::count();
+            $activeTeams = Team::where('status', 'active')->count();
+
+            return view('dashboard.staff', compact('teams', 'allStaff', 'allOutsourced', 'totalTeams', 'activeTeams', 'totalStaff', 'activeStaff', 'inactiveStaff', 'outsourcedStaff', 'tab'));
+        }
 
         if ($tab === 'outsourced') {
             return view('dashboard.staff', compact('outsourcedStaff', 'totalStaff', 'activeStaff', 'inactiveStaff', 'tab'));

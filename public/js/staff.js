@@ -69,6 +69,64 @@ function openDeleteOutsourcedModal(id, name) {
     new bootstrap.Modal(document.getElementById('deleteOutsourcedModal')).show();
 }
 
+// ---- Teams: modal helpers ----
+function openCreateTeamModal() {
+    document.querySelector('#createTeamModal form').reset();
+    new bootstrap.Modal(document.getElementById('createTeamModal')).show();
+}
+
+function openEditTeamModal(id, name, desc, memberIds, outsourcedIds) {
+    document.getElementById('editTeamForm').action = '/admin/team/' + id;
+    document.getElementById('editTeamName').value = name;
+    document.getElementById('editTeamDesc').value = desc;
+    document.querySelectorAll('.edit-member-check').forEach(cb => {
+        cb.checked = memberIds.includes(parseInt(cb.value));
+    });
+    document.querySelectorAll('.edit-outsourced-check').forEach(cb => {
+        cb.checked = outsourcedIds.includes(parseInt(cb.value));
+    });
+    new bootstrap.Modal(document.getElementById('editTeamModal')).show();
+}
+
+function openToggleTeamModal(id, name, status) {
+    var isDeactivating = status === 'active';
+    document.getElementById('toggleTeamHeader').className = 'modal-header ' + (isDeactivating ? 'bg-warning text-dark' : 'bg-success text-white');
+    document.getElementById('toggleTeamTitle').innerHTML = isDeactivating
+        ? '<i class="bi bi-pause-circle me-2"></i>Deactivate Team'
+        : '<i class="bi bi-play-circle me-2"></i>Activate Team';
+    document.getElementById('toggleTeamMessage').innerHTML = isDeactivating
+        ? 'Deactivate <strong>' + name + '</strong>? It cannot be assigned to new bookings while inactive.'
+        : 'Activate <strong>' + name + '</strong>? It will be available for booking assignments.';
+    document.getElementById('toggleTeamBtn').className = 'btn rounded-pill ' + (isDeactivating ? 'btn-warning' : 'btn-success');
+    document.getElementById('toggleTeamForm').action = '/admin/team/' + id + '/toggle-status';
+    new bootstrap.Modal(document.getElementById('toggleTeamModal')).show();
+}
+
+function openDeleteTeamModal(id, name) {
+    document.getElementById('deleteTeamForm').action = '/admin/team/' + id;
+    document.getElementById('deleteTeamName').textContent = name;
+    new bootstrap.Modal(document.getElementById('deleteTeamModal')).show();
+}
+
+// ---- Teams: auto-submit search/filter (no Filter button) ----
+(function () {
+    var form = document.getElementById('teamFilterForm');
+    if (!form) return;
+
+    var input = form.querySelector('input[name="search"]');
+    var select = form.querySelector('select[name="status"]');
+    var timer = null;
+
+    input.addEventListener('input', function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () { form.submit(); }, 500);
+    });
+
+    select.addEventListener('change', function () {
+        form.submit();
+    });
+})();
+
 // ---- Client-side search/filter (AJAX, no page reloads) ----
 (function () {
     var input = document.getElementById('staffSearchInput');

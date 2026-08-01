@@ -41,11 +41,6 @@ $pendingPaymentsCount = \App\Models\Downpayment::where('status', 'pending')->cou
             </a>
         </li>
         <li>
-            <a href="{{ route('team.index') }}" class="{{ $currentRoute === 'team.index' ? 'active' : '' }}">
-                <i class="bi bi-people-fill"></i> Teams
-            </a>
-        </li>
-        <li>
             <a href="{{ route('staff-schedule.index') }}" class="{{ str_starts_with($currentRoute, 'staff-schedule') ? 'active' : '' }}">
                 <i class="bi bi-calendar-event"></i> Schedules
             </a>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -27,60 +27,91 @@
 
         <div class="container-fluid p-4">
             {{-- ==================== SUMMARY CARDS ==================== --}}
-            <div class="row g-3 mb-4">
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="summary-card">
-                        <div class="d-flex align-items-center">
-                            <div class="summary-icon bg-primary bg-opacity-10 text-primary">
-                                <i class="bi bi-people"></i>
+            @if($tab === 'teams')
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="summary-card">
+                            <div class="d-flex align-items-center">
+                                <div class="summary-icon bg-primary bg-opacity-10 text-primary">
+                                    <i class="bi bi-people-fill"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1 small">Total Teams</h6>
+                                    <h4 class="mb-0 fw-bold">{{ $totalTeams }}</h4>
+                                </div>
                             </div>
-                            <div class="ms-3">
-                                <h6 class="text-muted mb-1 small">Total In-House</h6>
-                                <h4 class="mb-0 fw-bold">{{ $totalStaff }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="summary-card">
+                            <div class="d-flex align-items-center">
+                                <div class="summary-icon bg-success bg-opacity-10 text-success">
+                                    <i class="bi bi-check-circle"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1 small">Active Teams</h6>
+                                    <h4 class="mb-0 fw-bold">{{ $activeTeams }}</h4>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="summary-card">
-                        <div class="d-flex align-items-center">
-                            <div class="summary-icon bg-success bg-opacity-10 text-success">
-                                <i class="bi bi-check-circle"></i>
+            @else
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="summary-card">
+                            <div class="d-flex align-items-center">
+                                <div class="summary-icon bg-primary bg-opacity-10 text-primary">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1 small">Total In-House</h6>
+                                    <h4 class="mb-0 fw-bold">{{ $totalStaff }}</h4>
+                                </div>
                             </div>
-                            <div class="ms-3">
-                                <h6 class="text-muted mb-1 small">Active</h6>
-                                <h4 class="mb-0 fw-bold">{{ $activeStaff }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="summary-card">
+                            <div class="d-flex align-items-center">
+                                <div class="summary-icon bg-success bg-opacity-10 text-success">
+                                    <i class="bi bi-check-circle"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1 small">Active</h6>
+                                    <h4 class="mb-0 fw-bold">{{ $activeStaff }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="summary-card">
+                            <div class="d-flex align-items-center">
+                                <div class="summary-icon bg-danger bg-opacity-10 text-danger">
+                                    <i class="bi bi-person-x"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1 small">Inactive</h6>
+                                    <h4 class="mb-0 fw-bold">{{ $inactiveStaff }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="summary-card">
+                            <div class="d-flex align-items-center">
+                                <div class="summary-icon bg-warning bg-opacity-10 text-warning">
+                                    <i class="bi bi-person-badge"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1 small">Outsourced</h6>
+                                    <h4 class="mb-0 fw-bold">{{ $outsourcedStaff->count() }}</h4>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="summary-card">
-                        <div class="d-flex align-items-center">
-                            <div class="summary-icon bg-danger bg-opacity-10 text-danger">
-                                <i class="bi bi-person-x"></i>
-                            </div>
-                            <div class="ms-3">
-                                <h6 class="text-muted mb-1 small">Inactive</h6>
-                                <h4 class="mb-0 fw-bold">{{ $inactiveStaff }}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="summary-card">
-                        <div class="d-flex align-items-center">
-                            <div class="summary-icon bg-warning bg-opacity-10 text-warning">
-                                <i class="bi bi-person-badge"></i>
-                            </div>
-                            <div class="ms-3">
-                                <h6 class="text-muted mb-1 small">Outsourced</h6>
-                                <h4 class="mb-0 fw-bold">{{ $outsourcedStaff->count() }}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endif
 
             {{-- ==================== TABS ==================== --}}
             <ul class="nav nav-pills mb-4" id="staffTabs">
@@ -100,13 +131,19 @@
                     <a class="nav-link {{ $tab === 'outsourced' ? 'active' : '' }}"
                         href="{{ route('staff.admin.index', ['tab' => 'outsourced']) }}">
                         <i class="bi bi-person-lines-fill me-1"></i> Outsourced Staff
-                        <span class="badge bg-warning text-dark ms-1">Record Only</span>
+                        <span class="badge bg-success text-light ms-1">Record Only</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ $tab === 'teams' ? 'active' : '' }}"
+                        href="{{ route('staff.admin.index', ['tab' => 'teams']) }}">
+                        <i class="bi bi-people-fill me-1"></i> Teams
                     </a>
                 </li>
             </ul>
 
             {{-- ==================== SEARCH BAR ==================== --}}
-            @if($tab !== 'outsourced')
+            @if(!in_array($tab, ['outsourced', 'teams']))
                 <section class="surface-card mb-4">
                     <div class="row g-2 align-items-center">
                         <div class="col-9 col-md-9 col-lg-10">
@@ -117,7 +154,8 @@
                             <select id="staffStatusFilter" class="form-select">
                                 <option value="">All Status</option>
                                 <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
-                                <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -184,15 +222,123 @@
                 </section>
             @endif
 
+            {{-- ==================== TEAMS TABLE ==================== --}}
+            @if($tab === 'teams')
+                <section class="surface-card mb-4">
+                    <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <h2 class="section-title"><i class="bi bi-people-fill me-2"></i>All Teams</h2>
+                        <span class="badge bg-light text-dark border">{{ $teams->total() }} total</span>
+                    </div>
+                    <form method="GET" action="{{ route('staff.admin.index') }}" id="teamFilterForm"
+                        class="row g-2 align-items-end">
+                        <input type="hidden" name="tab" value="teams">
+                        <div class="col-md-6">
+                            <label class="form-label small text-muted mb-1">Search</label>
+                            <input type="text" name="search" class="form-control" placeholder="Search teams..."
+                                value="{{ request('search') }}" autocomplete="off">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small text-muted mb-1">Status</label>
+                            <select name="status" class="form-select">
+                                <option value="">All Status</option>
+                                <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-1">
+                            <button type="button" class="btn btn-dark w-100 rounded-3" onclick="openCreateTeamModal()">Add
+                                Team
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="surface-card">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Team Name</th>
+                                    <th>Description</th>
+                                    <th>Members</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($teams as $team)
+                                    <tr>
+                                        <td class="fw-semibold">{{ $team->name }}</td>
+                                        <td class="text-muted">{{ $team->description ?? '—' }}</td>
+                                        <td>
+                                            @forelse($team->members as $member)
+                                                <span class="member-chip">{{ $member->name }}</span>
+                                            @empty
+                                            @endforelse
+                                            @foreach($team->outsourcedMembers as $os)
+                                                <span class="member-chip member-chip-os">{{ $os->name }} <small>(OS)</small></span>
+                                            @endforeach
+                                            @if($team->members->isEmpty() && $team->outsourcedMembers->isEmpty())
+                                                <span class="text-muted fst-italic">No members</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($team->status === 'active')
+                                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Active</span>
+                                            @else
+                                                <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Inactive</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $team->created_at->format('M d, Y') }}</td>
+                                        <td class="text-center">
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <button class="btn btn-sm btn-outline-secondary rounded-3" title="Edit"
+                                                    onclick="openEditTeamModal('{{ $team->id }}', '{{ addslashes($team->name) }}', '{{ addslashes($team->description ?? '') }}', {!! json_encode($team->members->pluck('id')->toArray()) !!}, {!! json_encode($team->outsourcedMembers->pluck('id')->toArray()) !!})">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button
+                                                    class="btn btn-sm btn-outline-{{ $team->status === 'active' ? 'warning' : 'success' }} rounded-3"
+                                                    title="{{ $team->status === 'active' ? 'Deactivate' : 'Activate' }}"
+                                                    onclick="openToggleTeamModal('{{ $team->id }}', '{{ addslashes($team->name) }}', '{{ $team->status }}')">
+                                                    <i
+                                                        class="bi bi-{{ $team->status === 'active' ? 'pause-circle' : 'play-circle' }}"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger rounded-3" title="Delete"
+                                                    onclick="openDeleteTeamModal('{{ $team->id }}', '{{ addslashes($team->name) }}')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4 text-muted">
+                                            <i class="bi bi-people-fill fs-1 d-block mb-2"></i>
+                                            No teams found. Create one to get started.
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    @if($teams->hasPages())
+                        <div class="border-top pt-3 mt-3">{{ $teams->links() }}</div>
+                    @endif
+                </section>
+            @endif
+
             {{-- ==================== IN-HOUSE STAFF TABLE ==================== --}}
-            @if($tab !== 'outsourced')
+            @if(!in_array($tab, ['outsourced', 'teams']))
                 <section class="surface-card">
                     <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
                         <h2 class="section-title">
                             <i class="bi bi-people me-2"></i>{{ $tab === 'in-house' ? 'In-House Staff' : 'All Staff' }}
                         </h2>
                         <div class="d-flex align-items-center gap-2">
-                            <span class="badge bg-light text-dark border" id="staffTotalBadge">{{ $staff->total() }} total</span>
+                            <span class="badge bg-light text-dark border" id="staffTotalBadge">{{ $staff->total() }}
+                                total</span>
                             <button type="button" class="btn btn-dark rounded-pill" onclick="openCreateModal()">
                                 <i class="bi bi-plus-circle me-1"></i> Add Staff
                             </button>
@@ -225,274 +371,7 @@
         </div>
     </div>
 
-    {{-- ==================== CREATE OUTSOURCED MODAL ==================== --}}
-    <div class="modal fade" id="createOutsourcedModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-person-badge me-2 text-warning"></i>Add Outsourced Staff</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form method="POST" action="{{ route('outsourced-staff.store') }}">
-                    @csrf
-                    <div class="modal-body">
-                        <p class="text-muted small mb-3">Record only — no login account. Used for shoot-day assignments and post-production tracking.</p>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control" required placeholder="Enter full name">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Email Address</label>
-                            <input type="email" name="email" class="form-control" placeholder="e.g. staff@example.com">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Contact Number</label>
-                            <input type="text" name="contact_number" class="form-control" placeholder="e.g. 09XXXXXXXXX">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Notes</label>
-                            <input type="text" name="notes" class="form-control" placeholder="e.g. Photographer, Videographer...">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-warning rounded-pill"><i class="bi bi-check-lg me-1"></i>Add Record</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    {{-- ==================== EDIT OUTSOURCED MODAL ==================== --}}
-    <div class="modal fade" id="editOutsourcedModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-pencil me-2 text-secondary"></i>Edit Outsourced Staff</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form method="POST" id="editOutsourcedForm">
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
-                            <input type="text" name="name" id="editOsName" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Email Address</label>
-                            <input type="email" name="email" id="editOsEmail" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Contact Number</label>
-                            <input type="text" name="contact_number" id="editOsContact" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Notes</label>
-                            <input type="text" name="notes" id="editOsNotes" class="form-control">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary-dark rounded-pill"><i class="bi bi-check-lg me-1"></i>Update</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    {{-- ==================== DELETE OUTSOURCED MODAL ==================== --}}
-    <div class="modal fade" id="deleteOutsourcedModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-trash me-2 text-danger"></i>Delete Outsourced Staff</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form method="POST" id="deleteOutsourcedForm">
-                    @csrf
-                    @method('DELETE')
-                    <div class="modal-body">
-                        <p>Delete record for <strong id="deleteOsName"></strong>? This cannot be undone.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger rounded-pill"><i class="bi bi-trash me-1"></i>Delete</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    {{-- ==================== VIEW STAFF MODAL ==================== --}}
-    <div class="modal fade" id="viewModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-person-badge me-2 text-primary"></i>Staff Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-borderless mb-0">
-                        <tr><td class="text-muted" style="width:140px;">Name</td><td class="fw-semibold" id="viewName"></td></tr>
-                        <tr><td class="text-muted">Email</td><td id="viewEmail"></td></tr>
-                        <tr><td class="text-muted">Contact</td><td id="viewContact"></td></tr>
-                        <tr><td class="text-muted">Status</td><td id="viewStatus"></td></tr>
-                        <tr><td class="text-muted">Joined</td><td id="viewJoined"></td></tr>
-                        <tr><td class="text-muted">Last Login</td><td id="viewLastLogin"></td></tr>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- ==================== CREATE STAFF MODAL ==================== --}}
-    <div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-person-plus me-2 text-primary"></i>Add Staff</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form method="POST" action="{{ route('staff.admin.store') }}">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control" required placeholder="Enter full name">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
-                            <input type="email" name="email" class="form-control" required placeholder="staff@example.com">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Contact Number</label>
-                            <input type="text" name="contact_number" class="form-control" placeholder="e.g. 09XXXXXXXXX">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Password <span class="text-danger">*</span></label>
-                            <input type="password" name="password" class="form-control" required minlength="6" placeholder="Minimum 6 characters">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Confirm Password <span class="text-danger">*</span></label>
-                            <input type="password" name="password_confirmation" class="form-control" required minlength="6" placeholder="Re-enter password">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary-dark rounded-pill"><i class="bi bi-check-lg me-1"></i> Create Staff</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    {{-- ==================== EDIT STAFF MODAL ==================== --}}
-    <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-pencil me-2 text-secondary"></i>Edit Staff</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form method="POST" id="editForm">
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-body pb-0">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
-                            <input type="text" name="name" id="editName" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
-                            <input type="email" name="email" id="editEmail" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Contact Number</label>
-                            <input type="text" name="contact_number" id="editContact" class="form-control">
-                        </div>
-                    </div>
-                </form>
-                <div class="modal-body pt-0">
-                    <hr>
-                    <h6 class="mb-3"><i class="bi bi-person-check me-2 text-secondary"></i>Account Status</h6>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="fw-semibold" id="editStatusLabel">Active</div>
-                            <small class="text-muted">Enable or disable this staff account.</small>
-                        </div>
-                        <form method="POST" id="editToggleForm">
-                            @csrf
-                            <button type="submit" class="btn btn-sm btn-outline-warning rounded-pill" id="editToggleBtn">
-                                <i class="bi bi-pause-circle me-1"></i> Disable Account
-                            </button>
-                        </form>
-                    </div>
-
-                    <hr>
-                    <h6 class="mb-3"><i class="bi bi-key me-2 text-secondary"></i>Reset Password</h6>
-                    <form method="POST" id="editPasswordForm">
-                        @csrf
-                        <div class="mb-2">
-                            <label class="form-label small">New Password <span class="text-danger">*</span></label>
-                            <input type="password" name="new_password" class="form-control" required minlength="6"
-                                placeholder="Minimum 6 characters">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label small">Confirm Password <span class="text-danger">*</span></label>
-                            <input type="password" name="new_password_confirmation" class="form-control" required
-                                minlength="6">
-                        </div>
-                        <button type="submit" class="btn btn-sm btn-primary-dark">
-                            <i class="bi bi-key me-1"></i> Reset Password
-                        </button>
-                    </form>
-                    <form method="POST" id="editGenerateForm" class="mt-2">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-warning rounded-pill">
-                            <i class="bi bi-envelope me-1"></i> Generate & Email Temporary Password
-                        </button>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="editForm" class="btn btn-primary-dark rounded-pill">
-                        <i class="bi bi-check-lg me-1"></i> Update Staff
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- ==================== DELETE STAFF MODAL ==================== --}}
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-trash me-2 text-danger"></i>Delete Staff</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form method="POST" id="deleteForm">
-                    @csrf
-                    @method('DELETE')
-                    <div class="modal-body">
-                        <p>Are you sure you want to permanently delete this staff account?</p>
-                        <div class="alert alert-warning py-2 mb-0">
-                            <i class="bi bi-exclamation-triangle me-1"></i>
-                            This action cannot be undone. All data for <strong id="deleteStaffName"></strong> (<span id="deleteStaffEmail"></span>) will be permanently removed.
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger rounded-pill"><i class="bi bi-trash me-1"></i> Delete Permanently</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    @include('dashboard.partials.staff-modals')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/sidebar.js') }}"></script>

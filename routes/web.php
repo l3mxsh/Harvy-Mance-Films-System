@@ -122,7 +122,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/staff/{staff}/toggle-status', [StaffController::class, 'toggleStatus'])->name('staff.admin.toggleStatus');
     Route::delete('/admin/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.admin.destroy');
 
-    Route::get('/admin/team', [TeamController::class, 'index'])->name('team.index');
+    Route::get('/admin/team', fn () => redirect()->route('staff.admin.index', ['tab' => 'teams']))->name('team.index');
     Route::post('/admin/team', [TeamController::class, 'store'])->name('team.store');
     Route::put('/admin/team/{team}', [TeamController::class, 'update'])->name('team.update');
     Route::post('/admin/team/{team}/toggle-status', [TeamController::class, 'toggleStatus'])->name('team.toggleStatus');

@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Start Post-Production - Admin</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/post-production.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/booking.css') }}">
 </head>
 
-<body class="bg-light">
+<body>
     @include('partials.sidebar')
 
     <div class="sidebar-content">
@@ -23,107 +26,94 @@
         </div>
 
         <div class="container-fluid p-4">
-            @if(session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle me-1"></i> {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+                <div>
+                    <a href="{{ route('post-production.index') }}" class="text-decoration-none text-muted small">
+                        <i class="bi bi-arrow-left me-1"></i>Back to Post-Production
+                    </a>
                 </div>
-            @endif
+            </div>
 
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <div>
-                            <a href="{{ route('post-production.index') }}" class="text-decoration-none text-muted small">
-                                <i class="bi bi-arrow-left me-1"></i>Back to Post-Production
-                            </a>
-                            <h5 class="fw-bold mb-0 mt-1">
-                                <i class="bi bi-film me-2"></i>Start Post-Production
-                            </h5>
-                        </div>
-                    </div>
 
-                    <div class="card border-0 shadow-sm mb-4">
-                        <div class="card-header bg-white border-bottom">
-                            <h6 class="mb-0 fw-bold"><i class="bi bi-info-circle me-2"></i>Booking Information</h6>
+                    <section class="surface-card">
+                        <div class="section-head">
+                            <h2 class="section-title"><i class="bi bi-info-circle me-2"></i>Booking Information</h2>
                         </div>
-                        <div class="card-body">
-                            <div class="row g-3">
-                                <div class="col-md-3">
-                                    <div class="detail-row">
-                                        <span class="detail-label">Booking Ref</span>
-                                        <span class="detail-value"><code>{{ $booking->booking_ref }}</code></span>
-                                    </div>
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <div class="detail-box">
+                                    <div class="detail-label">Booking Ref</div>
+                                    <div class="detail-value"><code>{{ $booking->booking_ref }}</code></div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="detail-row">
-                                        <span class="detail-label">Client</span>
-                                        <span class="detail-value">{{ $booking->client_name }}</span>
-                                    </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="detail-box">
+                                    <div class="detail-label">Client</div>
+                                    <div class="detail-value">{{ $booking->client_name }}</div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="detail-row">
-                                        <span class="detail-label">Event Type</span>
-                                        <span class="detail-value">{{ $booking->event_type ?? 'N/A' }}</span>
-                                    </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="detail-box">
+                                    <div class="detail-label">Event Type</div>
+                                    <div class="detail-value">{{ $booking->event_type ?? 'N/A' }}</div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="detail-row">
-                                        <span class="detail-label">Event Date</span>
-                                        <span class="detail-value">{{ $booking->event_date->format('M d, Y') }}</span>
-                                    </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="detail-box">
+                                    <div class="detail-label">Event Date</div>
+                                    <div class="detail-value">{{ $booking->event_date->format('M d, Y') }}</div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
 
                     <form method="POST" action="{{ route('post-production.store', $booking->id) }}" id="createForm">
                         @csrf
 
-                        <div class="card border-0 shadow-sm mb-4">
-                            <div class="card-header bg-white border-bottom">
-                                <h6 class="mb-0 fw-bold"><i class="bi bi-gear me-2"></i>General Settings</h6>
+                        <section class="surface-card">
+                            <div class="section-head">
+                                <h2 class="section-title"><i class="bi bi-gear me-2"></i>General Settings</h2>
                             </div>
-                            <div class="card-body">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label for="expected_completion_date" class="form-label fw-semibold">
-                                            Expected Completion Date <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="date" name="expected_completion_date" id="expected_completion_date"
-                                               class="form-control @error('expected_completion_date') is-invalid @enderror"
-                                               value="{{ old('expected_completion_date') }}" required min="{{ date('Y-m-d', strtotime('+1 day')) }}">
-                                        @error('expected_completion_date')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="notes" class="form-label fw-semibold">General Notes / Instructions</label>
-                                        <textarea name="notes" id="notes" rows="2"
-                                                  class="form-control @error('notes') is-invalid @enderror"
-                                                  placeholder="Overall instructions for the post-production team...">{{ old('notes') }}</textarea>
-                                        @error('notes')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="expected_completion_date" class="form-label fw-semibold">
+                                        Expected Completion Date <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="date" name="expected_completion_date" id="expected_completion_date"
+                                           class="form-control @error('expected_completion_date') is-invalid @enderror"
+                                           value="{{ old('expected_completion_date') }}" required min="{{ date('Y-m-d', strtotime('+1 day')) }}">
+                                    @error('expected_completion_date')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="notes" class="form-label fw-semibold">General Notes / Instructions</label>
+                                    <textarea name="notes" id="notes" rows="2"
+                                              class="form-control @error('notes') is-invalid @enderror"
+                                              placeholder="Overall instructions for the post-production team...">{{ old('notes') }}</textarea>
+                                    @error('notes')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
-                        </div>
+                        </section>
 
-                        <div class="card border-0 shadow-sm mb-4">
-                            <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0 fw-bold"><i class="bi bi-list-task me-2"></i>Task Assignments</h6>
-                                <button type="button" class="btn btn-sm btn-outline-primary" id="addTaskBtn">
+                        <section class="surface-card">
+                            <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <h2 class="section-title"><i class="bi bi-list-task me-2"></i>Task Assignments</h2>
+                                <button type="button" class="btn btn-sm btn-outline-dark rounded-2" id="addTaskBtn">
                                     <i class="bi bi-plus-lg me-1"></i>Add Task
                                 </button>
                             </div>
-                            <div class="card-body" id="tasksContainer">
+                            <div id="tasksContainer">
                         @php $oldTasks = old('tasks', [['assignee_type' => 'inhouse', 'staff_id' => '', 'outsourced_staff_id' => '', 'task_type' => '', 'instructions' => '']]); @endphp
                                 @foreach($oldTasks as $idx => $oldTask)
-                                    <div class="task-entry border rounded p-3 mb-3" data-index="{{ $idx }}">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <h6 class="fw-bold text-primary mb-0"><i class="bi bi-person-gear me-1"></i>Task #{{ $idx + 1 }}</h6>
-                                            <button type="button" class="btn btn-sm btn-outline-danger remove-task" style="display: {{ count($oldTasks) > 1 ? 'block' : 'none' }}">
+                                    <div class="task-entry" data-index="{{ $idx }}">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h6 class="fw-bold mb-0"><i class="bi bi-person-gear me-1"></i>Task #{{ $idx + 1 }}</h6>
+                                            <button type="button" class="btn btn-sm btn-outline-danger rounded-2 remove-task" style="display: {{ count($oldTasks) > 1 ? 'block' : 'none' }}">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
@@ -177,13 +167,13 @@
                                     </div>
                                 @endforeach
                             </div>
-                        </div>
+                        </section>
 
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">
+                        <div class="d-flex gap-2 mb-4 justify-content-end">
+                            <a href="{{ route('post-production.index') }}" class="btn btn-outline-dark-soft btn-radius-sm px-4">Cancel</a>
+                            <button type="submit" class="btn btn-primary-dark btn-radius-sm">
                                 <i class="bi bi-play-circle me-1"></i>Start Post-Production
                             </button>
-                            <a href="{{ route('post-production.index') }}" class="btn btn-outline-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -222,10 +212,10 @@
             const container = document.getElementById('tasksContainer');
             const idx = taskIndex++;
             const html = `
-                <div class="task-entry border rounded p-3 mb-3" data-index="${idx}">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h6 class="fw-bold text-primary mb-0"><i class="bi bi-person-gear me-1"></i>Task #${idx + 1}</h6>
-                        <button type="button" class="btn btn-sm btn-outline-danger remove-task"><i class="bi bi-trash"></i></button>
+                <div class="task-entry" data-index="${idx}">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold mb-0"><i class="bi bi-person-gear me-1"></i>Task #${idx + 1}</h6>
+                        <button type="button" class="btn btn-sm btn-outline-danger rounded-2 remove-task"><i class="bi bi-trash"></i></button>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-3">
@@ -286,6 +276,27 @@
                 entry.querySelector('.remove-task').style.display = entries.length > 1 ? 'block' : 'none';
             });
         }
+    </script>
+
+    {{-- FLASH TOASTS --}}
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="flashToasts" style="z-index: 1080;">
+        @if(session('error'))
+            <div class="toast align-items-center text-bg-danger border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        @endif
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('#flashToasts .toast').forEach(function (el) {
+                new bootstrap.Toast(el, { delay: 4000 }).show();
+            });
+        });
     </script>
 </body>
 

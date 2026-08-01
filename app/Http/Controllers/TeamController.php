@@ -3,38 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Team;
-use App\Models\Staff;
-use App\Models\OutsourcedStaff;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
 {
-    public function index(Request $request)
-    {
-        $query = Team::with('members', 'outsourcedMembers');
-
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
-            });
-        }
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $teams = $query->latest()->paginate(10)->withQueryString();
-        $allStaff = Staff::where('status', 'active')->orderBy('name')->get();
-        $allOutsourced = OutsourcedStaff::orderBy('name')->get();
-
-        $totalTeams = Team::count();
-        $activeTeams = Team::where('status', 'active')->count();
-
-        return view('dashboard.teams', compact('teams', 'allStaff', 'allOutsourced', 'totalTeams', 'activeTeams'));
-    }
-
     public function store(Request $request)
     {
         $validated = $request->validate([

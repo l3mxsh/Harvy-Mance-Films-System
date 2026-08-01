@@ -70,6 +70,13 @@ function openRescheduleRejectModal(rrId, bookingRef) {
     new bootstrap.Modal(document.getElementById('rescheduleRejectModal')).show();
 }
 
+function openCompleteModal(bookingId, bookingRef, clientName) {
+    document.getElementById('completeForm').action = '/admin/booking/' + bookingId + '/complete';
+    document.getElementById('completeBookingRef').textContent = bookingRef;
+    document.getElementById('completeClientName').textContent = clientName;
+    new bootstrap.Modal(document.getElementById('completeModal')).show();
+}
+
 function openApproveModal(bookingId, bookingRef, clientName, eventDate) {
     document.getElementById('approveForm').action = '/admin/booking/' + bookingId + '/approve';
     document.getElementById('approveBookingRef').textContent = bookingRef;
@@ -358,4 +365,10 @@ document.getElementById('rejectForm').addEventListener('submit', function (e) {
     var submitBtn = document.getElementById('rejectBtn');
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Rejecting...';
+});
+
+document.getElementById('completeForm').addEventListener('submit', function () {
+    var submitBtn = document.getElementById('completeBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Completing...';
 });

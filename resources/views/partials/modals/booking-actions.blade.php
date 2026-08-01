@@ -42,7 +42,7 @@
                     @if($availableTeams->isEmpty())
                         <div class="alert alert-soft alert-soft-warning py-2 mb-0">
                             <i class="bi bi-exclamation-triangle me-1"></i>
-                            No active teams available. <a href="{{ route('team.index') }}">Create a team first</a>.
+                            No active teams available. <a href="{{ route('staff.admin.index', ['tab' => 'teams']) }}">Create a team first</a>.
                         </div>
                     @endif
                 </div>
@@ -85,6 +85,35 @@
                     </button>
                     <button type="submit" id="rejectBtn" class="btn btn-sm btn-danger rounded-pill p-2">
                         Reject Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- COMPLETE BOOKING MODAL --}}
+<div class="modal fade" id="completeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-check2-circle me-2 text-success"></i>Complete Booking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" id="completeForm">
+                @csrf
+                <div class="modal-body">
+                    <p class="mb-3">Mark booking <strong id="completeBookingRef"></strong> for <strong
+                            id="completeClientName"></strong> as completed?</p>
+                    <div class="complete-hint">
+                        <span class="complete-hint-icon"><i class="bi bi-info-circle"></i></span>
+                        <span class="complete-hint-text">Post-production tasks will be created for this booking.</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success rounded-pill" id="completeBtn">
+                        <i class="bi bi-check-lg me-1"></i> Complete Booking
                     </button>
                 </div>
             </form>

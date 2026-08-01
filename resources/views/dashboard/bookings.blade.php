@@ -246,14 +246,11 @@
                                                     <small
                                                         class="text-success text-muted fst-italic align-self-center">Approved</small>
                                                 @elseif($booking->status === 'ongoing')
-                                                    <form action="{{ route('booking.complete', $booking->id) }}" method="POST"
-                                                        class="d-inline"
-                                                        onsubmit="return confirm('Mark booking {{ $booking->booking_ref }} as completed? This will start the post-production phase.')">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-sm btn-outline-success">
-                                                            <i class="bi bi-check-lg"></i> Complete
-                                                        </button>
-                                                    </form>
+                                                    <button type="button" class="btn btn-sm btn-outline-success rounded-pill"
+                                                        title="Complete Booking"
+                                                        onclick="openCompleteModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}')">
+                                                        <i class="bi bi-check-lg me-1"></i> Complete
+                                                    </button>
                                                 @elseif($booking->status === 'completed')
                                                     @if($booking->postProduction)
                                                         <a href="{{ route('post-production.show', $booking->postProduction->id) }}"
@@ -262,7 +259,7 @@
                                                         </a>
                                                     @else
                                                         <a href="{{ route('post-production.create', $booking->id) }}"
-                                                            class="btn btn-sm btn-primary">
+                                                            class="btn btn-sm btn-outline-dark rounded-2">
                                                             <i class="bi bi-film me-1"></i>Proceed to Post-Production
                                                         </a>
                                                     @endif
