@@ -147,11 +147,21 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Password <span class="text-danger">*</span></label>
-                        <input type="password" name="password" class="form-control" required minlength="6" placeholder="Minimum 6 characters">
+                        <div class="input-group">
+                            <input type="password" name="password" id="createPassword" class="form-control" required minlength="6" placeholder="Minimum 6 characters">
+                            <button type="button" class="btn btn-outline-secondary toggle-password" data-target="createPassword" tabindex="-1">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Confirm Password <span class="text-danger">*</span></label>
-                        <input type="password" name="password_confirmation" class="form-control" required minlength="6" placeholder="Re-enter password">
+                        <div class="input-group">
+                            <input type="password" name="password_confirmation" id="createPasswordConfirmation" class="form-control" required minlength="6" placeholder="Re-enter password">
+                            <button type="button" class="btn btn-outline-secondary toggle-password" data-target="createPasswordConfirmation" tabindex="-1">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -187,52 +197,75 @@
                         <label class="form-label fw-semibold">Contact Number</label>
                         <input type="text" name="contact_number" id="editContact" class="form-control">
                     </div>
+
+                    <hr>
+                    <h6 class="mb-3"><i class="bi bi-person-check me-2 text-secondary"></i>Account Status</h6>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-semibold" id="editStatusLabel">Active</div>
+                            <small class="text-muted">Enable or disable this staff account.</small>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="editStatusSwitch" role="switch">
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h6 class="mb-3"><i class="bi bi-key me-2 text-secondary"></i>Reset Password</h6>
+
+                    <input type="hidden" name="notify" id="editNotify" value="0">
+                    <div id="editPasswordSection" class="d-none mx-auto">
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label class="form-label small mb-0">New Password</label>
+                                <button type="button" class="btn btn-link btn-sm p-0 text-primary border-0" id="editGeneratePwBtn">
+                                    Generate Random Password
+                                </button>
+                            </div>
+                            <div class="input-group">
+                                <input type="password" name="new_password" id="editNewPassword" class="form-control"
+                                    minlength="6" placeholder="Leave blank to keep current password" autocomplete="off">
+                                <button type="button" class="btn btn-outline-secondary toggle-password" data-target="editNewPassword" tabindex="-1">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small">Confirm Password</label>
+                            <div class="input-group">
+                                <input type="password" name="new_password_confirmation" id="editNewPasswordConfirmation"
+                                    class="form-control" minlength="6">
+                                <button type="button" class="btn btn-outline-secondary toggle-password" data-target="editNewPasswordConfirmation" tabindex="-1">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" id="editEmailPwBtn" class="btn btn-sm btn-dark rounded-3 w-100">
+                          Email New Password
+                        </button>
+                    </div>
                 </div>
             </form>
-            <div class="modal-body pt-0">
-                <hr>
-                <h6 class="mb-3"><i class="bi bi-person-check me-2 text-secondary"></i>Account Status</h6>
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="fw-semibold" id="editStatusLabel">Active</div>
-                        <small class="text-muted">Enable or disable this staff account.</small>
-                    </div>
-                    <form method="POST" id="editToggleForm">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-outline-warning rounded-pill" id="editToggleBtn">
-                            <i class="bi bi-pause-circle me-1"></i> Disable Account
-                        </button>
-                    </form>
-                </div>
 
-                <hr>
-                <h6 class="mb-3"><i class="bi bi-key me-2 text-secondary"></i>Reset Password</h6>
-                <form method="POST" id="editPasswordForm">
+            {{-- Outsource staff: generate & email temporary password --}}
+            <div class="modal-body pt-0" id="editGenerateSection">
+                <form method="POST" id="editGenerateForm">
                     @csrf
-                    <div class="mb-2">
-                        <label class="form-label small">New Password <span class="text-danger">*</span></label>
-                        <input type="password" name="new_password" class="form-control" required minlength="6"
-                            placeholder="Minimum 6 characters">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small">Confirm Password <span class="text-danger">*</span></label>
-                        <input type="password" name="new_password_confirmation" class="form-control" required
-                            minlength="6">
-                    </div>
-                    <button type="submit" class="btn btn-sm btn-primary-dark">
-                        <i class="bi bi-key me-1"></i> Reset Password
-                    </button>
-                </form>
-                <form method="POST" id="editGenerateForm" class="mt-2">
-                    @csrf
-                    <button type="submit" class="btn btn-sm btn-warning rounded-pill">
+                    <p class="text-muted small">Generate a random temporary password and email it to this staff member.</p>
+                    <button type="submit" class="btn btn-sm btn-warning rounded-2">
                         <i class="bi bi-envelope me-1"></i> Generate & Email Temporary Password
                     </button>
                 </form>
             </div>
+
+            {{-- Account status toggle form (referenced via form attribute, kept outside editForm) --}}
+            <form method="POST" id="editToggleForm" class="d-none">
+                @csrf
+            </form>
+
             <div class="modal-footer">
-                <button type="button" class="btn border-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" form="editForm" class="btn btn-primary-dark rounded-pill">
+                <button type="button" class="btn btn-outline-dark-soft btn-radius-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" form="editForm" class="btn btn-primary-dark btn-radius-sm">
                     <i class="bi bi-check-lg me-1"></i> Update Staff
                 </button>
             </div>

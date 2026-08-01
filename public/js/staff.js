@@ -16,31 +16,92 @@ function openCreateModal() {
     new bootstrap.Modal(document.getElementById('createModal')).show();
 }
 
-function openEditModal(id, name, email, contact, status) {
+function openEditModal(id, name, email, contact, status, isOutsourced) {
     document.getElementById('editForm').action = '/admin/staff/' + id;
     document.getElementById('editName').value = name;
     document.getElementById('editEmail').value = email;
     document.getElementById('editContact').value = contact || '';
 
-    var isDisabling = status === 'active';
-    var statusLabel = document.getElementById('editStatusLabel');
-    var toggleBtn = document.getElementById('editToggleBtn');
-
-    statusLabel.textContent = isDisabling ? 'Active' : 'Inactive';
-    toggleBtn.className = 'btn btn-sm rounded-pill ' + (isDisabling ? 'btn-outline-warning' : 'btn-outline-success');
-    toggleBtn.innerHTML = isDisabling
-        ? '<i class="bi bi-pause-circle me-1"></i> Disable Account'
-        : '<i class="bi bi-play-circle me-1"></i> Enable Account';
+    var isActive = status === 'active';
+    document.getElementById('editStatusLabel').textContent = isActive ? 'Active' : 'Inactive';
+    document.getElementById('editStatusSwitch').checked = isActive;
     document.getElementById('editToggleForm').action = '/admin/staff/' + id + '/toggle-status';
 
-    document.getElementById('editPasswordForm').action = '/admin/staff/' + id + '/reset-password';
     document.getElementById('editGenerateForm').action = '/admin/staff/' + id + '/generate-password';
-    var pwForm = document.getElementById('editPasswordForm');
-    pwForm.querySelector('[name="new_password"]').value = '';
-    pwForm.querySelector('[name="new_password_confirmation"]').value = '';
+
+    document.getElementById('editGenerateSection').classList.toggle('d-none', !isOutsourced);
+    document.getElementById('editPasswordSection').classList.toggle('d-none', !!isOutsourced);
+
+    document.getElementById('editNotify').value = '0';
+    document.getElementById('editNewPassword').value = '';
+    document.getElementById('editNewPasswordConfirmation').value = '';
 
     new bootstrap.Modal(document.getElementById('editModal')).show();
 }
+
+function generateRandomPassword() {
+    var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+    var password = '';
+    for (var i = 0; i < 10; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.getElementById('editGeneratePwBtn');
+    if (btn) {
+        btn.addEventListener('click', function () {
+            var password = generateRandomPassword();
+            document.getElementById('editNewPassword').value = password;
+            document.getElementById('editNewPasswordConfirmation').value = password;
+        });
+    }
+
+    var emailBtn = document.getElementById('editEmailPwBtn');
+    if (emailBtn) {
+        emailBtn.addEventListener('click', function () {
+            applyButtonSpinner(emailBtn);
+            document.getElementById('editNotify').value = '1';
+            document.getElementById('editForm').submit();
+        });
+    }
+
+    var statusSwitch = document.getElementById('editStatusSwitch');
+    if (statusSwitch) {
+        statusSwitch.addEventListener('change', function () {
+            var wrap = statusSwitch.closest('.form-check');
+            if (wrap) {
+                wrap.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            }
+            document.getElementById('editToggleForm').submit();
+        });
+    }
+});
+
+function applyButtonSpinner(btn) {
+    if (!btn || btn.disabled) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Processing...';
+}
+
+document.addEventListener('submit', function (e) {
+    var form = e.target;
+    if (!form || !form.closest('.modal')) return;
+    var btn = e.submitter;
+    if (!btn || btn.tagName !== 'BUTTON') return;
+    applyButtonSpinner(btn);
+});
+
+document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.toggle-password');
+    if (!btn) return;
+    var input = document.getElementById(btn.getAttribute('data-target'));
+    if (!input) return;
+    var show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    btn.querySelector('i').className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+});
 
 function openDeleteModal(id, name, email) {
     document.getElementById('deleteForm').action = '/admin/staff/' + id;

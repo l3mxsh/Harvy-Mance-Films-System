@@ -574,6 +574,63 @@ body {
     margin-bottom: 1rem;
 }
 
+.task-card {
+    background: var(--canvas);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 1.1rem 1.25rem;
+}
+
+/* ---------------- Detail rows (admin side panels) ---------------- */
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+}
+
+.detail-value {
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-align: right;
+}
+
+/* ---------------- Hint / revision note boxes ---------------- */
+.hint-box {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    background: var(--canvas);
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+}
+
+.revision-note {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    padding: 0.55rem 0.8rem;
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+}
+
 /* ---------------- Buttons ---------------- */
 .btn {
     transition: var(--ease);
@@ -643,6 +700,15 @@ body {
     font-weight: 500;
     color: #495057;
     margin-bottom: 0.4rem;
+}
+
+.form-switch .form-check-input#editStatusSwitch:checked {
+    background-color: var(--ink);
+    border-color: var(--ink);
+}
+
+.form-switch .form-check-input#editStatusSwitch:focus {
+    box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.06);
 }
 
 .req {
@@ -868,6 +934,49 @@ body {
     background-color: #6f42c1 !important;
 }
 
+/* ---------------- Bento grid (post-production details) ---------------- */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.bento-grid .surface-card {
+    height: 100%;
+    margin-bottom: 0;
+}
+
+.bento-grid .panel-tasks {
+    grid-column: 1 / 3;
+    grid-row: 1;
+}
+
+.bento-grid .panel-booking {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.bento-grid .panel-notes {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.bento-grid .panel-payment {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.bento-grid .panel-summary {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.bento-grid .task-card:last-child {
+    margin-bottom: 0;
+}
+
 /* ---------------- Footer ---------------- */
 .booking-footer {
     background: #fff;
@@ -881,6 +990,21 @@ body {
 }
 
 /* ---------------- Responsive ---------------- */
+@media (max-width: 991.98px) {
+    .bento-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bento-grid .panel-tasks,
+    .bento-grid .panel-booking,
+    .bento-grid .panel-payment,
+    .bento-grid .panel-summary,
+    .bento-grid .panel-notes {
+        grid-column: auto;
+        grid-row: auto;
+    }
+}
+
 @media (max-width: 767.98px) {
     .booking-hero {
         padding: 2.5rem 0 1.75rem;

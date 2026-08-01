@@ -106,34 +106,86 @@ class StaffController extends Controller
 
     public function update(Request $request, Staff $staff)
     {
-        $validated = $request->validate([
+        if ($request->boolean('notify') && !$request->filled('new_password')) {
+            return back()->with('error', 'Generate or enter a new password before emailing it.');
+        }
+
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:staff,email,' . $staff->id,
             'contact_number' => 'nullable|string|max:50',
-        ]);
+        ];
 
-        $staff->update([
+        if ($request->filled('new_password')) {
+            $rules['new_password'] = 'required|string|min:6|confirmed';
+        }
+
+        $validated = $request->validate($rules);
+
+        $data = [
             'name' => $validated['name'],
             'email' => $validated['email'],
             'contact_number' => $validated['contact_number'] ?? null,
-        ]);
+        ];
+
+        if ($request->filled('new_password')) {
+            $data['password'] = $request->new_password;
+        }
+
+        $staff->update($data);
+
+        if ($request->boolean('notify')) {
+            try {
+                Mail::to($staff->email)->send(
+                    new StaffCredentialsEmail(
+                        $staff->name,
+                        $staff->email,
+                        $request->new_password
+                    )
+                );
+            } catch (\Exception $e) {
+                // Mail may fail
+            }
+
+            return back()->with('success', 'Staff account updated and new password emailed to ' . $staff->email . '.');
+        }
 
         return back()->with('success', 'Staff account updated successfully.');
     }
 
     public function resetPassword(Request $request, Staff $staff)
     {
-        $request->validate([
+        $validated = $request->validate([
             'new_password' => 'required|string|min:6|confirmed',
         ]);
 
-        $staff->update(['password' => $request->new_password]);
+        $staff->update(['password' => $validated['new_password']]);
 
-        return back()->with('success', "Password reset successfully for {$staff->name}.");
+        if ($request->boolean('notify')) {
+            try {
+                Mail::to($staff->email)->send(
+                    new StaffCredentialsEmail(
+                        $staff->name,
+                        $staff->email,
+                        $validated['new_password']
+                    )
+                );
+            } catch (\Exception $e) {
+                // Mail may fail
+            }
+
+            return back()->with('success', "Password updated and emailed to {$staff->email}.");
+        }
+
+        return back()->with('success', "Password updated for {$staff->name}. No email sent.");
     }
 
     public function generatePassword(Request $request, Staff $staff)
     {
+        if (!$staff->is_outsourced) {
+            return back()->with('error', 'Generate & email temporary password is only for outsourced staff. Use the new password form instead.');
+        }
+
         $tempPassword = self::generateTempPassword();
 
         $staff->update(['password' => $tempPassword]);

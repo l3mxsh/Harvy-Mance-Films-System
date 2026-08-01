@@ -25,7 +25,7 @@
                     <i class="bi bi-eye"></i>
                 </button>
                 <button class="btn btn-sm btn-outline-secondary rounded-3" title="Edit Staff"
-                    onclick="openEditModal('{{ $member->id }}', '{{ addslashes($member->name) }}', '{{ $member->email }}', '{{ $member->contact_number }}', '{{ $member->status }}')">
+                    onclick="openEditModal('{{ $member->id }}', '{{ addslashes($member->name) }}', '{{ $member->email }}', '{{ $member->contact_number }}', '{{ $member->status }}', {{ $member->is_outsourced ? 1 : 0 }})">
                     <i class="bi bi-pencil"></i>
                 </button>
                 <button class="btn btn-sm btn-outline-danger rounded-3" title="Delete Staff"

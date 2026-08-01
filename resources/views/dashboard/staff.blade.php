@@ -399,6 +399,18 @@
                 </div>
             </div>
         @endif
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                <div class="toast align-items-center text-bg-danger border-0" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="bi bi-exclamation-triangle me-2"></i>{{ $error }}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            @endforeach
+        @endif
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
