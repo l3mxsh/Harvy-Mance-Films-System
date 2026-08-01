@@ -29,12 +29,10 @@ Route::middleware('auth:customer')->name('customer.')->group(function () {
     Route::get('/dashboard', [CustomerAccountController::class, 'dashboard'])->name('dashboard');
     Route::get('/change-password', [CustomerAccountController::class, 'showChangePassword'])->name('change-password');
     Route::post('/change-password', [CustomerAccountController::class, 'changePassword'])->name('change-password.post');
-    Route::get('/downpayment', [DownpaymentController::class, 'showForm'])->name('downpayment');
     Route::post('/reschedule', [RescheduleController::class, 'store'])->name('reschedule.store');
     Route::post('/cancel', [CancellationController::class, 'store'])->name('cancellation.store');
     Route::post('/downpayment', [DownpaymentController::class, 'submit'])->name('downpayment.submit');
     Route::post('/downpayment/{downpayment}/resubmit', [DownpaymentController::class, 'resubmit'])->name('downpayment.resubmit');
-    Route::get('/final-payment', [DownpaymentController::class, 'showFinalPaymentForm'])->name('final-payment');
     Route::post('/final-payment', [DownpaymentController::class, 'submitFinalPayment'])->name('final-payment.submit');
     Route::post('/final-payment/{downpayment}/resubmit', [DownpaymentController::class, 'resubmitFinalPayment'])->name('final-payment.resubmit');
 });

@@ -9,17 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DownpaymentController extends Controller
 {
-    public function showForm()
-    {
-        $account = auth('customer')->user();
-        $booking = Booking::with(['package', 'addons', 'downpayments'])
-            ->findOrFail($account->booking_id);
-
-        $latestDownpayment = $booking->latestDownpayment;
-
-        return view('customer.downpayment', compact('account', 'booking', 'latestDownpayment'));
-    }
-
     public function submit(Request $request)
     {
         $account = auth('customer')->user();
@@ -80,18 +69,6 @@ class DownpaymentController extends Controller
 
         return redirect()->route('customer.dashboard')
             ->with('success', 'Payment proof resubmitted successfully! Awaiting admin verification.');
-    }
-
-    public function showFinalPaymentForm()
-    {
-        $account = auth('customer')->user();
-        $booking = Booking::with(['package', 'addons', 'downpayments'])
-            ->findOrFail($account->booking_id);
-
-        $remainingBalance = $booking->total_price - $booking->downpayments()->where('status', 'verified')->sum('amount');
-        $latestFinalPayment = $booking->downpayments()->where('payment_type', 'final')->latest()->first();
-
-        return view('customer.final-payment', compact('account', 'booking', 'remainingBalance', 'latestFinalPayment'));
     }
 
     public function submitFinalPayment(Request $request)

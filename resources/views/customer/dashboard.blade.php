@@ -32,7 +32,7 @@
             @php
                 $bannerTitle = $daysUntilDeletion <= 3 ? 'Final Warning' : ($daysUntilDeletion <= 7 ? 'Access Ending Soon' : 'Download Window');
             @endphp
-            <div class="download-window-banner my-2">
+            <div class="download-window-banner mb-4">
                 <div class="fw-semibold">{{ $bannerTitle }}</div>
                 <div class="small">
                     You have access to your deliverables until <strong>{{ $deleteAt->format('M d, Y') }}</strong> ({{ $daysUntilDeletion }} day(s) left). After this date, your account will be archived and you can no longer log in.
