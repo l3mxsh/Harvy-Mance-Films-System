@@ -1096,3 +1096,16 @@ body {
     background: #fff3cd;
     color: #856404;
 }
+
+/* ---------------- Consistent status badges ---------------- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    line-height: 1.5;
+    padding: 0.4em 0.75em;
+    white-space: nowrap;
+    vertical-align: middle;
+    letter-spacing: 0.01em;
+}

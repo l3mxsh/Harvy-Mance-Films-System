@@ -34,20 +34,18 @@
                     </a>
                 </div>
                 <div class="d-flex gap-2 align-items-center flex-wrap">
-                    @php
-                        $statusMap = [
-                            'in_progress' => ['bg-warning text-dark', 'bi-arrow-repeat', 'In Progress'],
-                            'ready' => ['bg-success', 'bi-check2-all', 'Ready for Delivery'],
-                            'delivered' => ['bg-dark', 'bi-box-seam', 'Delivered'],
-                        ];
-                        [$cls, $icon, $label] = $statusMap[$postProduction->status] ?? ['bg-secondary', 'bi-circle', ucfirst($postProduction->status)];
-                    @endphp
-                    <span class="badge {{ $cls }} px-3 py-2" style="font-size: 0.9rem;">
-                        <i class="bi {{ $icon }} me-1"></i>{{ $label }}
-                    </span>
+                    @include('partials.status-badge', [
+                        'status' => $postProduction->status,
+                        'label' => match ($postProduction->status) {
+                            'in_progress' => 'In Progress',
+                            'ready' => 'Ready for Delivery',
+                            'delivered' => 'Delivered',
+                            default => null,
+                        },
+                    ])
                     @if($allApproved && !$isFullyPaid && $postProduction->status !== 'delivered')
                         <span class="badge bg-warning text-dark px-3 py-2" style="font-size: 0.85rem;">
-                            <i class="bi bi-cash-stack me-1"></i>Waiting for Final Payment
+                            Waiting for Final Payment
                             (₱{{ number_format($remainingBalance, 2) }} remaining)
                         </span>
                     @endif
@@ -76,12 +74,6 @@
                                     <span
                                         class="badge bg-light text-dark border">{{ str_replace('_', ' ', ucfirst($task->task_type)) }}</span>
                                     @php
-                                        $taskStatusMap = [
-                                            'not_started' => ['secondary', 'Not Started'],
-                                            'in_progress' => ['warning', 'In Progress'],
-                                            'completed' => ['success', 'Completed'],
-                                        ];
-                                        [$tCls, $tLabel] = $taskStatusMap[$task->status] ?? ['secondary', ucfirst($task->status)];
                                         $hasTaskDetails = $task->instructions
                                             || $task->revision_notes
                                             || $task->deliverable_link
@@ -91,14 +83,13 @@
                                             || (!$task->staff_id && $task->admin_review_status !== 'approved')
                                             || ($task->status === 'completed' && $task->admin_review_status === 'pending');
                                     @endphp
-                                    <span class="badge bg-{{ $tCls }}">{{ $tLabel }}</span>
+                                    @include('partials.status-badge', ['status' => $task->status, 'label' => str_replace('_', ' ', ucfirst($task->status))])
                                     @if($task->admin_review_status === 'approved')
-                                        <span class="badge bg-success"><i class="bi bi-check-lg me-1"></i>Approved</span>
+                                        @include('partials.status-badge', ['status' => 'approved'])
                                     @elseif($task->admin_review_status === 'revision_requested')
-                                        <span class="badge bg-danger"><i class="bi bi-arrow-return-left me-1"></i>Revision
-                                            Requested</span>
+                                        @include('partials.status-badge', ['status' => 'revision_requested'])
                                     @elseif($task->status === 'completed' && $task->admin_review_status === 'pending')
-                                        <span class="badge bg-info"><i class="bi bi-hourglass me-1"></i>Awaiting Review</span>
+                                        @include('partials.status-badge', ['status' => 'awaiting_review', 'label' => 'Awaiting Review'])
                                     @endif
                                 </div>
                                 <div class="small text-muted">
@@ -340,10 +331,9 @@
                         <span class="detail-label">Final Payment</span>
                         <span class="detail-value">
                             @if($isFullyPaid)
-                                <span class="badge bg-success px-3 py-2"><i class="bi bi-check-circle me-1"></i>Fully
-                                    Paid</span>
+                                @include('partials.status-badge', ['status' => 'fully_paid', 'label' => 'Fully Paid'])
                             @else
-                                <span class="badge bg-danger px-3 py-2"><i class="bi bi-x-circle me-1"></i>Unpaid</span>
+                                @include('partials.status-badge', ['status' => 'unpaid'])
                             @endif
                         </span>
                     </div>

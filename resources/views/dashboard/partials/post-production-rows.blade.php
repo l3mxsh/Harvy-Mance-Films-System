@@ -24,15 +24,15 @@
             <small class="text-muted">{{ $completedTasks }}/{{ $totalTasks }}</small>
         </td>
         <td>
-            @php
-                $statusMap = [
-                    'in_progress' => ['bg-warning text-dark', 'bi-arrow-repeat', 'In Progress'],
-                    'ready' => ['bg-success', 'bi-check2-all', 'Ready for Delivery'],
-                    'delivered' => ['bg-dark', 'bi-box-seam', 'Delivered'],
-                ];
-                [$cls, $icon, $label] = $statusMap[$pp->status] ?? ['bg-secondary', 'bi-circle', ucfirst($pp->status)];
-            @endphp
-            <span class="badge {{ $cls }}"><i class="bi {{ $icon }} me-1"></i>{{ $label }}</span>
+            @include('partials.status-badge', [
+                'status' => $pp->status,
+                'label' => match ($pp->status) {
+                    'in_progress' => 'In Progress',
+                    'ready' => 'Ready for Delivery',
+                    'delivered' => 'Delivered',
+                    default => null,
+                },
+            ])
         </td>
         <td>{{ $pp->expected_completion_date ? $pp->expected_completion_date->format('M d, Y') : '—' }}</td>
         <td class="text-center">

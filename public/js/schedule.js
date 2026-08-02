@@ -11,10 +11,10 @@
     const STAFF = DATA.staff || [];
 
     const STATUS_META = {
-        assigned: { label: 'Pending', color: '#f59e0b', badge: 'bg-warning text-dark', icon: 'bi-hourglass-split' },
-        confirmed: { label: 'Confirmed', color: '#198754', badge: 'bg-success', icon: 'bi-check-circle' },
-        completed: { label: 'Completed', color: '#6c757d', badge: 'bg-secondary', icon: 'bi-check2-circle' },
-        cancelled: { label: 'Cancelled', color: '#dc3545', badge: 'bg-danger', icon: 'bi-x-circle' },
+        assigned: { label: 'Pending', color: '#f59e0b', badge: 'bg-warning text-dark' },
+        confirmed: { label: 'Confirmed', color: '#0d6efd', badge: 'bg-primary' },
+        completed: { label: 'Completed', color: '#198754', badge: 'bg-success' },
+        cancelled: { label: 'Cancelled', color: '#dc3545', badge: 'bg-danger' },
     };
 
     const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -96,7 +96,7 @@
             <div class="sched-staff"><i class="bi bi-person"></i>${esc(names)}</div>
             <div class="sched-venue"><i class="bi bi-geo-alt"></i>${esc(ev.venue)}</div>
           </div>
-          <span class="badge ${st.badge} sched-status"><i class="bi ${st.icon} me-1"></i>${st.label}</span>
+          <span class="badge ${st.badge} sched-status">${st.label}</span>
         </div>`;
     }
 
@@ -185,7 +185,7 @@
         </div>`;
 
         document.getElementById('evStatusBadge').className = `badge ${st.badge || ''}`;
-        document.getElementById('evStatusBadge').innerHTML = `<i class="bi ${st.icon || 'bi-circle'} me-1"></i>${st.label}`;
+        document.getElementById('evStatusBadge').innerHTML = st.label;
         document.getElementById('evTitle').textContent = ev.package_name;
         document.getElementById('evMeta').innerHTML = `
         <div class="row g-2">

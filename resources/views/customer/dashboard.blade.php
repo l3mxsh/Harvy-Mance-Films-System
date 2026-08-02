@@ -285,11 +285,11 @@
                                     <div class="small text-muted mb-1">Status</div>
                                     <div>
                                         @if($postProduction->status === 'delivered')
-                                            <span class="badge bg-success rounded-pill"><i class="bi bi-check-circle me-1"></i>Delivered</span>
+                                            <span class="badge bg-success rounded-pill">Delivered</span>
                                         @elseif($postProduction->status === 'ready')
-                                            <span class="badge bg-info rounded-pill"><i class="bi bi-hourglass me-1"></i>Ready</span>
+                                            <span class="badge bg-info rounded-pill">Ready</span>
                                         @else
-                                            <span class="badge bg-warning text-dark rounded-pill"><i class="bi bi-arrow-repeat me-1"></i>In Progress</span>
+                                            <span class="badge bg-warning text-dark rounded-pill">In Progress</span>
                                         @endif
                                     </div>
                                 </div>
@@ -308,9 +308,9 @@
                                     <div class="small text-muted mb-1">File Access</div>
                                     <div>
                                         @if($deliverablesReady && $hasFinalPayment)
-                                            <span class="badge bg-success rounded-pill"><i class="bi bi-unlock me-1"></i>Unlocked</span>
+                                            <span class="badge bg-success rounded-pill">Unlocked</span>
                                         @else
-                                            <span class="badge bg-secondary rounded-pill"><i class="bi bi-lock me-1"></i>Locked</span>
+                                            <span class="badge bg-secondary rounded-pill">Locked</span>
                                         @endif
                                     </div>
                                 </div>
@@ -320,9 +320,9 @@
                                     <div class="small text-muted mb-1">Payment</div>
                                     <div>
                                         @if($hasFinalPayment)
-                                            <span class="badge bg-success rounded-pill"><i class="bi bi-check-circle me-1"></i>Fully Paid</span>
+                                            <span class="badge bg-success rounded-pill">Fully Paid</span>
                                         @else
-                                            <span class="badge bg-danger rounded-pill"><i class="bi bi-x-circle me-1"></i>Balance Due</span>
+                                            <span class="badge bg-danger rounded-pill">Balance Due</span>
                                         @endif
                                     </div>
                                 </div>
@@ -405,11 +405,11 @@
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <small class="text-muted">Downpayment</small>
                             @if($latestDownpayment->status === 'pending')
-                                <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i>Pending Verification</span>
+                                <span class="badge bg-warning text-dark">Pending Verification</span>
                             @elseif($latestDownpayment->status === 'verified')
-                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Verified</span>
+                                <span class="badge bg-success">Verified</span>
                             @elseif($latestDownpayment->status === 'rejected')
-                                <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Rejected</span>
+                                <span class="badge bg-danger">Rejected</span>
                             @endif
                         </div>
                         @if($latestDownpayment->submitted_at)
@@ -433,7 +433,7 @@
                     @elseif($booking->status === 'approved')
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <small class="text-muted">Downpayment</small>
-                            <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i>Awaiting</span>
+                            <span class="badge bg-warning text-dark">Awaiting</span>
                         </div>
                         <button type="button" class="btn btn-primary-dark w-100 rounded-pill mb-3 btn-action" data-bs-toggle="modal" data-bs-target="#downpaymentModal">
                             <i class="bi bi-credit-card me-1"></i>Submit Downpayment
@@ -459,13 +459,13 @@
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <small class="text-muted">Status</small>
                                 @if($booking->final_payment_status === 'paid')
-                                    <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Paid</span>
+                                    <span class="badge bg-success">Paid</span>
                                 @elseif($latestFinalPayment && $latestFinalPayment->status === 'pending')
-                                    <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i>Pending Verification</span>
+                                    <span class="badge bg-warning text-dark">Pending Verification</span>
                                 @elseif($latestFinalPayment && $latestFinalPayment->status === 'rejected')
-                                    <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Rejected</span>
+                                    <span class="badge bg-danger">Rejected</span>
                                 @else
-                                    <span class="badge bg-secondary"><i class="bi bi-clock me-1"></i>Not Yet Submitted</span>
+                                    <span class="badge bg-secondary">Not Yet Submitted</span>
                                 @endif
                             </div>
                             @if($booking->final_payment_status !== 'paid')

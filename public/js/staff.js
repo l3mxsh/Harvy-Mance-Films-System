@@ -5,7 +5,7 @@ function openViewModal(id, name, email, contact, status, joined, lastLogin) {
     document.getElementById('viewContact').textContent = contact || '—';
     document.getElementById('viewStatus').innerHTML = status === 'active'
         ? '<span class="badge bg-success">Active</span>'
-        : '<span class="badge bg-danger">Inactive</span>';
+        : '<span class="badge bg-secondary">Inactive</span>';
     document.getElementById('viewJoined').textContent = joined;
     document.getElementById('viewLastLogin').textContent = lastLogin;
     new bootstrap.Modal(document.getElementById('viewModal')).show();

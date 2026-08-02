@@ -60,22 +60,22 @@
                         <div class="col-md-6 text-md-end mt-3 mt-md-0">
                             @switch($booking->status)
                                 @case('pending')
-                                    <span class="badge bg-warning text-dark fs-6"><i class="bi bi-clock me-1"></i>Pending Approval</span>
+                                    <span class="badge bg-warning text-dark fs-6">Pending Approval</span>
                                     @break
                                 @case('approved')
-                                    <span class="badge bg-info fs-6"><i class="bi bi-check-circle me-1"></i>Awaiting Payment</span>
+                                    <span class="badge bg-info fs-6">Awaiting Payment</span>
                                     @break
                                 @case('ongoing')
-                                    <span class="badge bg-primary fs-6"><i class="bi bi-camera-video me-1"></i>Confirmed</span>
+                                    <span class="badge bg-primary fs-6">Confirmed</span>
                                     @break
                                 @case('completed')
-                                    <span class="badge bg-success fs-6"><i class="bi bi-check-all me-1"></i>Completed</span>
+                                    <span class="badge bg-success fs-6">Completed</span>
                                     @break
                                 @case('rejected')
-                                    <span class="badge bg-danger fs-6"><i class="bi bi-x-circle me-1"></i>Rejected</span>
+                                    <span class="badge bg-danger fs-6">Rejected</span>
                                     @break
                                 @case('cancelled')
-                                    <span class="badge bg-danger fs-6"><i class="bi bi-x-circle me-1"></i>Cancelled</span>
+                                    <span class="badge bg-danger fs-6">Cancelled</span>
                                     @break
                             @endswitch
                         </div>

@@ -103,26 +103,10 @@
                                                                 </td>
                                                                 <td>{{ $downpayment->submitted_at ? $downpayment->submitted_at->format('M d, Y g:i A') : '—' }}</td>
                                                                 <td>
-                                                                    @php
-                                $badgeClass = match ($downpayment->status) {
-                                    'pending' => 'bg-warning text-dark',
-                                    'verified' => 'bg-success',
-                                    'rejected' => 'bg-danger',
-                                    default => 'bg-secondary',
-                                };
-                                $badgeIcon = match ($downpayment->status) {
-                                    'pending' => 'bi-hourglass-split',
-                                    'verified' => 'bi-check-circle',
-                                    'rejected' => 'bi-x-circle',
-                                    default => 'bi-circle',
-                                };
-                                                                    @endphp
-                                                                    <span class="badge {{ $badgeClass }}"><i
-                                                                            class="bi {{ $badgeIcon }} me-1"></i>{{ ucfirst($downpayment->status) }}</span>
+                                                                    @include('partials.status-badge', ['status' => $downpayment->status])
                                                                     @if($downpayment->status === 'verified')
                                                                         <div class="mt-1">
-                                                                            <span class="badge bg-success"><i
-                                                                                    class="bi bi-check2-all me-1"></i>Payment Received</span>
+                                                                            <span class="badge bg-success">Payment Received</span>
                                                                         </div>
                                                                     @endif
                                                                 </td>

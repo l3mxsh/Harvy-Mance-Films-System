@@ -51,20 +51,11 @@
             <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
         </a>
 
-        @php
-            $taskStatusMap = [
-                'not_started' => ['secondary', 'Not Started'],
-                'in_progress' => ['warning', 'In Progress'],
-                'completed' => ['success', 'Completed'],
-            ];
-            [$tCls, $tLabel] = $taskStatusMap[$task->status] ?? ['secondary', ucfirst($task->status)];
-        @endphp
-
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4 mt-2">
             <div>
                 <h1 class="section-title fs-3 mb-1">Task Details</h1>
             </div>
-            <span class="badge bg-{{ $tCls }} rounded-pill px-3 py-2">{{ $tLabel }}</span>
+            @include('partials.status-badge', ['status' => $task->status])
         </div>
 
         <div class="row g-4">
@@ -132,11 +123,11 @@
                                 <span class="detail-label">Review Status</span>
                                 <span class="detail-value">
                                     @if($task->admin_review_status === 'approved')
-                                        <span class="badge bg-success rounded-pill">Approved</span>
+                                        @include('partials.status-badge', ['status' => 'approved'])
                                     @elseif($task->admin_review_status === 'revision_requested')
-                                        <span class="badge bg-danger rounded-pill">Revision Requested</span>
+                                        @include('partials.status-badge', ['status' => 'revision_requested'])
                                     @else
-                                        <span class="badge bg-secondary rounded-pill">Pending</span>
+                                        @include('partials.status-badge', ['status' => 'awaiting_review', 'label' => 'Pending Review'])
                                     @endif
                                 </span>
                             </div>

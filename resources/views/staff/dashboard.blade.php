@@ -47,7 +47,7 @@
             </div>
             @if($staff->is_temporary)
                 <span class="badge bg-warning text-dark rounded-pill">
-                    <i class="bi bi-clock me-1"></i>Temporary Access
+                    Temporary Access
                 </span>
             @endif
         </div>
@@ -139,15 +139,7 @@
                                 <td>{{ $task->postProduction->booking->event_date ? $task->postProduction->booking->event_date->format('M d, Y') : 'N/A' }}</td>
                                 <td><span class="badge bg-dark rounded-pill">{{ str_replace('_', ' ', ucfirst($task->task_type)) }}</span></td>
                                 <td>
-                                    @php
-                                        $taskStatusMap = [
-                                            'not_started' => ['secondary', 'Not Started'],
-                                            'in_progress' => ['warning', 'In Progress'],
-                                            'completed' => ['success', 'Completed'],
-                                        ];
-                                        [$tCls, $tLabel] = $taskStatusMap[$task->status] ?? ['secondary', ucfirst($task->status)];
-                                    @endphp
-                                    <span class="badge bg-{{ $tCls }} rounded-pill">{{ $tLabel }}</span>
+                                    @include('partials.status-badge', ['status' => $task->status])
                                 </td>
                                 <td>{{ $task->postProduction->expected_completion_date ? $task->postProduction->expected_completion_date->format('M d, Y') : '—' }}</td>
                                 <td class="text-center">

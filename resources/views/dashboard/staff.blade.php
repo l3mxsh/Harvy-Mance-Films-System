@@ -285,11 +285,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($team->status === 'active')
-                                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Active</span>
-                                            @else
-                                                <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Inactive</span>
-                                            @endif
+                                            @include('partials.status-badge', ['status' => $team->status])
                                         </td>
                                         <td>{{ $team->created_at->format('M d, Y') }}</td>
                                         <td class="text-center">

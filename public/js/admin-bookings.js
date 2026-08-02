@@ -186,7 +186,7 @@ function refreshApprovedRow(bookingId, teamName) {
 
     var payment = document.getElementById('payment-cell-' + bookingId);
     if (payment) {
-        payment.innerHTML = '<span class="badge bg-info text-white"><i class="bi bi-clock me-1"></i>Awaiting</span>';
+        payment.innerHTML = '<span class="badge bg-info">Awaiting</span>';
     }
 
     var actions = document.getElementById('actions-cell-' + bookingId);
@@ -251,7 +251,7 @@ var viewStatusBadges = {
     pending: 'bg-warning text-dark',
     approved: 'bg-success',
     ongoing: 'bg-primary',
-    completed: 'bg-secondary',
+    completed: 'bg-success',
     rejected: 'bg-danger',
     cancelled: 'bg-danger'
 };
@@ -259,7 +259,11 @@ var viewStatusBadges = {
 var viewPaymentBadges = {
     pending: 'bg-warning text-dark',
     verified: 'bg-success',
-    rejected: 'bg-danger'
+    rejected: 'bg-danger',
+    paid: 'bg-success',
+    fully_paid: 'bg-success',
+    unpaid: 'bg-danger',
+    balance_due: 'bg-danger'
 };
 
 function openViewModal(data) {

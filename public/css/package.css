@@ -1,42 +1,13 @@
-.service-row .form-control:focus {
-    border-color: #000;
-    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.15);
-}
+/* ============================================================
+   HarvyMance Films — Manage Packages
+   Follows the shared white-first design system (booking.css)
+   ============================================================ */
 
-.table th {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.table td {
-    vertical-align: middle;
-}
-
-.badge.bg-light {
-    font-weight: 500;
-}
-
-.modal-header {
-    border-bottom: none;
-}
-
-.modal-footer {
-    border-top: 1px solid #eee;
-}
-
-.nav-tabs .nav-link {
-    font-weight: 500;
-}
-
-.nav-tabs .nav-link.active {
-    font-weight: 600;
-}
-
+.service-row .form-control:focus,
 #pkgInventorySearch:focus,
 #addonInventorySearch:focus {
-    border-color: #000;
-    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.15);
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.06);
 }
 
 .text-purple {

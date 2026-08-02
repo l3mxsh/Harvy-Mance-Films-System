@@ -203,36 +203,10 @@
                                         </td>
                                         <td>{{ $item->unit }}</td>
                                         <td class="text-center">
-                                            @switch($item->condition_status)
-                                                @case('new')
-                                                    <span class="badge bg-success">New</span>
-                                                    @break
-                                                @case('good')
-                                                    <span class="badge bg-info">Good</span>
-                                                    @break
-                                                @case('maintenance')
-                                                    <span class="badge bg-warning text-dark">Maintenance</span>
-                                                    @break
-                                                @case('damaged')
-                                                    <span class="badge bg-danger">Damaged</span>
-                                                    @break
-                                            @endswitch
+                                            @include('partials.status-badge', ['status' => $item->condition_status])
                                         </td>
                                         <td class="text-center">
-                                            @switch($item->availability_status)
-                                                @case('available')
-                                                    <span class="badge bg-success">Available</span>
-                                                    @break
-                                                @case('in_use')
-                                                    <span class="badge bg-info">In Use</span>
-                                                    @break
-                                                @case('reserved')
-                                                    <span class="badge bg-warning text-dark">Reserved</span>
-                                                    @break
-                                                @case('unavailable')
-                                                    <span class="badge bg-secondary">Unavailable</span>
-                                                    @break
-                                            @endswitch
+                                            @include('partials.status-badge', ['status' => $item->availability_status])
                                         </td>
                                         <td class="text-center">
                                             <div class="btn-group btn-group-sm">

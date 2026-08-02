@@ -85,20 +85,11 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($rr->status === 'pending')
-                                                <span class="badge bg-warning text-dark"><i
-                                                        class="bi bi-hourglass-split me-1"></i>Pending</span>
-                                            @elseif($rr->status === 'approved')
-                                                <span class="badge bg-success"><i
-                                                        class="bi bi-check-circle me-1"></i>Approved</span>
-                                                @if($rr->newTeam)
-                                                    <div><small class="text-muted">Team: {{ $rr->newTeam->name }}</small></div>
-                                                @endif
-                                            @elseif($rr->status === 'rejected')
-                                                <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Rejected</span>
-                                                @if($rr->rejection_reason)
-                                                    <div><small class="text-muted">{{ $rr->rejection_reason }}</small></div>
-                                                @endif
+                                            @include('partials.status-badge', ['status' => $rr->status])
+                                            @if($rr->status === 'approved' && $rr->newTeam)
+                                                <div><small class="text-muted">Team: {{ $rr->newTeam->name }}</small></div>
+                                            @elseif($rr->status === 'rejected' && $rr->rejection_reason)
+                                                <div><small class="text-muted">{{ $rr->rejection_reason }}</small></div>
                                             @endif
                                         </td>
                                         <td class="text-center">
@@ -167,33 +158,14 @@
                                         <td>{{ \Carbon\Carbon::parse($booking->event_date)->format('M d, Y') }}</td>
                                         <td>&#8369;{{ number_format($booking->total_price, 2) }}</td>
                                         <td>
-                                            @php
-        $badgeClass = match ($booking->status) {
-            'pending' => 'bg-warning text-dark',
-            'approved' => 'bg-success',
-            'ongoing' => 'bg-primary',
-            'completed' => 'bg-secondary',
-            'rejected' => 'bg-danger',
-            default => 'bg-secondary',
-        };
-                                            @endphp
-                                            <span class="badge {{ $badgeClass }}" id="status-badge-{{ $booking->id }}">{{ ucfirst($booking->status) }}</span>
+                                            @include('partials.status-badge', ['status' => $booking->status, 'id' => 'status-badge-'.$booking->id])
                                         </td>
                                         <td id="payment-cell-{{ $booking->id }}">
                                             @php $dp = $booking->latestDownpayment; @endphp
                                             @if($dp)
-                                                @if($dp->status === 'pending')
-                                                    <span class="badge bg-warning text-dark"><i
-                                                            class="bi bi-hourglass-split me-1"></i>Submitted</span>
-                                                @elseif($dp->status === 'verified')
-                                                    <span class="badge bg-success"><i
-                                                            class="bi bi-check-circle me-1"></i>Verified</span>
-                                                @elseif($dp->status === 'rejected')
-                                                    <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Rejected</span>
-                                                @endif
+                                                @include('partials.status-badge', ['status' => $dp->status === 'pending' ? 'submitted' : $dp->status, 'label' => $dp->status === 'pending' ? 'Submitted' : null])
                                             @elseif($booking->status === 'approved')
-                                                <span class="badge bg-info text-white"><i
-                                                        class="bi bi-clock me-1"></i>Awaiting</span>
+                                                @include('partials.status-badge', ['status' => 'awaiting', 'label' => 'Awaiting'])
                                             @else
                                                 <span class="text-muted fst-italic">—</span>
                                             @endif

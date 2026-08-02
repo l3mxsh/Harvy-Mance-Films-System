@@ -133,11 +133,9 @@
                                     <div>
                                         <div class="fw-semibold small">{{ $s->name }}</div>
                                         @if($assignedCount > 0)
-                                            <span class="badge bg-warning text-dark" style="font-size:0.7rem;">
-                                                {{ $assignedCount }} assigned
-                                            </span>
+                                            @include('partials.status-badge', ['status' => 'assigned', 'label' => $assignedCount.' assigned'])
                                         @else
-                                            <span class="badge bg-success" style="font-size:0.7rem;">Available</span>
+                                            @include('partials.status-badge', ['status' => 'available', 'label' => 'Available'])
                                         @endif
                                     </div>
                                 </div>

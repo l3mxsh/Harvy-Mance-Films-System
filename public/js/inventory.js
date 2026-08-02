@@ -29,12 +29,12 @@ async function viewItem(id) {
         : '<span class="badge bg-purple bg-opacity-10 text-purple">Material</span>';
 
     const conditionLabels = { new: 'New', good: 'Good', maintenance: 'Maintenance', damaged: 'Damaged' };
-    const conditionColors = { new: 'success', good: 'info', maintenance: 'warning', damaged: 'danger' };
+    const conditionColors = { new: 'success', good: 'info', maintenance: 'warning text-dark', damaged: 'danger' };
     const condEl = document.getElementById('viewCondition');
     condEl.innerHTML = `<span class="badge bg-${conditionColors[item.condition_status]}">${conditionLabels[item.condition_status]}</span>`;
 
     const availLabels = { available: 'Available', in_use: 'In Use', reserved: 'Reserved', unavailable: 'Unavailable' };
-    const availColors = { available: 'success', in_use: 'info', reserved: 'warning', unavailable: 'secondary' };
+    const availColors = { available: 'success', in_use: 'info', reserved: 'warning text-dark', unavailable: 'secondary' };
     const availEl = document.getElementById('viewAvailability');
     availEl.innerHTML = `<span class="badge bg-${availColors[item.availability_status]}">${availLabels[item.availability_status]}</span>`;
 

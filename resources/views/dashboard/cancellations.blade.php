@@ -81,17 +81,9 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($c->status === 'pending')
-                                                <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i>Pending</span>
-                                            @elseif($c->status === 'refunded')
-                                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Refunded</span>
-                                                @if($c->refund_reference)
-                                                    <div><small class="text-muted">Ref: {{ $c->refund_reference }}</small></div>
-                                                @endif
-                                            @elseif($c->status === 'rejected')
-                                                <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Rejected</span>
-                                            @elseif($c->status === 'approved')
-                                                <span class="badge bg-info"><i class="bi bi-check me-1"></i>Approved</span>
+                                            @include('partials.status-badge', ['status' => $c->status])
+                                            @if($c->status === 'refunded' && $c->refund_reference)
+                                                <div><small class="text-muted">Ref: {{ $c->refund_reference }}</small></div>
                                             @endif
                                         </td>
                                         <td>{{ $c->created_at->format('M d, Y g:i A') }}</td>

@@ -17,7 +17,7 @@ var viewStatusBadges = {
     pending: 'bg-warning text-dark',
     approved: 'bg-success',
     ongoing: 'bg-primary',
-    completed: 'bg-secondary',
+    completed: 'bg-success',
     rejected: 'bg-danger',
     cancelled: 'bg-danger'
 };
@@ -25,7 +25,11 @@ var viewStatusBadges = {
 var viewPaymentBadges = {
     pending: 'bg-warning text-dark',
     verified: 'bg-success',
-    rejected: 'bg-danger'
+    rejected: 'bg-danger',
+    paid: 'bg-success',
+    fully_paid: 'bg-success',
+    unpaid: 'bg-danger',
+    balance_due: 'bg-danger'
 };
 
 function openViewModal(data) {
