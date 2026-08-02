@@ -86,14 +86,41 @@ class CancellationController extends Controller
     }
 
     /** Admin: list all cancellation requests */
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        $cancellations = CancellationRequest::with(['booking.downpayments'])
+        $query = CancellationRequest::with(['booking.downpayments']);
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('search')) {
+            $search = trim($request->search);
+            $query->whereHas('booking', function ($q) use ($search) {
+                $q->where('booking_ref', 'like', "%{$search}%")
+                    ->orWhere('client_name', 'like', "%{$search}%")
+                    ->orWhere('client_email', 'like', "%{$search}%");
+            });
+        }
+
+        $cancellations = $query
             ->orderByRaw("CASE WHEN status = 'pending' THEN 0 ELSE 1 END")
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
-        return view('dashboard.cancellations', compact('cancellations'));
+        $summaryTotal    = CancellationRequest::count();
+        $summaryPending  = CancellationRequest::where('status', 'pending')->count();
+        $summaryRefunded = CancellationRequest::where('status', 'refunded')->count();
+        $summaryRejected = CancellationRequest::where('status', 'rejected')->count();
+
+        return view('dashboard.cancellations', compact(
+            'cancellations',
+            'summaryTotal',
+            'summaryPending',
+            'summaryRefunded',
+            'summaryRejected'
+        ));
     }
 
     /** Admin: approve refund and mark as refunded */
