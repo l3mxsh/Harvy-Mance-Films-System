@@ -12,52 +12,68 @@ class StaffScheduleController extends Controller
 {
     public function index(Request $request)
     {
-        $query = StaffSchedule::with(['staff', 'booking.package']);
-
-        if ($request->filled('staff_id')) {
-            $query->where('staff_id', $request->staff_id);
-        }
-
-        if ($request->filled('month')) {
-            $month = Carbon::parse($request->month);
-            $query->whereMonth('event_date', $month->month)
-                  ->whereYear('event_date', $month->year);
-        } else {
-            $query->where('event_date', '>=', now()->startOfMonth())
-                  ->where('event_date', '<=', now()->endOfMonth());
-        }
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $schedules = $query->orderBy('event_date')->orderBy('event_time')->paginate(20)->withQueryString();
-        $allStaff = Staff::where('status', 'active')->orderBy('name')->get();
-
-        return view('dashboard.schedules', compact('schedules', 'allStaff'));
-    }
-
-    public function calendar(Request $request)
-    {
-        $month = $request->filled('month') ? Carbon::parse($request->month) : Carbon::now();
-        $startOfMonth = $month->copy()->startOfMonth();
-        $endOfMonth = $month->copy()->endOfMonth();
-
         $schedules = StaffSchedule::with(['staff', 'booking.package'])
-            ->whereBetween('event_date', [$startOfMonth, $endOfMonth])
             ->orderBy('event_date')
             ->orderBy('event_time')
             ->get();
 
-        $calendarData = [];
-        foreach ($schedules as $schedule) {
-            $day = $schedule->event_date->format('Y-m-d');
-            $calendarData[$day][] = $schedule;
+        $events = $schedules->map(function ($schedule) {
+            $booking = $schedule->booking;
+
+            return [
+                'id'           => $schedule->id,
+                'staff_id'     => $schedule->staff_id,
+                'staff_name'   => $schedule->staff->name ?? '—',
+                'booking_id'   => $schedule->booking_id,
+                'booking_ref'  => $booking->booking_ref ?? '—',
+                'package_name' => $booking->package->name ?? '—',
+                'event_type'   => $booking->event_type ?? '—',
+                'client_name'  => $booking->client_name ?? '—',
+                'client_email' => $booking->client_email ?? '—',
+                'client_phone' => $booking->client_phone ?? '—',
+                'date'         => $schedule->event_date->format('Y-m-d'),
+                'time'         => $schedule->event_time ? date('H:i', strtotime($schedule->event_time)) : '09:00',
+                'time_display' => $schedule->event_time ? date('g:i A', strtotime($schedule->event_time)) : '—',
+                'venue'        => $booking->event_venue ?? '—',
+                'address'      => $booking->event_address ?? '—',
+                'status'       => $schedule->status,
+            ];
+        })->values()->toArray();
+
+        $allStaff = Staff::where('status', 'active')->orderBy('name')->get()
+            ->map(fn ($s) => ['id' => $s->id, 'name' => $s->name])
+            ->values()
+            ->toArray();
+
+        $eventTypes = Booking::whereNotNull('event_type')
+            ->pluck('event_type')
+            ->map(fn ($t) => ucfirst(trim($t)))
+            ->unique()
+            ->sort()
+            ->values();
+
+        return view('dashboard.schedules', compact('events', 'allStaff', 'eventTypes'));
+    }
+
+    public function update(Request $request, StaffSchedule $schedule)
+    {
+        $validated = $request->validate([
+            'event_date' => 'required|date',
+            'event_time' => 'required|string',
+        ]);
+
+        $schedule->update($validated);
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Schedule updated.']);
         }
 
-        $allStaff = Staff::where('status', 'active')->orderBy('name')->get();
+        return back()->with('success', 'Schedule updated successfully.');
+    }
 
-        return view('dashboard.calendar', compact('calendarData', 'month', 'startOfMonth', 'endOfMonth', 'allStaff'));
+    public function calendar(Request $request)
+    {
+        return redirect()->route('staff-schedule.index');
     }
 
     public function checkAvailability(Request $request)

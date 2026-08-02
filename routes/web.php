@@ -127,6 +127,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/admin/team/{team}', [TeamController::class, 'destroy'])->name('team.destroy');
 
     Route::get('/admin/schedule', [StaffScheduleController::class, 'index'])->name('staff-schedule.index');
+    Route::put('/admin/schedule/{schedule}', [StaffScheduleController::class, 'update'])->name('staff-schedule.update');
     Route::get('/admin/schedule/calendar', [StaffScheduleController::class, 'calendar'])->name('staff-schedule.calendar');
     Route::post('/api/staff-schedule/check-availability', [StaffScheduleController::class, 'checkAvailability'])->name('staff-schedule.checkAvailability');
 

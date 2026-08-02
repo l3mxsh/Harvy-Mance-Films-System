@@ -181,6 +181,8 @@ class PostProductionController extends Controller
             'event_completed_at' => now(),
         ]);
 
+        $booking->staffSchedules()->update(['status' => 'completed']);
+
         return back()->with('success', "Event for booking {$booking->booking_ref} has been marked as completed.");
     }
 
@@ -211,6 +213,8 @@ class PostProductionController extends Controller
             'post_production_status' => 'delivered',
             'delivered_at' => now(),
         ]);
+
+        $booking->staffSchedules()->update(['status' => 'completed']);
 
         $booking->postProduction->update([
             'status' => 'delivered',
