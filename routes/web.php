@@ -75,6 +75,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/addon', [AddonController::class, 'index'])->name('addon.index');
     Route::post('/addon', [AddonController::class, 'store'])->name('addon.store');
+    Route::get('/addon/{addon}/edit', [AddonController::class, 'edit'])->name('addon.edit');
     Route::get('/addon/{addon}', [AddonController::class, 'show'])->name('addon.show');
     Route::put('/addon/{addon}', [AddonController::class, 'update'])->name('addon.update');
     Route::delete('/addon/{addon}', [AddonController::class, 'destroy'])->name('addon.destroy');

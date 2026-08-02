@@ -220,12 +220,9 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="d-flex justify-content-center gap-2">
-                                                    <button class="btn btn-sm btn-outline-secondary rounded-3" title="View" onclick="viewAddon({{ $addon->id }})">
+                                                    <a class="btn btn-sm btn-outline-secondary rounded-3" title="View & Edit" href="{{ route('addon.edit', $addon->id) }}">
                                                         <i class="bi bi-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-outline-dark rounded-3" title="Edit" onclick="editAddon({{ $addon->id }})">
-                                                        <i class="bi bi-pencil"></i>
-                                                    </button>
+                                                    </a>
                                                     <button class="btn btn-sm btn-outline-danger rounded-3" title="Delete" onclick="confirmDeleteAddon({{ $addon->id }}, '{{ addslashes($addon->name) }}')">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
@@ -436,45 +433,6 @@
                         <button type="submit" class="btn btn-dark rounded-pill" id="addonSubmitBtn">Save Add-On</button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- View Add-On Modal -->
-    <div class="modal fade" id="viewAddonModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add-On Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="text-muted small">Add-On Name</label>
-                        <div class="fw-semibold fs-5" id="viewAddonName"></div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-6">
-                            <label class="text-muted small">Additional Price</label>
-                            <div class="fw-semibold text-success fs-5" id="viewAddonPrice"></div>
-                        </div>
-                        <div class="col-6">
-                            <label class="text-muted small">Status</label>
-                            <div id="viewAddonStatus"></div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="text-muted small">Description</label>
-                        <div id="viewAddonDescription" class="text-secondary"></div>
-                    </div>
-                    <div>
-                        <label class="text-muted small">Required Equipment & Materials</label>
-                        <div id="viewAddonInventory"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Close</button>
-                </div>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 let packageModal, deletePackageModal;
-let addonModal, viewAddonModal, deleteAddonModal;
+let addonModal, deleteAddonModal;
 
 let pkgInventoryItems = [];
 let addonInventoryItems = [];
@@ -13,9 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if (document.getElementById('addonModal')) {
         addonModal = new bootstrap.Modal(document.getElementById('addonModal'));
-    }
-    if (document.getElementById('viewAddonModal')) {
-        viewAddonModal = new bootstrap.Modal(document.getElementById('viewAddonModal'));
     }
     if (document.getElementById('deleteAddonModal')) {
         deleteAddonModal = new bootstrap.Modal(document.getElementById('deleteAddonModal'));
@@ -274,62 +271,6 @@ function openAddAddonModal() {
     document.getElementById('addonModalTitle').textContent = 'Add Add-On';
     document.getElementById('addonSubmitBtn').textContent = 'Save Add-On';
     resetAddonInventory();
-    addonModal.show();
-}
-
-async function viewAddon(id) {
-    const res = await fetch(`/addon/${id}`);
-    const addon = await res.json();
-
-    document.getElementById('viewAddonName').textContent = addon.name;
-    document.getElementById('viewAddonPrice').textContent = '\u20B1' + parseFloat(addon.price).toLocaleString('en', { minimumFractionDigits: 2 });
-    document.getElementById('viewAddonDescription').textContent = addon.description || 'No description provided.';
-
-    const statusEl = document.getElementById('viewAddonStatus');
-    statusEl.innerHTML = addon.status === 'active'
-        ? '<span class="badge bg-success">Active</span>'
-        : '<span class="badge bg-secondary">Inactive</span>';
-
-    const inventoryEl = document.getElementById('viewAddonInventory');
-    if (addon.inventory && addon.inventory.length > 0) {
-        inventoryEl.innerHTML = `
-            <table class="table table-sm table-bordered mb-0">
-                <thead class="table-light">
-                    <tr><th>Item</th><th>Category</th><th class="text-center">Qty Needed</th><th>Unit</th></tr>
-                </thead>
-                <tbody>
-                    ${addon.inventory.map(i => `
-                        <tr>
-                            <td><i class="bi bi-${i.category === 'equipment' ? 'camera' : 'box'} me-1"></i>${i.name}</td>
-                            <td><span class="badge ${i.category === 'equipment' ? 'bg-primary bg-opacity-10 text-primary' : 'bg-purple text-white'}">${i.category === 'equipment' ? 'Equipment' : 'Material'}</span></td>
-                            <td class="text-center">${i.pivot.quantity}</td>
-                            <td>${i.unit}</td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-            </table>
-        `;
-    } else {
-        inventoryEl.innerHTML = '<div class="text-muted small">No equipment or materials assigned.</div>';
-    }
-
-    viewAddonModal.show();
-}
-
-async function editAddon(id) {
-    const res = await fetch(`/addon/${id}`);
-    const addon = await res.json();
-
-    document.getElementById('addonName').value = addon.name;
-    document.getElementById('addonPrice').value = addon.price;
-    document.getElementById('addonDescription').value = addon.description || '';
-    document.getElementById('addonStatus').value = addon.status;
-    setAddonInventory(addon.inventory || []);
-
-    document.getElementById('addonForm').action = `/addon/${addon.id}`;
-    document.getElementById('addonFormMethod').value = 'PUT';
-    document.getElementById('addonModalTitle').textContent = 'Edit Add-On';
-    document.getElementById('addonSubmitBtn').textContent = 'Update Add-On';
     addonModal.show();
 }
 

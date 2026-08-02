@@ -43,6 +43,12 @@ class AddonController extends Controller
         return redirect()->route('package')->with('success', 'Add-on created successfully.');
     }
 
+    public function edit(Addon $addon)
+    {
+        $addon->load('inventory');
+        return view('dashboard.addon-edit', compact('addon'));
+    }
+
     public function show(Addon $addon)
     {
         $addon->load('inventory');
