@@ -109,6 +109,17 @@ class CancellationController extends Controller
             ->paginate(20)
             ->withQueryString();
 
+        if ($request->ajax()) {
+            $rowsHtml = view('dashboard.partials.cancellation-rows', compact('cancellations'))->render();
+            $paginationHtml = $cancellations->hasPages() ? $cancellations->links()->render() : '';
+
+            return response()->json([
+                'rows' => $rowsHtml,
+                'pagination' => $paginationHtml,
+                'total' => $cancellations->total(),
+            ]);
+        }
+
         $summaryTotal    = CancellationRequest::count();
         $summaryPending  = CancellationRequest::where('status', 'pending')->count();
         $summaryRefunded = CancellationRequest::where('status', 'refunded')->count();

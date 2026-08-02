@@ -227,19 +227,17 @@
                 <section class="surface-card mb-4">
                     <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
                         <h2 class="section-title">All Teams</h2>
-                        <span class="badge bg-light text-dark border">{{ $teams->total() }} total</span>
+                        <span class="badge bg-light text-dark border" id="teamTotalBadge">{{ $teams->total() }} total</span>
                     </div>
-                    <form method="GET" action="{{ route('staff.admin.index') }}" id="teamFilterForm"
-                        class="row g-2 align-items-end">
-                        <input type="hidden" name="tab" value="teams">
+                    <div class="row g-2 align-items-end">
                         <div class="col-md-6">
                             <label class="form-label small text-muted mb-1">Search</label>
-                            <input type="text" name="search" class="form-control" placeholder="Search teams..."
+                            <input type="text" id="teamSearchInput" class="form-control" placeholder="Search teams..."
                                 value="{{ request('search') }}" autocomplete="off">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label small text-muted mb-1">Status</label>
-                            <select name="status" class="form-select">
+                            <select id="teamStatusFilter" class="form-select">
                                 <option value="">All Status</option>
                                 <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
                                 <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive
@@ -251,7 +249,7 @@
                                 Team
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </section>
 
                 <section class="surface-card">
@@ -267,61 +265,16 @@
                                     <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @forelse($teams as $team)
-                                    <tr>
-                                        <td class="fw-semibold">{{ $team->name }}</td>
-                                        <td class="text-muted">{{ $team->description ?? '—' }}</td>
-                                        <td>
-                                            @forelse($team->members as $member)
-                                                <span class="member-chip">{{ $member->name }}</span>
-                                            @empty
-                                            @endforelse
-                                            @foreach($team->outsourcedMembers as $os)
-                                                <span class="member-chip member-chip-os">{{ $os->name }} <small>(OS)</small></span>
-                                            @endforeach
-                                            @if($team->members->isEmpty() && $team->outsourcedMembers->isEmpty())
-                                                <span class="text-muted fst-italic">No members</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @include('partials.status-badge', ['status' => $team->status])
-                                        </td>
-                                        <td>{{ $team->created_at->format('M d, Y') }}</td>
-                                        <td class="text-center">
-                                            <div class="d-flex justify-content-center gap-2">
-                                                <button class="btn btn-sm btn-outline-secondary rounded-3" title="Edit"
-                                                    onclick="openEditTeamModal('{{ $team->id }}', '{{ addslashes($team->name) }}', '{{ addslashes($team->description ?? '') }}', {!! json_encode($team->members->pluck('id')->toArray()) !!}, {!! json_encode($team->outsourcedMembers->pluck('id')->toArray()) !!})">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-                                                <button
-                                                    class="btn btn-sm btn-outline-{{ $team->status === 'active' ? 'warning' : 'success' }} rounded-3"
-                                                    title="{{ $team->status === 'active' ? 'Deactivate' : 'Activate' }}"
-                                                    onclick="openToggleTeamModal('{{ $team->id }}', '{{ addslashes($team->name) }}', '{{ $team->status }}')">
-                                                    <i
-                                                        class="bi bi-{{ $team->status === 'active' ? 'pause-circle' : 'play-circle' }}"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger rounded-3" title="Delete"
-                                                    onclick="openDeleteTeamModal('{{ $team->id }}', '{{ addslashes($team->name) }}')">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center py-4 text-muted">
-                                            <i class="bi bi-people-fill fs-1 d-block mb-2"></i>
-                                            No teams found. Create one to get started.
-                                        </td>
-                                    </tr>
-                                @endforelse
+                            <tbody id="teamTableBody">
+                                @include('dashboard.partials.team-rows', compact('teams'))
                             </tbody>
                         </table>
                     </div>
-                    @if($teams->hasPages())
-                        <div class="border-top pt-3 mt-3">{{ $teams->links() }}</div>
-                    @endif
+                    <div id="teamPagination" class="border-top pt-3 mt-3 @if(!$teams->hasPages()) d-none @endif">
+                        @if($teams->hasPages())
+                            {{ $teams->links() }}
+                        @endif
+                    </div>
                 </section>
             @endif
 

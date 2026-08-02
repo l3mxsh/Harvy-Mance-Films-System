@@ -38,6 +38,18 @@ class StaffController extends Controller
             }
 
             $teams = $query->latest()->paginate(10)->withQueryString();
+
+            if ($request->ajax()) {
+                $rowsHtml = view('dashboard.partials.team-rows', compact('teams'))->render();
+                $paginationHtml = $teams->hasPages() ? $teams->links()->render() : '';
+
+                return response()->json([
+                    'rows' => $rowsHtml,
+                    'pagination' => $paginationHtml,
+                    'total' => $teams->total(),
+                ]);
+            }
+
             $allStaff = Staff::where('status', 'active')->orderBy('name')->get();
             $allOutsourced = OutsourcedStaff::orderBy('name')->get();
             $totalTeams = Team::count();

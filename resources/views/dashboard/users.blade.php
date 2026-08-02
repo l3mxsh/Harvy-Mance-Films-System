@@ -32,37 +32,27 @@
                 <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <h2 class="section-title"><i class="bi bi-shield-lock me-2"></i>Admin Accounts</h2>
                     <div class="d-flex align-items-center gap-2">
-                        <span class="badge bg-light text-dark border">{{ $users->total() }} total</span>
+                        <span class="badge bg-light text-dark border" id="userTotalBadge">{{ $users->total() }} total</span>
                         <button type="button" class="btn btn-dark rounded-pill" onclick="openCreateModal()">
                             <i class="bi bi-plus-circle me-1"></i> Add Admin
                         </button>
                     </div>
                 </div>
 
-                <form method="GET" action="{{ route('users.admin.index') }}" class="row g-2 align-items-end mb-3">
+                <div class="row g-2 align-items-end mb-3">
                     <div class="col-md-6">
                         <label class="form-label small text-muted mb-1">Search</label>
-                        <input type="text" name="search" class="form-control" placeholder="Search by name or email..." value="{{ request('search') }}" autocomplete="off">
+                        <input type="text" id="userSearchInput" class="form-control" placeholder="Search by name or email..." value="{{ request('search') }}" autocomplete="off">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label small text-muted mb-1">Status</label>
-                        <select name="status" class="form-select">
+                        <select id="userStatusFilter" class="form-select">
                             <option value="">All Status</option>
                             <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
                             <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
                         </select>
                     </div>
-                    <div class="col-md-2 d-flex gap-2 mb-1">
-                        <button type="submit" class="btn btn-dark w-100 rounded-2">
-                            <i class="bi bi-funnel me-1"></i> Filter
-                        </button>
-                        @if(request()->hasAny(['search', 'status']))
-                            <a href="{{ route('users.admin.index') }}" class="btn btn-outline-dark btn-sm rounded-pill" title="Clear filters">
-                                <i class="bi bi-x-lg"></i>
-                            </a>
-                        @endif
-                    </div>
-                </form>
+                </div>
 
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
@@ -76,61 +66,17 @@
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @forelse($users as $user)
-                                <tr>
-                                    <td class="fw-semibold">
-                                        {{ $user->name }}
-                                        @if($user->id === auth()->id())
-                                            <span class="badge bg-primary ms-1">You</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ $user->email }}</td>
-                                    <td><span class="badge bg-dark">Admin</span></td>
-                                    <td>
-                                        @include('partials.status-badge', ['status' => $user->status])
-                                    </td>
-                                    <td>{{ $user->created_at->format('M d, Y') }}</td>
-                                    <td class="text-center">
-                                        @if($user->id === auth()->id())
-                                            <button class="btn btn-sm btn-outline-secondary rounded-3"
-                                                onclick="openEditModal('{{ $user->id }}', '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}')">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                        @else
-                                            <div class="d-flex justify-content-center gap-2">
-                                                <button class="btn btn-sm btn-outline-secondary rounded-3" title="Edit"
-                                                    onclick="openEditModal('{{ $user->id }}', '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}')">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-{{ $user->status === 'active' ? 'warning' : 'success' }} rounded-3"
-                                                    title="{{ $user->status === 'active' ? 'Deactivate' : 'Activate' }}"
-                                                    onclick="openToggleModal('{{ $user->id }}', '{{ addslashes($user->name) }}', '{{ $user->status }}')">
-                                                    <i class="bi bi-{{ $user->status === 'active' ? 'pause-circle' : 'play-circle' }}"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger rounded-3" title="Delete"
-                                                    onclick="openDeleteModal('{{ $user->id }}', '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}')">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="text-center py-4 text-muted">
-                                        <i class="bi bi-person-gear fs-1 d-block mb-2"></i>
-                                        No admin accounts found.
-                                    </td>
-                                </tr>
-                            @endforelse
+                        <tbody id="userTableBody">
+                            @include('dashboard.partials.user-rows', compact('users'))
                         </tbody>
                     </table>
                 </div>
 
-                @if($users->hasPages())
-                    <div class="border-top pt-3 mt-3">{{ $users->links('vendor.pagination.bootstrap-5') }}</div>
-                @endif
+                <div id="userPagination" class="border-top pt-3 mt-3 @if(!$users->hasPages()) d-none @endif">
+                    @if($users->hasPages())
+                        {{ $users->links('vendor.pagination.bootstrap-5') }}
+                    @endif
+                </div>
             </section>
         </div>
     </div>

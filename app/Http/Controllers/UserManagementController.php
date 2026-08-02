@@ -25,6 +25,17 @@ class UserManagementController extends Controller
 
         $users = $query->orderByDesc('created_at')->paginate(10)->withQueryString();
 
+        if ($request->ajax()) {
+            $rowsHtml = view('dashboard.partials.user-rows', compact('users'))->render();
+            $paginationHtml = $users->hasPages() ? $users->links()->render() : '';
+
+            return response()->json([
+                'rows' => $rowsHtml,
+                'pagination' => $paginationHtml,
+                'total' => $users->total(),
+            ]);
+        }
+
         return view('dashboard.users', compact('users'));
     }
 

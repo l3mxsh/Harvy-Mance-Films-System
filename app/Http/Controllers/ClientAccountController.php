@@ -140,6 +140,17 @@ class ClientAccountController extends Controller
 
         $accounts = $activeQuery->orderByDesc('created_at')->paginate(15)->withQueryString();
 
+        if ($request->ajax()) {
+            $rowsHtml = view('dashboard.partials.client-rows', compact('accounts'))->render();
+            $paginationHtml = $accounts->hasPages() ? $accounts->links()->render() : '';
+
+            return response()->json([
+                'rows' => $rowsHtml,
+                'pagination' => $paginationHtml,
+                'total' => $accounts->total(),
+            ]);
+        }
+
         $archivedAccounts = ClientAccount::with('booking')
             ->whereNotNull('archived_at')
             ->orderByDesc('archived_at')

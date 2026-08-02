@@ -33,6 +33,17 @@ class InventoryController extends Controller
 
         $items = $query->latest()->paginate(10)->withQueryString();
 
+        if ($request->ajax()) {
+            $rowsHtml = view('dashboard.partials.inventory-rows', compact('items'))->render();
+            $paginationHtml = $items->hasPages() ? $items->links()->render() : '';
+
+            return response()->json([
+                'rows' => $rowsHtml,
+                'pagination' => $paginationHtml,
+                'total' => $items->total(),
+            ]);
+        }
+
         $totalItems = InventoryItem::count();
         $availableItems = InventoryItem::where('availability_status', 'available')->count();
         $inUseItems = InventoryItem::where('availability_status', 'in_use')->count();
