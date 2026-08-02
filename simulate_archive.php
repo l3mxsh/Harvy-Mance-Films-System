@@ -19,7 +19,7 @@ $app = require_once __DIR__ . '/bootstrap/app.php';
 $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
 use App\Models\Booking;
-use App\Models\CustomerAccount;
+use App\Models\ClientAccount;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Artisan;
 
@@ -39,7 +39,7 @@ $autoDeleteDays = $daysOverride ?? (int) Setting::getValue('client_auto_delete_d
 
 // ─── RESTORE MODE ───────────────────────────────────────────────────────────────
 if (($args[0] ?? null) === '--restore-all') {
-    $archived = CustomerAccount::whereNotNull('archived_at')->get();
+    $archived = ClientAccount::whereNotNull('archived_at')->get();
     if ($archived->isEmpty()) {
         echo "No archived accounts to restore.\n";
         exit(0);
@@ -58,7 +58,7 @@ if (($args[0] ?? null) === '--restore') {
         echo "Usage: php simulate_archive.php --restore <account_id>\n";
         exit(1);
     }
-    $acc = CustomerAccount::find($id);
+    $acc = ClientAccount::find($id);
     if (!$acc) {
         echo "ERROR: No account with id {$id}.\n";
         exit(1);
@@ -78,8 +78,8 @@ function eligibleBookings(): \Illuminate\Support\Collection
     return Booking::where('status', 'completed')
         ->where('deliverables_unlocked', true)
         ->whereNotNull('delivered_at')
-        ->whereHas('customerAccount', fn ($q) => $q->whereNull('archived_at'))
-        ->with('customerAccount')
+        ->whereHas('clientAccount', fn ($q) => $q->whereNull('archived_at'))
+        ->with('clientAccount')
         ->get();
 }
 
@@ -120,7 +120,7 @@ $targets = $bookings;
 if ($identifier && $identifier !== '--all') {
     $byRef = $bookings->first(fn ($b) => $b->booking_ref === $identifier);
     $byId  = is_numeric($identifier) ? $bookings->first(fn ($b) => $b->id == $identifier) : null;
-    $byAcct = CustomerAccount::where('control_number', $identifier)
+    $byAcct = ClientAccount::where('control_number', $identifier)
         ->orWhere('client_email', $identifier)
         ->first();
     $targets = collect();
@@ -174,7 +174,7 @@ echo Artisan::output();
 // ─── VERIFY ────────────────────────────────────────────────────────────────────
 echo "\nVerification:\n";
 foreach ($targets as $b) {
-    $acc = $b->customerAccount()->first();
+    $acc = $b->clientAccount()->first();
     echo "  {$b->booking_ref} | {$b->client_name} | archived_at: " . ($acc?->archived_at?->format('M d, Y H:i') ?? 'NULL (not archived!)') . "\n";
 }
 

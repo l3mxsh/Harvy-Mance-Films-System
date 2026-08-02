@@ -12,7 +12,7 @@
                 <h5 class="modal-title"><i class="bi bi-x-circle me-2 text-danger"></i>Cancel Booking</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form method="POST" action="{{ route('customer.cancellation.store') }}">
+            <form method="POST" action="{{ route('client.cancellation.store') }}">
                 @csrf
                 <div class="modal-body">
                     <div class="alert alert-soft alert-soft-{{ $refundPercent > 0 ? 'info' : 'warning' }} py-2 small mb-3">

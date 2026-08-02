@@ -16,7 +16,7 @@ class RescheduleController extends Controller
 {
     public function store(Request $request)
     {
-        $account = auth('customer')->user();
+        $account = auth('client')->user();
         $booking = Booking::findOrFail($account->booking_id);
 
         $leadTime = (int) Setting::getValue('reschedule_lead_time_days', 5);

@@ -26,7 +26,7 @@
                     Dashboard
                 </a>
             @else
-                <a href="{{ route('customer.login') }}" class="btn btn-primary-dark btn-sm-pill btn-login">
+                <a href="{{ route('client.login') }}" class="btn btn-primary-dark btn-sm-pill btn-login">
                     Login
                 </a>
             @endauth
@@ -134,7 +134,7 @@
                     {{-- ==================== CUSTOMER INFO ==================== --}}
                     <div class="col-md-6">
                         <section class="surface-card confirmation-section h-100 mb-0">
-                            <h6><i class="bi bi-person me-2"></i>Customer Information</h6>
+                            <h6><i class="bi bi-person me-2"></i>Client Information</h6>
                             <div class="detail-row">
                                 <span class="detail-label">Name</span>
                                 <span class="detail-value">{{ $booking->client_name }}</span>

@@ -81,9 +81,9 @@ class Booking extends Model
             ->withTimestamps();
     }
 
-    public function customerAccount(): HasOne
+    public function clientAccount(): HasOne
     {
-        return $this->hasOne(CustomerAccount::class);
+        return $this->hasOne(ClientAccount::class);
     }
 
     public function downpayments(): HasMany

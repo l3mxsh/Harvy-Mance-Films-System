@@ -159,7 +159,7 @@ function updateConfirmationSummary(packagePrice, addonsTotal, total, addonNames)
     document.getElementById('confirmBalance').textContent = formatPeso(Math.round(total * 0.70 * 100) / 100);
 }
 
-function updateConfirmationCustomerInfo() {
+function updateConfirmationClientInfo() {
     document.getElementById('confirmName').textContent = document.getElementById('clientName').value || '-';
     document.getElementById('confirmEmail').textContent = document.getElementById('clientEmail').value || '-';
     document.getElementById('confirmPhone').textContent = document.getElementById('clientPhone').value || '-';
@@ -217,7 +217,7 @@ function goToStep(step) {
     }
 
     if (step === 4) {
-        updateConfirmationCustomerInfo();
+        updateConfirmationClientInfo();
         updateConfirmationEventInfo();
     }
 

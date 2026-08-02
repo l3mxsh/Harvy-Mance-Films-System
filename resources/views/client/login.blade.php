@@ -37,7 +37,7 @@
                         <p class="section-sub">Log in to monitor your booking, payments, and deliverables.</p>
                     </div>
 
-                    <form method="POST" action="{{ route('customer.login.post') }}">
+                    <form method="POST" action="{{ route('client.login.post') }}">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Control Number</label>

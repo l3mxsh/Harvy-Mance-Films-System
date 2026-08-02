@@ -7,7 +7,7 @@ use App\Http\Controllers\AddonController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\OtpController;
-use App\Http\Controllers\CustomerAccountController;
+use App\Http\Controllers\ClientAccountController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\StaffScheduleController;
@@ -21,14 +21,14 @@ use App\Http\Controllers\OutsourcedStaffController;
 
 Route::get('/', [BookingController::class, 'index'])->name('home');
 
-Route::get('/login', [CustomerAccountController::class, 'showLogin'])->name('customer.login');
-Route::post('/login', [CustomerAccountController::class, 'login'])->middleware('throttle:customer-login')->name('customer.login.post');
-Route::post('/logout', [CustomerAccountController::class, 'logout'])->name('customer.logout');
+Route::get('/login', [ClientAccountController::class, 'showLogin'])->name('client.login');
+Route::post('/login', [ClientAccountController::class, 'login'])->middleware('throttle:client-login')->name('client.login.post');
+Route::post('/logout', [ClientAccountController::class, 'logout'])->name('client.logout');
 
-Route::middleware('auth:customer')->name('customer.')->group(function () {
-    Route::get('/dashboard', [CustomerAccountController::class, 'dashboard'])->name('dashboard');
-    Route::get('/change-password', [CustomerAccountController::class, 'showChangePassword'])->name('change-password');
-    Route::post('/change-password', [CustomerAccountController::class, 'changePassword'])->name('change-password.post');
+Route::middleware('auth:client')->name('client.')->group(function () {
+    Route::get('/dashboard', [ClientAccountController::class, 'dashboard'])->name('dashboard');
+    Route::get('/change-password', [ClientAccountController::class, 'showChangePassword'])->name('change-password');
+    Route::post('/change-password', [ClientAccountController::class, 'changePassword'])->name('change-password.post');
     Route::post('/reschedule', [RescheduleController::class, 'store'])->name('reschedule.store');
     Route::post('/cancel', [CancellationController::class, 'store'])->name('cancellation.store');
     Route::post('/downpayment', [DownpaymentController::class, 'submit'])->name('downpayment.submit');

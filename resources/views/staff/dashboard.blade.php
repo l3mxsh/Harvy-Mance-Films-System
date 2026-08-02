@@ -132,7 +132,7 @@
                         @forelse($tasks as $task)
                             <tr>
                                 <td>
-                                    <code>{{ $task->postProduction->booking->customerAccount->control_number ?? 'N/A' }}</code>
+                                    <code>{{ $task->postProduction->booking->clientAccount->control_number ?? 'N/A' }}</code>
                                 </td>
                                 <td>{{ $task->postProduction->booking->client_name ?? 'N/A' }}</td>
                                 <td>{{ $task->postProduction->booking->event_type ?? 'N/A' }}</td>

@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="mb-4">
-                    <h6 class="fw-semibold small text-uppercase text-muted mb-2">Customer</h6>
+                    <h6 class="fw-semibold small text-uppercase text-muted mb-2">Client</h6>
                     <div class="row g-3">
                         <div class="col-sm-4">
                             <div class="text-muted small">Name</div>

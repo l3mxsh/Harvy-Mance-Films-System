@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CustomerAccount;
+use App\Models\ClientAccount;
 use App\Models\Booking;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 
-class CustomerAccountController extends Controller
+class ClientAccountController extends Controller
 {
     public function showLogin()
     {
-        if (auth('customer')->check()) {
-            return redirect()->route('customer.dashboard');
+        if (auth('client')->check()) {
+            return redirect()->route('client.dashboard');
         }
-        return view('customer.login');
+        return view('client.login');
     }
 
     public function login(Request $request)
@@ -27,7 +27,7 @@ class CustomerAccountController extends Controller
             'password' => 'required|string',
         ]);
 
-        $account = CustomerAccount::where('control_number', $request->control_number)->first();
+        $account = ClientAccount::where('control_number', $request->control_number)->first();
 
         if ($account && $account->archived_at) {
             return back()->withErrors([
@@ -37,7 +37,7 @@ class CustomerAccountController extends Controller
 
         if (!$account || !Hash::check($request->password, $account->password)) {
             $maxAttempts = 5;
-            $key = md5('customer-login' . $request->ip());
+            $key = md5('client-login' . $request->ip());
             $remaining = RateLimiter::retriesLeft($key, $maxAttempts);
 
             return back()->withErrors([
@@ -45,30 +45,30 @@ class CustomerAccountController extends Controller
             ])->withInput($request->only('control_number'));
         }
 
-        auth('customer')->login($account);
+        auth('client')->login($account);
 
         $account->update(['last_login_at' => now()]);
 
         if ($account->must_change_password) {
-            return redirect()->route('customer.change-password');
+            return redirect()->route('client.change-password');
         }
 
-        return redirect()->route('customer.dashboard');
+        return redirect()->route('client.dashboard');
     }
 
     public function logout()
     {
-        auth('customer')->logout();
-        return redirect()->route('customer.login');
+        auth('client')->logout();
+        return redirect()->route('client.login');
     }
 
     public function dashboard()
     {
-        $account = auth('customer')->user();
+        $account = auth('client')->user();
 
         if ($account->archived_at) {
-            auth('customer')->logout();
-            return redirect()->route('customer.login')
+            auth('client')->logout();
+            return redirect()->route('client.login')
                 ->withErrors(['control_number' => 'This account has expired and is no longer active. Please contact us to request access again.']);
         }
 
@@ -90,13 +90,13 @@ class CustomerAccountController extends Controller
             $daysUntilDeletion = max(0, (int) round(now()->diffInDays($deleteAt, false)));
         }
 
-        return view('customer.dashboard', compact('account', 'booking', 'latestDownpayment', 'remainingBalance', 'hasFinalPayment', 'daysUntilDeletion', 'deleteAt'));
+        return view('client.dashboard', compact('account', 'booking', 'latestDownpayment', 'remainingBalance', 'hasFinalPayment', 'daysUntilDeletion', 'deleteAt'));
     }
 
     public function showChangePassword()
     {
-        $account = auth('customer')->user();
-        return view('customer.change-password', compact('account'));
+        $account = auth('client')->user();
+        return view('client.change-password', compact('account'));
     }
 
     public function changePassword(Request $request)
@@ -106,7 +106,7 @@ class CustomerAccountController extends Controller
             'new_password' => 'required|string|min:6|confirmed',
         ]);
 
-        $account = auth('customer')->user();
+        $account = auth('client')->user();
 
         if (!Hash::check($request->current_password, $account->password)) {
             return back()->withErrors(['current_password' => 'Current password is incorrect.']);
@@ -117,7 +117,7 @@ class CustomerAccountController extends Controller
             'must_change_password' => false,
         ]);
 
-        return redirect()->route('customer.dashboard')
+        return redirect()->route('client.dashboard')
             ->with('success', 'Password changed successfully!');
     }
 
@@ -125,7 +125,7 @@ class CustomerAccountController extends Controller
     {
         do {
             $controlNumber = 'HMF-' . now()->format('ymd') . '-' . strtoupper(Str::random(4));
-        } while (CustomerAccount::where('control_number', $controlNumber)->exists());
+        } while (ClientAccount::where('control_number', $controlNumber)->exists());
 
         return $controlNumber;
     }

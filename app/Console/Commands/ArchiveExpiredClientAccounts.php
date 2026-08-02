@@ -20,14 +20,14 @@ class ArchiveExpiredClientAccounts extends Command
             ->where('deliverables_unlocked', true)
             ->whereNotNull('delivered_at')
             ->where('delivered_at', '<=', $threshold)
-            ->whereHas('customerAccount', fn ($q) => $q->whereNull('archived_at'))
-            ->with('customerAccount')
+            ->whereHas('clientAccount', fn ($q) => $q->whereNull('archived_at'))
+            ->with('clientAccount')
             ->get();
 
         $archivedCount = 0;
 
         foreach ($bookings as $booking) {
-            $account = $booking->customerAccount;
+            $account = $booking->clientAccount;
 
             if (!$account) {
                 continue;

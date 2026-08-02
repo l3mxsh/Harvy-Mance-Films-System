@@ -98,7 +98,7 @@ class StaffPostProductionController extends Controller
             abort(403);
         }
 
-        $task->load(['postProduction.booking.package', 'postProduction.booking.customerAccount']);
+        $task->load(['postProduction.booking.package', 'postProduction.booking.clientAccount']);
 
         return view('staff.task', compact('staff', 'task'));
     }

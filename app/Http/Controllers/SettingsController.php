@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use App\Models\Booking;
-use App\Models\CustomerAccount;
+use App\Models\ClientAccount;
 use Illuminate\Http\Request;
 
 class SettingsController extends Controller
@@ -22,9 +22,9 @@ class SettingsController extends Controller
         $deliveredBookings = Booking::where('status', 'completed')
             ->where('deliverables_unlocked', true)
             ->whereNotNull('delivered_at')
-            ->with(['customerAccount' => fn ($q) => $q->whereNull('archived_at')])
+            ->with(['clientAccount' => fn ($q) => $q->whereNull('archived_at')])
             ->get()
-            ->filter(fn($b) => $b->customerAccount);
+            ->filter(fn($b) => $b->clientAccount);
 
         $upcomingDeletions = $deliveredBookings->map(function ($booking) use ($autoDeleteDays) {
             $deliveredAt = $booking->delivered_at;
@@ -39,7 +39,7 @@ class SettingsController extends Controller
             ];
         })->sortBy('delete_at')->values();
 
-        $archivedAccounts = CustomerAccount::whereNotNull('archived_at')
+        $archivedAccounts = ClientAccount::whereNotNull('archived_at')
             ->with('booking')
             ->orderByDesc('archived_at')
             ->get();
@@ -49,7 +49,7 @@ class SettingsController extends Controller
 
     public function restore(string $account)
     {
-        $account = CustomerAccount::findOrFail($account);
+        $account = ClientAccount::findOrFail($account);
 
         if ($account->archived_at) {
             $account->update(['archived_at' => null]);

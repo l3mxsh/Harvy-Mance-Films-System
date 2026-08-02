@@ -228,7 +228,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Notes <span class="req">(optional)</span></label>
-                            <textarea name="admin_notes" class="form-control" rows="2" placeholder="Additional notes for the customer..."></textarea>
+                            <textarea name="admin_notes" class="form-control" rows="2" placeholder="Additional notes for the client..."></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

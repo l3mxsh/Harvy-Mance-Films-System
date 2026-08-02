@@ -7,7 +7,7 @@ use App\Models\BookingItem;
 use App\Models\Package;
 use App\Models\Addon;
 use App\Models\InventoryItem;
-use App\Models\CustomerAccount;
+use App\Models\ClientAccount;
 use App\Models\StaffSchedule;
 use App\Models\Team;
 use App\Models\Otp;
@@ -189,9 +189,9 @@ class BookingController extends Controller
         }
 
         $controlNumber = $booking->booking_ref;
-        $tempPassword = CustomerAccountController::generateTempPassword();
+        $tempPassword = ClientAccountController::generateTempPassword();
 
-        $account = CustomerAccount::create([
+        $account = ClientAccount::create([
             'control_number' => $controlNumber,
             'password' => $tempPassword,
             'client_name' => $booking->client_name,
@@ -246,7 +246,7 @@ class BookingController extends Controller
     {
         $email = strtolower(trim($email));
 
-        if (CustomerAccount::whereRaw('LOWER(client_email) = ?', [$email])
+        if (ClientAccount::whereRaw('LOWER(client_email) = ?', [$email])
             ->whereNull('archived_at')
             ->exists()) {
             return [

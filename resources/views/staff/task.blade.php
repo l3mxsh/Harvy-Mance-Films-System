@@ -69,7 +69,7 @@
                         <div class="col-md-6 pe-md-3">
                             <div class="detail-row">
                                 <span class="detail-label">Booking Ref.</span>
-                                <span class="detail-value"><code>{{ $task->postProduction->booking->customerAccount->control_number ?? 'N/A' }}</code></span>
+                                <span class="detail-value"><code>{{ $task->postProduction->booking->clientAccount->control_number ?? 'N/A' }}</code></span>
                             </div>
                             <div class="detail-row">
                                 <span class="detail-label">Client Name</span>

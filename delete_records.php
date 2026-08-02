@@ -17,7 +17,7 @@ Usage: php delete_records.php <command> [options]
 Commands:
   user <id>              Delete a user by ID
   user email <email>     Delete a user by email
-  booking <id>           Delete a booking by ID (cascades to items, addons, downpayments, post-productions, customer accounts)
+  booking <id>           Delete a booking by ID (cascades to items, addons, downpayments, post-productions, client accounts)
   delete-all-users       Delete all non-admin users
   delete-all-bookings    Delete all bookings (cascades to related records)
   list-users             List all users
@@ -127,7 +127,7 @@ function deleteBooking(PDO $db, int $id): void
     }
 
     echo "Deleting booking #{$booking['id']}: {$booking['client_name']} ({$booking['event_date']}) [{$booking['status']}]\n";
-    echo "  - Related booking_items, booking_addons, downpayments, post_productions, and customer_accounts will be cascade-deleted.\n";
+    echo "  - Related booking_items, booking_addons, downpayments, post_productions, and client_accounts will be cascade-deleted.\n";
 
     $db->prepare("DELETE FROM bookings WHERE id = ?")->execute([$id]);
     echo "Booking #$id deleted.\n";
@@ -163,7 +163,7 @@ function deleteAllBookings(PDO $db): void
         return;
     }
 
-    echo "Deleting $count booking(s) and all related records (items, addons, downpayments, post-productions, customer accounts)...\n";
+    echo "Deleting $count booking(s) and all related records (items, addons, downpayments, post-productions, client accounts)...\n";
 
     $db->exec("DELETE FROM bookings");
     echo "All bookings deleted.\n";

@@ -36,10 +36,10 @@ class CancellationController extends Controller
         return 0;
     }
 
-    /** Customer: submit cancellation request */
+    /** Client: submit cancellation request */
     public function store(Request $request)
     {
-        $account = Auth::guard('customer')->user();
+        $account = Auth::guard('client')->user();
         $booking = $account->booking;
 
         if (!in_array($booking->status, ['pending', 'approved', 'ongoing'])) {

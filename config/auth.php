@@ -40,9 +40,9 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'customer' => [
+        'client' => [
             'driver' => 'session',
-            'provider' => 'customers',
+            'provider' => 'clients',
         ],
         'staff' => [
             'driver' => 'session',
@@ -72,9 +72,9 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-        'customers' => [
+        'clients' => [
             'driver' => 'eloquent',
-            'model' => App\Models\CustomerAccount::class,
+            'model' => App\Models\ClientAccount::class,
         ],
         'staff' => [
             'driver' => 'eloquent',

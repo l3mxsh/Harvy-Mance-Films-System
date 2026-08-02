@@ -44,7 +44,7 @@
                         @endif
                     </div>
 
-                    <form method="POST" action="{{ route('customer.change-password.post') }}">
+                    <form method="POST" action="{{ route('client.change-password.post') }}">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Current Password</label>
@@ -89,7 +89,7 @@
                     </form>
 
                     <p class="summary-note">
-                        <a href="{{ route('customer.dashboard') }}" class="text-decoration-none text-dark">
+                        <a href="{{ route('client.dashboard') }}" class="text-decoration-none text-dark">
                             <i class="bi bi-arrow-left me-1"></i><strong>Back to Dashboard</strong>
                         </a>
                     </p>

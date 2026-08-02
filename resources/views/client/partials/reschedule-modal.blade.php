@@ -6,7 +6,7 @@
                 <h5 class="modal-title"><i class="bi bi-calendar-event me-2"></i>Request Reschedule</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form method="POST" action="{{ route('customer.reschedule.store') }}">
+            <form method="POST" action="{{ route('client.reschedule.store') }}">
                 @csrf
                 <div class="modal-body">
                     <div class="alert alert-soft alert-soft-info py-2 small mb-3">

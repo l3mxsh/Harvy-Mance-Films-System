@@ -116,7 +116,7 @@ class PostProductionController extends Controller
 
     public function show(PostProduction $postProduction)
     {
-        $postProduction->load(['booking.package', 'booking.addons', 'booking.customerAccount', 'tasks.staff', 'tasks.outsourcedStaff']);
+        $postProduction->load(['booking.package', 'booking.addons', 'booking.clientAccount', 'tasks.staff', 'tasks.outsourcedStaff']);
 
         $allApproved = $postProduction->tasks->count() > 0
             && $postProduction->tasks->every(fn($t) => $t->admin_review_status === 'approved');

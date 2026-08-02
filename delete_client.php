@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Delete Customer Script - FOR TESTING ONLY
- * Usage: php delete_customer.php <control_number|email|booking_ref>
- *        php delete_customer.php --all
+ * Delete Client Script - FOR TESTING ONLY
+ * Usage: php delete_client.php <control_number|email|booking_ref>
+ *        php delete_client.php --all
  */
 
 require __DIR__ . '/vendor/autoload.php';
@@ -11,7 +11,7 @@ require __DIR__ . '/vendor/autoload.php';
 $app = require_once __DIR__ . '/bootstrap/app.php';
 $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
-use App\Models\CustomerAccount;
+use App\Models\ClientAccount;
 use App\Models\Booking;
 use App\Models\Downpayment;
 use App\Models\StaffSchedule;
@@ -26,14 +26,14 @@ use Illuminate\Support\Facades\Storage;
 $identifier = $argv[1] ?? null;
 
 if (!$identifier) {
-    echo "Usage: php delete_customer.php <control_number|email|booking_ref>\n";
-    echo "       php delete_customer.php --all\n";
+    echo "Usage: php delete_client.php <control_number|email|booking_ref>\n";
+    echo "       php delete_client.php --all\n";
     exit(1);
 }
 
 // ─── DELETE ALL ────────────────────────────────────────────────────────────────
 if ($identifier === '--all') {
-    $accounts  = CustomerAccount::with('booking')->get();
+    $accounts  = ClientAccount::with('booking')->get();
     $bookings  = Booking::all();
     $payments  = Downpayment::all();
     $schedules = StaffSchedule::count();
@@ -41,7 +41,7 @@ if ($identifier === '--all') {
     $ppTasks   = PostProductionTask::count();
 
     echo "===========================================\n";
-    echo "Customer accounts  : {$accounts->count()}\n";
+    echo "Client accounts    : {$accounts->count()}\n";
     echo "Bookings           : {$bookings->count()}\n";
     echo "Payment records    : {$payments->count()}\n";
     echo "Staff schedules    : {$schedules}\n";
@@ -72,8 +72,8 @@ if ($identifier === '--all') {
             deleteAccount($acc);
         }
 
-        // 2. Clean up orphaned bookings (no customer account)
-        $orphanedBookings = Booking::doesntHave('customerAccount')->get();
+        // 2. Clean up orphaned bookings (no client account)
+        $orphanedBookings = Booking::doesntHave('clientAccount')->get();
         foreach ($orphanedBookings as $booking) {
             deleteBookingData($booking);
             $booking->delete();
@@ -107,16 +107,16 @@ if ($identifier === '--all') {
 }
 
 // ─── DELETE SINGLE ─────────────────────────────────────────────────────────────
-$account = CustomerAccount::where('control_number', $identifier)
+$account = ClientAccount::where('control_number', $identifier)
     ->orWhere('client_email', $identifier)
     ->first();
 
 if (!$account) {
-    $account = CustomerAccount::whereHas('booking', fn($q) => $q->where('booking_ref', $identifier))->first();
+    $account = ClientAccount::whereHas('booking', fn($q) => $q->where('booking_ref', $identifier))->first();
 }
 
 if (!$account) {
-    echo "ERROR: No customer account found for '{$identifier}'\n";
+    echo "ERROR: No client account found for '{$identifier}'\n";
     exit(1);
 }
 
@@ -148,7 +148,7 @@ echo "Done. All records deleted successfully.\n";
 
 // ─── HELPERS ───────────────────────────────────────────────────────────────────
 
-function deleteAccount(CustomerAccount $account): void
+function deleteAccount(ClientAccount $account): void
 {
     $booking = $account->booking;
     if ($booking) {

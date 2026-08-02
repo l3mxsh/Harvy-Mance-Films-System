@@ -11,7 +11,7 @@ class DownpaymentController extends Controller
 {
     public function submit(Request $request)
     {
-        $account = auth('customer')->user();
+        $account = auth('client')->user();
         $booking = Booking::findOrFail($account->booking_id);
 
         $validated = $request->validate([
@@ -32,13 +32,13 @@ class DownpaymentController extends Controller
 
         $booking->update(['payment_status' => 'payment_submitted']);
 
-        return redirect()->route('customer.dashboard')
+        return redirect()->route('client.dashboard')
             ->with('success', 'Payment proof submitted successfully! Awaiting admin verification.');
     }
 
     public function resubmit(Request $request, Downpayment $downpayment)
     {
-        $account = auth('customer')->user();
+        $account = auth('client')->user();
         $booking = Booking::findOrFail($account->booking_id);
 
         if ($downpayment->booking_id !== $booking->id) {
@@ -67,13 +67,13 @@ class DownpaymentController extends Controller
 
         $booking->update(['payment_status' => 'payment_submitted']);
 
-        return redirect()->route('customer.dashboard')
+        return redirect()->route('client.dashboard')
             ->with('success', 'Payment proof resubmitted successfully! Awaiting admin verification.');
     }
 
     public function submitFinalPayment(Request $request)
     {
-        $account = auth('customer')->user();
+        $account = auth('client')->user();
         $booking = Booking::findOrFail($account->booking_id);
 
         if (!in_array($booking->status, ['completed', 'ongoing'])) {
@@ -96,13 +96,13 @@ class DownpaymentController extends Controller
             'submitted_at' => now(),
         ]);
 
-        return redirect()->route('customer.dashboard')
+        return redirect()->route('client.dashboard')
             ->with('success', 'Final payment proof submitted successfully! Awaiting admin verification.');
     }
 
     public function resubmitFinalPayment(Request $request, Downpayment $downpayment)
     {
-        $account = auth('customer')->user();
+        $account = auth('client')->user();
         $booking = Booking::findOrFail($account->booking_id);
 
         if ($downpayment->booking_id !== $booking->id || $downpayment->status !== 'rejected' || $downpayment->payment_type !== 'final') {
@@ -125,7 +125,7 @@ class DownpaymentController extends Controller
             'submitted_at' => now(),
         ]);
 
-        return redirect()->route('customer.dashboard')
+        return redirect()->route('client.dashboard')
             ->with('success', 'Final payment resubmitted successfully! Awaiting admin verification.');
     }
 

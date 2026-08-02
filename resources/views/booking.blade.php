@@ -23,7 +23,7 @@
                 <img src="{{ asset('storage/images/Black Logo.png') }}" alt="HarvyMance Films" height="34">
             </a>
             @guest
-                <a href="{{ route('customer.login') }}" class="btn btn-primary-dark btn-sm-pill btn-login">Login</a>
+                <a href="{{ route('client.login') }}" class="btn btn-primary-dark btn-sm-pill btn-login">Login</a>
             @endguest
         </div>
     </nav>
@@ -204,7 +204,7 @@
                 </div>
             </div>
 
-            {{-- ==================== STEP 2: Customer Information ==================== --}}
+            {{-- ==================== STEP 2: Client Information ==================== --}}
             <div class="step-content" id="step2">
                 <section class="surface-card">
                     <div class="section-head">
@@ -348,7 +348,7 @@
                 </section>
 
                 <section class="surface-card confirmation-section">
-                    <h6>Customer Information</h6>
+                    <h6>Client Information</h6>
                     <div class="detail-row">
                         <span class="detail-label">Name</span>
                         <span class="detail-value" id="confirmName">-</span>

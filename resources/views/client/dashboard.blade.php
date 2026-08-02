@@ -19,7 +19,7 @@
     {{-- ==================== NAVBAR ==================== --}}
     <nav class="navbar booking-navbar">
         <div class="container d-flex align-items-center justify-content-between">
-            <a href="{{ route('customer.dashboard') }}" class="d-inline-flex align-items-center">
+            <a href="{{ route('client.dashboard') }}" class="d-inline-flex align-items-center">
                 <img src="{{ asset('storage/images/Black Logo.png') }}" alt="HarvyMance Films" height="34">
             </a>
             <span class="fw-semibold">{{ $account->client_name }}</span>
@@ -567,13 +567,13 @@
                             </button>
                         @endif
 
-                        <a href="{{ route('customer.change-password') }}" class="btn btn-outline-dark-soft rounded-pill btn-action">
+                        <a href="{{ route('client.change-password') }}" class="btn btn-outline-dark-soft rounded-pill btn-action">
                             <i class="bi bi-key me-2"></i>Change Password
                         </a>
                         <button class="btn btn-outline-dark-soft rounded-pill btn-action" onclick="window.print()">
                             <i class="bi bi-printer me-2"></i>Print Details
                         </button>
-                        <form method="POST" action="{{ route('customer.logout') }}">
+                        <form method="POST" action="{{ route('client.logout') }}">
                             @csrf
                             <button type="submit" class="btn btn-outline-danger rounded-pill btn-action w-100">
                                 <i class="bi bi-box-arrow-left me-2"></i>Logout
@@ -622,15 +622,15 @@
     </footer>
 
     {{-- MODALS --}}
-    @include('customer.partials.downpayment-modal')
-    @include('customer.partials.final-payment-modal')
-    @include('customer.partials.cancel-modal')
-    @include('customer.partials.reschedule-modal')
-    @include('customer.partials.refund-proof-modal')
+    @include('client.partials.downpayment-modal')
+    @include('client.partials.final-payment-modal')
+    @include('client.partials.cancel-modal')
+    @include('client.partials.reschedule-modal')
+    @include('client.partials.refund-proof-modal')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/client-downpayment.js') }}"></script>
-    <script src="{{ asset('js/customer-dashboard.js') }}"></script>
+    <script src="{{ asset('js/client-dashboard.js') }}"></script>
     @if($errors->has('amount') || $errors->has('payment_proof'))
         <script>
             document.addEventListener('DOMContentLoaded', function () {
