@@ -1,6 +1,7 @@
 @php
 $currentRoute = request()->route()->getName();
 $pendingPaymentsCount = \App\Models\Downpayment::where('status', 'pending')->count();
+$archivedClientsCount = \App\Models\ClientAccount::whereNotNull('archived_at')->count();
 @endphp
 
 <nav id="sidebar" class="sidebar">
@@ -61,8 +62,11 @@ $pendingPaymentsCount = \App\Models\Downpayment::where('status', 'pending')->cou
             </a>
         </li>
         <li>
-            <a href="{{ url('/login') }}">
+            <a href="{{ route('clients.admin.index') }}" class="{{ str_starts_with($currentRoute, 'clients.admin') ? 'active' : '' }}">
                 <i class="bi bi-people"></i> Clients
+                @if($archivedClientsCount > 0)
+                    <span class="badge bg-secondary ms-auto">{{ $archivedClientsCount }}</span>
+                @endif
             </a>
         </li>
         <li>

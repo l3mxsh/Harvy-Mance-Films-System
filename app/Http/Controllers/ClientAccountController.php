@@ -121,6 +121,51 @@ class ClientAccountController extends Controller
             ->with('success', 'Password changed successfully!');
     }
 
+    public function adminIndex(Request $request)
+    {
+        $activeQuery = ClientAccount::query()
+            ->with('booking')
+            ->whereNull('archived_at');
+
+        if ($request->filled('search')) {
+            $search = trim($request->search);
+            $activeQuery->where(function ($q) use ($search) {
+                $q->where('control_number', 'like', "%{$search}%")
+                    ->orWhere('client_name', 'like', "%{$search}%")
+                    ->orWhere('client_email', 'like', "%{$search}%")
+                    ->orWhere('client_phone', 'like', "%{$search}%")
+                    ->orWhereHas('booking', fn ($b) => $b->where('booking_ref', 'like', "%{$search}%"));
+            });
+        }
+
+        $accounts = $activeQuery->orderByDesc('created_at')->paginate(15)->withQueryString();
+
+        $archivedAccounts = ClientAccount::with('booking')
+            ->whereNotNull('archived_at')
+            ->orderByDesc('archived_at')
+            ->get();
+
+        $summary = [
+            'total' => ClientAccount::count(),
+            'active' => ClientAccount::whereNull('archived_at')->count(),
+            'archived' => ClientAccount::whereNotNull('archived_at')->count(),
+            'pendingChange' => ClientAccount::whereNull('archived_at')->where('must_change_password', true)->count(),
+        ];
+
+        return view('dashboard.clients', compact('accounts', 'archivedAccounts', 'summary'));
+    }
+
+    public function restore(string $account)
+    {
+        $account = ClientAccount::findOrFail($account);
+
+        if ($account->archived_at) {
+            $account->update(['archived_at' => null]);
+        }
+
+        return back()->with('success', "Account for {$account->client_name} has been restored.");
+    }
+
     public static function generateControlNumber(): string
     {
         do {

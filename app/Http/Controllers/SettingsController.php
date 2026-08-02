@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use App\Models\Booking;
-use App\Models\ClientAccount;
 use Illuminate\Http\Request;
 
 class SettingsController extends Controller
@@ -39,23 +38,7 @@ class SettingsController extends Controller
             ];
         })->sortBy('delete_at')->values();
 
-        $archivedAccounts = ClientAccount::whereNotNull('archived_at')
-            ->with('booking')
-            ->orderByDesc('archived_at')
-            ->get();
-
-        return view('dashboard.settings', compact('autoDeleteDays', 'rescheduleLeadTime', 'upcomingDeletions', 'archivedAccounts', 'refundPolicy'));
-    }
-
-    public function restore(string $account)
-    {
-        $account = ClientAccount::findOrFail($account);
-
-        if ($account->archived_at) {
-            $account->update(['archived_at' => null]);
-        }
-
-        return back()->with('success', "Account for {$account->client_name} has been restored.");
+        return view('dashboard.settings', compact('autoDeleteDays', 'rescheduleLeadTime', 'upcomingDeletions', 'refundPolicy'));
     }
 
     public function update(Request $request)
