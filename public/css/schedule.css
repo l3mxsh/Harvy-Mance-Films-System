@@ -1,5 +1,5 @@
 /* ============================================================
-   HarvyMance Films — Staff Schedule Calendar
+   HarvyMance Films — Staff Schedule
    Matches the white-first design system (booking.css / sidebar.css)
    ============================================================ */
 
@@ -19,7 +19,7 @@
     --ev-cancelled: #dc3545;
 }
 
-/* ---------------- Calendar surface ---------------- */
+/* ---------------- Schedule surface ---------------- */
 .schedule-layout {
     max-width: 1500px;
     margin: 0 auto;
@@ -32,16 +32,6 @@
     overflow: hidden;
 }
 
-/* ---------------- Toolbar ---------------- */
-.calendar-toolbar {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid var(--line);
-}
-
 .calendar-title {
     font-size: 1.2rem;
     font-weight: 700;
@@ -50,501 +40,105 @@
     white-space: nowrap;
 }
 
-.toolbar-nav .btn {
-    min-height: 38px;
-}
-
-.btn-icon {
-    display: inline-flex;
+.date-list-head {
+    display: flex;
     align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    padding: 0;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: #fff;
-    color: var(--ink);
-    transition: var(--ease);
-}
-
-.btn-icon:hover,
-.btn-icon:focus-visible {
-    border-color: var(--ink);
-    color: var(--ink);
-    background: var(--canvas);
-}
-
-.btn-today {
-    height: 38px;
-    padding: 0 1rem;
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--line);
-    background: #fff;
-    color: var(--ink);
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: var(--ease);
-}
-
-.btn-today:hover,
-.btn-today:focus-visible {
-    border-color: var(--ink);
-    color: var(--ink);
-}
-
-/* View switcher — pills */
-.view-switcher {
-    display: inline-flex;
-    background: var(--canvas);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-pill);
-    padding: 3px;
-    gap: 2px;
-}
-
-.view-switcher .btn {
-    border: none;
-    background: transparent;
-    color: var(--ink-soft);
-    font-size: 0.8rem;
-    font-weight: 500;
-    padding: 0.4rem 0.9rem;
-    border-radius: var(--radius-pill);
-    transition: var(--ease);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-}
-
-.view-switcher .btn:hover {
-    color: var(--ink);
-}
-
-.view-switcher .btn.active {
-    background: var(--ink);
-    color: #fff;
-    box-shadow: 0 2px 6px rgba(17, 17, 17, 0.18);
-}
-
-/* Search */
-.search-box {
-    position: relative;
-}
-
-.search-box .search-icon {
-    position: absolute;
-    left: 0.85rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--ink-soft);
-    font-size: 0.85rem;
-    pointer-events: none;
-}
-
-.search-box .form-control {
-    padding-left: 2.25rem;
-    width: 220px;
-    height: 38px;
-}
-
-/* ---------------- Month grid ---------------- */
-.calendar-scroll {
-    overflow-x: auto;
-}
-
-.month-grid {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(130px, 1fr));
-    min-width: 760px;
-}
-
-.cal-weekday {
-    background: var(--canvas);
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 1rem 1.25rem;
     border-bottom: 1px solid var(--line);
-    border-right: 1px solid var(--line);
-    padding: 0.6rem 0.75rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--ink-soft);
-    text-align: left;
 }
 
-.cal-weekday:last-child {
-    border-right: none;
-}
-
-.day-cell {
-    min-height: 128px;
-    padding: 0.5rem 0.55rem;
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    background: var(--surface);
-    position: relative;
-    transition: background 0.15s ease;
+/* ---------------- Schedules for date ---------------- */
+.date-schedules {
+    padding: 1.25rem;
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.7rem;
 }
 
-.day-cell:nth-child(7n) {
-    border-right: none;
-}
-
-.day-cell.is-empty::after {
-    content: "";
-    position: absolute;
-    inset: 0.6rem 0.6rem auto 0.6rem;
-    height: 2px;
-    border-radius: var(--radius-pill);
-    background: repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 12px);
-    opacity: 0.6;
-    pointer-events: none;
-}
-
-.day-cell:hover {
-    background: #fcfcfc;
-}
-
-.day-cell.other-month {
-    background: var(--canvas);
-}
-
-.day-cell.other-month .day-number {
-    color: #c3c9cf;
-}
-
-.day-cell.today {
-    background: #fff;
-    box-shadow: inset 0 0 0 1.5px var(--ink);
-    border-radius: 4px;
-}
-
-.day-number {
-    width: 26px;
-    height: 26px;
-    display: inline-flex;
+.sched-card {
+    display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: #495057;
-    border-radius: 50%;
-    margin-bottom: 0.15rem;
-}
-
-.day-cell.today .day-number {
-    background: var(--ink);
-    color: #fff;
-}
-
-.day-cell .cell-events {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    flex: 1;
-    overflow: hidden;
-}
-
-/* ---------------- Event chips (month / week) ---------------- */
-.cal-chip {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    padding: 5px 8px;
-    border-radius: 8px;
-    font-size: 0.72rem;
-    line-height: 1.35;
-    color: var(--ink);
+    gap: 1rem;
+    padding: 0.85rem 1rem;
     background: #fff;
     border: 1px solid var(--line);
+    border-radius: var(--radius-md);
     cursor: pointer;
-    user-select: none;
     transition: var(--ease);
-    overflow: hidden;
 }
 
-.cal-chip:hover {
+.sched-card:hover,
+.sched-card:focus-visible {
     border-color: #ced4da;
+    box-shadow: 0 3px 10px rgba(17, 17, 17, 0.06);
     transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(17, 17, 17, 0.08);
 }
 
-.cal-chip:active {
-    cursor: grabbing;
-}
-
-.cal-chip .chip-title {
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.cal-chip .chip-staff {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    color: var(--ink-soft);
-    font-size: 0.7rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.cal-chip.is-dragging {
-    opacity: 0.4;
-    transform: scale(0.98);
-}
-
-.cal-chip.drop-target {
-    outline: 2px dashed var(--ink);
-    outline-offset: 2px;
-}
-
-.cal-chip .chip-venue {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    width: 100%;
-    color: var(--ink-soft);
-    font-size: 0.68rem;
-    margin-top: 1px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.more-link {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--ink-soft);
-    background: var(--canvas);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 2px 7px;
-    cursor: pointer;
-    transition: var(--ease);
-    text-align: left;
-}
-
-.more-link:hover {
-    color: var(--ink);
-    border-color: #ced4da;
-}
-
-/* empty day placeholder */
-.cell-empty-hint {
-    font-size: 0.7rem;
-    color: #c3c9cf;
-    border: 1px dashed var(--line);
-    border-radius: 8px;
-    padding: 3px 7px;
-    text-align: center;
-}
-
-/* ---------------- Week view ---------------- */
-.week-grid {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(160px, 1fr));
-    min-width: 960px;
-}
-
-.week-col {
-    border-right: 1px solid var(--line);
-    display: flex;
-    flex-direction: column;
-}
-
-.week-col:last-child {
-    border-right: none;
-}
-
-.week-col .col-head {
-    padding: 0.7rem 0.65rem;
-    text-align: center;
-    border-bottom: 1px solid var(--line);
-    background: var(--surface);
-    transition: var(--ease);
-}
-
-.week-col .col-head.today-head {
-    background: var(--canvas);
-}
-
-.week-col .col-weekday {
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--ink-soft);
-}
-
-.week-col .col-daynum {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    font-size: 0.95rem;
-    font-weight: 700;
-    margin-top: 0.15rem;
-    color: var(--ink);
-}
-
-.week-col.today-col .col-daynum {
-    background: var(--ink);
-    color: #fff;
-}
-
-.week-col .col-body {
-    flex: 1;
-    padding: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    min-height: 220px;
-    background: var(--surface);
-    transition: background 0.15s ease;
-}
-
-.week-col .col-body:hover {
-    background: #fcfcfc;
-}
-
-/* ---------------- Day view (timeline) ---------------- */
-.day-view {
-    position: relative;
-    overflow-x: auto;
-}
-
-.timeline {
-    position: relative;
-    min-width: 640px;
-}
-
-.timeline-hour-labels {
-    position: relative;
-    width: 64px;
+.sched-time {
     flex-shrink: 0;
-    z-index: 3;
-}
-
-.timeline-body {
-    position: relative;
-    flex: 1;
-    border-left: 1px solid var(--line);
-    min-height: 100%;
-}
-
-.timeline-hour {
-    position: absolute;
-    left: 0;
-    right: 0;
-    border-top: 1px solid var(--line);
-    pointer-events: none;
-}
-
-.timeline-hour.now-line {
-    border-top: 2px solid var(--ink);
-    z-index: 2;
-}
-
-.timeline-hour.now-line::after {
-    content: "";
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--ink);
-}
-
-.timeline-hour-label {
-    position: absolute;
-    right: 8px;
-    transform: translateY(-50%);
-    font-size: 0.7rem;
-    color: var(--ink-soft);
-    text-align: right;
-    white-space: nowrap;
-}
-
-.timeline-events {
-    position: absolute;
-    inset: 0;
-}
-
-.timeline-event {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-radius: 10px;
-    padding: 6px 8px;
-    font-size: 0.75rem;
-    line-height: 1.35;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    cursor: pointer;
-    overflow: hidden;
-    box-shadow: 0 1px 2px rgba(17, 17, 17, 0.05);
-    transition: var(--ease);
-    user-select: none;
-}
-
-.timeline-event:hover {
-    box-shadow: 0 4px 14px rgba(17, 17, 17, 0.12);
-    transform: translateY(-1px);
-    z-index: 5;
-}
-
-.timeline-event:active {
-    cursor: grabbing;
-}
-
-.timeline-event .te-time {
+    min-width: 84px;
+    font-size: 0.8rem;
     font-weight: 700;
-    font-size: 0.7rem;
+    color: var(--ink);
 }
 
-.timeline-event .te-title {
+.sched-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.sched-title {
     font-weight: 600;
-    margin-top: 1px;
-    width: 100%;
+    font-size: 0.9rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.timeline-event .te-staff {
+.sched-staff,
+.sched-venue {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
     color: var(--ink-soft);
+    font-size: 0.78rem;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sched-status {
+    flex-shrink: 0;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
     font-size: 0.7rem;
-    margin-top: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.25rem;
+    padding: 0.35rem 0.7rem;
 }
 
-.timeline-event .te-venue {
+.date-empty {
+    text-align: center;
     color: var(--ink-soft);
-    font-size: 0.68rem;
-    margin-top: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.25rem;
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    padding: 3rem 1rem;
+}
+
+.date-empty i {
+    font-size: 2.2rem;
+    color: #c3c9cf;
+    display: block;
+    margin-bottom: 0.6rem;
+}
+
+.date-empty div {
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.date-empty small {
+    color: var(--ink-soft);
 }
 
 /* ---------------- Sidebar widgets ---------------- */
@@ -643,6 +237,27 @@
 
 .mini-day.selected .mini-dot.has-events {
     background: #fff;
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--ink);
+    transition: var(--ease);
+}
+
+.btn-icon:hover,
+.btn-icon:focus-visible {
+    border-color: var(--ink);
+    color: var(--ink);
+    background: var(--canvas);
 }
 
 .mini-nav {
@@ -770,18 +385,6 @@
 }
 
 /* ---------------- Misc ---------------- */
-.calendar-footer {
-    padding: 0.9rem 1.25rem;
-    border-top: 1px solid var(--line);
-    font-size: 0.78rem;
-    color: var(--ink-soft);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-}
-
 .count-badge {
     font-size: 0.7rem;
     font-weight: 600;
@@ -797,21 +400,6 @@
     .calendar-title {
         font-size: 1.05rem;
     }
-
-    .search-box .form-control {
-        width: 170px;
-    }
-}
-
-@media (max-width: 991.98px) {
-    .calendar-toolbar {
-        gap: 0.6rem;
-    }
-
-    .toolbar-actions {
-        width: 100%;
-        justify-content: space-between;
-    }
 }
 
 @media (max-width: 575.98px) {
@@ -819,20 +407,11 @@
         font-size: 0.98rem;
     }
 
-    .btn-today {
-        padding: 0 0.8rem;
-        font-size: 0.78rem;
+    .sched-card {
+        flex-wrap: wrap;
     }
 
-    .view-switcher .btn span {
-        display: none;
-    }
-
-    .view-switcher .btn {
-        padding: 0.4rem 0.7rem;
-    }
-
-    .search-box .form-control {
-        width: 140px;
+    .sched-status {
+        width: 100%;
     }
 }

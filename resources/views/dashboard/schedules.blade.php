@@ -35,7 +35,7 @@
                     <div class="col-lg-4 col-xl-3">
 
                         <div class="side-widget">
-                            <div class="widget-title"><i class="bi bi-calendar3"></i> Mini Calendar</div>
+                            <div class="widget-title"><i class="bi bi-calendar3"></i> Calendar</div>
                             <div id="miniCalendar"></div>
                         </div>
 
@@ -84,53 +84,17 @@
 
                     </div>
 
-                    {{-- ==================== CALENDAR ==================== --}}
+                    {{-- ==================== SCHEDULES FOR DATE ==================== --}}
                     <div class="col-lg-8 col-xl-9">
 
                         <div class="calendar-surface">
-                            {{-- Toolbar --}}
-                            <div class="calendar-toolbar">
-                                <div class="d-flex align-items-center gap-2">
-                                    <button type="button" class="btn-icon" id="navPrev" aria-label="Previous period">
-                                        <i class="bi bi-chevron-left"></i>
-                                    </button>
-                                    <button type="button" class="btn-today" id="navToday">Today</button>
-                                    <button type="button" class="btn-icon" id="navNext" aria-label="Next period">
-                                        <i class="bi bi-chevron-right"></i>
-                                    </button>
-                                </div>
-
-                                <h2 class="calendar-title" id="calendarTitle">Month</h2>
-
-                                <div class="ms-lg-auto d-flex align-items-center gap-2 toolbar-actions flex-wrap">
-                                    <div class="search-box">
-                                        <i class="bi bi-search search-icon"></i>
-                                        <input type="search" class="form-control" id="scheduleSearch"
-                                            placeholder="Search schedules…" aria-label="Search schedules">
-                                    </div>
-
-                                    <div class="view-switcher" role="group" aria-label="Calendar view switcher">
-                                        <button type="button" class="btn active" data-view="month" aria-pressed="true">
-                                            <i class="bi bi-calendar3"></i><span> Month</span>
-                                        </button>
-                                        <button type="button" class="btn" data-view="week" aria-pressed="false">
-                                            <i class="bi bi-calendar-week"></i><span> Week</span>
-                                        </button>
-                                        <button type="button" class="btn" data-view="day" aria-pressed="false">
-                                            <i class="bi bi-calendar-day"></i><span> Day</span>
-                                        </button>
-                                    </div>
+                            <div class="date-list-head">
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                    <h2 class="calendar-title" id="dateTitle">Today</h2>
+                                    <span class="count-badge" id="eventCount">0 schedules</span>
                                 </div>
                             </div>
-
-                            {{-- View --}}
-                            <div id="calendarView"></div>
-
-                            {{-- Footer --}}
-                            <div class="calendar-footer">
-                                <span><i class="bi bi-arrows-move me-1"></i>Drag &amp; drop schedules to reschedule · Click an event for details</span>
-                                <span class="count-badge" id="eventCount">0 schedules</span>
-                            </div>
+                            <div id="dateSchedules" class="date-schedules"></div>
                         </div>
                     </div>
 
@@ -139,27 +103,7 @@
         </div>
     </div>
 
-    {{-- ==================== SCHEDULE DETAIL MODAL ==================== --}}
-    <div class="modal fade schedule-modal" id="scheduleDetailModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header align-items-start">
-                    <div>
-                        <span class="badge bg-secondary me-2" id="evStatusBadge"></span>
-                        <h5 class="modal-title d-inline" id="evTitle"></h5>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="evMeta"></div>
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-outline-dark rounded-pill" id="evViewBooking" target="_blank">
-                       View Booking
-                    </a>
-                    <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('partials.modals.schedule-details')
 
     {{-- FLASH TOASTS --}}
     <div class="toast-container position-fixed top-0 end-0 p-3" id="flashToasts" style="z-index: 1080;">
