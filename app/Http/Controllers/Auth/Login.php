@@ -22,6 +22,18 @@ class Login extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if ($user->role !== 'admin' || $user->status !== 'active') {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->withErrors([
+                    'email' => 'This account is not active or does not have admin access.',
+                ])->onlyInput('email');
+            }
+
             $request->session()->regenerate();
             return redirect()->route('admin.dashboard');
         }

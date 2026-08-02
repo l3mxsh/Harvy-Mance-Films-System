@@ -18,6 +18,7 @@ use App\Http\Controllers\RescheduleController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\CancellationController;
 use App\Http\Controllers\OutsourcedStaffController;
+use App\Http\Controllers\UserManagementController;
 
 Route::get('/', [BookingController::class, 'index'])->name('home');
 
@@ -142,4 +143,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::put('/admin/settings', [SettingsController::class, 'update'])->name('settings.update');
+
+    Route::get('/admin/users', [UserManagementController::class, 'index'])->name('users.admin.index');
+    Route::post('/admin/users', [UserManagementController::class, 'store'])->name('users.admin.store');
+    Route::put('/admin/users/{user}', [UserManagementController::class, 'update'])->name('users.admin.update');
+    Route::post('/admin/users/{user}/toggle-status', [UserManagementController::class, 'toggleStatus'])->name('users.admin.toggleStatus');
+    Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy'])->name('users.admin.destroy');
 });

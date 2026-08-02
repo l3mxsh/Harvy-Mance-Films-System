@@ -70,6 +70,11 @@ $archivedClientsCount = \App\Models\ClientAccount::whereNotNull('archived_at')->
             </a>
         </li>
         <li>
+            <a href="{{ route('users.admin.index') }}" class="{{ str_starts_with($currentRoute, 'users.admin') ? 'active' : '' }}">
+                <i class="bi bi-person-gear"></i> User Management
+            </a>
+        </li>
+        <li>
             <a href="{{ route('settings.index') }}" class="{{ $currentRoute === 'settings.index' ? 'active' : '' }}">
                 <i class="bi bi-gear"></i> Settings
             </a>
