@@ -62,11 +62,6 @@ $pendingPaymentsCount = \App\Models\Downpayment::where('status', 'pending')->cou
         </li>
         <li>
             <a href="{{ url('/login') }}">
-                <i class="bi bi-person-badge"></i> Booking Monitoring
-            </a>
-        </li>
-        <li>
-            <a href="#">
                 <i class="bi bi-people"></i> Clients
             </a>
         </li>

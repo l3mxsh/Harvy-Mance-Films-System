@@ -11,7 +11,7 @@
                 </div>
                 <div class="modal-body" id="evMeta"></div>
                 <div class="modal-footer">
-                    <a href="#" class="btn btn-outline-dark rounded-pill" id="evViewBooking" target="_blank">
+                    <a href="#" class="btn btn-outline-dark rounded-pill" id="evViewBooking">
                        View Booking
                     </a>
                     <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">Close</button>
