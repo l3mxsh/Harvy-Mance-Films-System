@@ -86,7 +86,7 @@
             <section class="surface-card">
                 <div class="section-head">
                     <div class="d-flex align-items-center gap-2 flex-wrap mb-3">
-                        <h2 class="section-title"><i class="bi bi-list-check me-2"></i>All Post-Production Projects</h2>
+                        <h2 class="section-title">All Post-Production Projects</h2>
                         <span class="badge bg-light text-dark border" id="ppTotalBadge">{{ $postProductions->total() }} total</span>
                     </div>
                     <input type="text" id="ppSearchInput" class="form-control"

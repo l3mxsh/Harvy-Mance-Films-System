@@ -1,19 +1,32 @@
-let packageModal, viewModal, deletePackageModal;
+let packageModal, deletePackageModal;
 let addonModal, viewAddonModal, deleteAddonModal;
 
 let pkgInventoryItems = [];
 let addonInventoryItems = [];
 
 document.addEventListener('DOMContentLoaded', function () {
-    packageModal = new bootstrap.Modal(document.getElementById('packageModal'));
-    viewModal = new bootstrap.Modal(document.getElementById('viewPackageModal'));
-    deletePackageModal = new bootstrap.Modal(document.getElementById('deletePackageModal'));
-    addonModal = new bootstrap.Modal(document.getElementById('addonModal'));
-    viewAddonModal = new bootstrap.Modal(document.getElementById('viewAddonModal'));
-    deleteAddonModal = new bootstrap.Modal(document.getElementById('deleteAddonModal'));
+    if (document.getElementById('packageModal')) {
+        packageModal = new bootstrap.Modal(document.getElementById('packageModal'));
+    }
+    if (document.getElementById('deletePackageModal')) {
+        deletePackageModal = new bootstrap.Modal(document.getElementById('deletePackageModal'));
+    }
+    if (document.getElementById('addonModal')) {
+        addonModal = new bootstrap.Modal(document.getElementById('addonModal'));
+    }
+    if (document.getElementById('viewAddonModal')) {
+        viewAddonModal = new bootstrap.Modal(document.getElementById('viewAddonModal'));
+    }
+    if (document.getElementById('deleteAddonModal')) {
+        deleteAddonModal = new bootstrap.Modal(document.getElementById('deleteAddonModal'));
+    }
 
-    setupInventorySearch('pkgInventorySearch', 'pkgInventoryDropdown', 'pkg');
-    setupInventorySearch('addonInventorySearch', 'addonInventoryDropdown', 'addon');
+    if (document.getElementById('pkgInventorySearch')) {
+        setupInventorySearch('pkgInventorySearch', 'pkgInventoryDropdown', 'pkg');
+    }
+    if (document.getElementById('addonInventorySearch')) {
+        setupInventorySearch('addonInventorySearch', 'addonInventoryDropdown', 'addon');
+    }
 });
 
 // ==================== INVENTORY SEARCH ====================
@@ -37,8 +50,11 @@ function setupInventorySearch(inputId, dropdownId, prefix) {
     });
 
     input.addEventListener('focus', function () {
-        if (dropdown.children.length > 0 && this.value.trim().length >= 1) {
+        const q = this.value.trim();
+        if (q.length >= 1 && dropdown.children.length > 0) {
             dropdown.classList.add('show');
+        } else {
+            searchInventoryItems(q, dropdownId, prefix);
         }
     });
 
@@ -70,7 +86,7 @@ async function searchInventoryItems(query, dropdownId, prefix) {
                 <button type="button" class="dropdown-item d-flex justify-content-between align-items-center"
                         onclick="addInventoryItem('${prefix}', ${item.id}, '${escapeHtml(item.name)}', '${item.category}', ${item.quantity}, '${escapeHtml(item.unit)}')">
                     <span>
-                        <i class="bi bi-${item.category === 'equipment' ? 'camera' : 'box'} me-2"></i>${escapeHtml(item.name)}
+                        ${escapeHtml(item.name)}
                         <small class="text-muted ms-1">(${item.category})</small>
                     </span>
                     <small class="text-muted">${item.quantity} ${escapeHtml(item.unit)} avail</small>
@@ -143,7 +159,6 @@ function renderInventoryTable(prefix) {
         <tr>
             <td>
                 <input type="hidden" name="inventory_items[]" value="${item.id}">
-                <i class="bi bi-${item.category === 'equipment' ? 'camera' : 'box'} me-1 text-muted"></i>
                 ${item.name}
                 <small class="text-muted">(${item.category})</small>
             </td>
@@ -154,7 +169,7 @@ function renderInventoryTable(prefix) {
                        required>
             </td>
             <td class="text-center">
-                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeInventoryItem('${prefix}', ${item.id})">
+                <button type="button" class="btn btn-sm btn-outline-danger border-0" onclick="removeInventoryItem('${prefix}', ${item.id})" title="Remove item">
                     <i class="bi bi-x-lg"></i>
                 </button>
             </td>
@@ -215,7 +230,7 @@ function addService(value = '') {
     row.className = 'input-group mb-2 service-row';
     row.innerHTML = `
         <input type="text" class="form-control" name="services[]" placeholder="e.g. Pre-nuptial shoot" value="${value}" required>
-        <button type="button" class="btn btn-outline-danger" onclick="removeService(this)"><i class="bi bi-x-lg"></i></button>
+        <button type="button" class="btn btn-outline-danger border-0" onclick="removeService(this)" title="Remove service"><i class="bi bi-x-lg"></i></button>
     `;
     container.appendChild(row);
 }
@@ -232,7 +247,7 @@ function resetServices() {
     container.innerHTML = `
         <div class="input-group mb-2 service-row">
             <input type="text" class="form-control" name="services[]" placeholder="e.g. Pre-nuptial shoot" required>
-            <button type="button" class="btn btn-outline-danger" onclick="removeService(this)"><i class="bi bi-x-lg"></i></button>
+            <button type="button" class="btn btn-outline-danger border-0" onclick="removeService(this)" title="Remove service"><i class="bi bi-x-lg"></i></button>
         </div>
     `;
 }
@@ -242,68 +257,6 @@ function setServices(services) {
     container.innerHTML = '';
     services.forEach(s => addService(s.service_name));
     if (services.length === 0) addService();
-}
-
-async function viewPackage(id) {
-    const res = await fetch(`/package/${id}`);
-    const pkg = await res.json();
-
-    document.getElementById('viewName').textContent = pkg.name;
-    document.getElementById('viewPrice').textContent = '\u20B1' + parseFloat(pkg.price).toLocaleString('en', { minimumFractionDigits: 2 });
-    document.getElementById('viewDescription').textContent = pkg.description || 'No description provided.';
-
-    const statusEl = document.getElementById('viewStatus');
-    statusEl.innerHTML = pkg.status === 'active'
-        ? '<span class="badge bg-success">Active</span>'
-        : '<span class="badge bg-secondary">Inactive</span>';
-
-    const servicesList = document.getElementById('viewServices');
-    servicesList.innerHTML = pkg.services.length
-        ? pkg.services.map(s => `<li class="list-group-item"><i class="bi bi-check2-circle text-success me-2"></i>${s.service_name}</li>`).join('')
-        : '<li class="list-group-item text-muted">No services included.</li>';
-
-    const inventoryEl = document.getElementById('viewInventory');
-    if (pkg.inventory && pkg.inventory.length > 0) {
-        inventoryEl.innerHTML = `
-            <table class="table table-sm table-bordered mb-0">
-                <thead class="table-light">
-                    <tr><th>Item</th><th>Category</th><th class="text-center">Qty Needed</th><th>Unit</th></tr>
-                </thead>
-                <tbody>
-                    ${pkg.inventory.map(i => `
-                        <tr>
-                            <td><i class="bi bi-${i.category === 'equipment' ? 'camera' : 'box'} me-1"></i>${i.name}</td>
-                            <td><span class="badge bg-${i.category === 'equipment' ? 'primary' : 'purple'} bg-opacity-10 text-${i.category === 'equipment' ? 'primary' : 'purple'}">${i.category === 'equipment' ? 'Equipment' : 'Material'}</span></td>
-                            <td class="text-center">${i.pivot.quantity}</td>
-                            <td>${i.unit}</td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-            </table>
-        `;
-    } else {
-        inventoryEl.innerHTML = '<div class="text-muted small">No equipment or materials assigned.</div>';
-    }
-
-    viewModal.show();
-}
-
-async function editPackage(id) {
-    const res = await fetch(`/package/${id}`);
-    const pkg = await res.json();
-
-    document.getElementById('packageName').value = pkg.name;
-    document.getElementById('packagePrice').value = pkg.price;
-    document.getElementById('packageDescription').value = pkg.description || '';
-    document.getElementById('packageStatus').value = pkg.status;
-    setServices(pkg.services);
-    setPackageInventory(pkg.inventory || []);
-
-    document.getElementById('packageForm').action = `/package/${pkg.id}`;
-    document.getElementById('formMethod').value = 'PUT';
-    document.getElementById('packageModalTitle').textContent = 'Edit Package';
-    document.getElementById('packageSubmitBtn').textContent = 'Update Package';
-    packageModal.show();
 }
 
 function confirmDeletePackage(id, name) {
@@ -348,7 +301,7 @@ async function viewAddon(id) {
                     ${addon.inventory.map(i => `
                         <tr>
                             <td><i class="bi bi-${i.category === 'equipment' ? 'camera' : 'box'} me-1"></i>${i.name}</td>
-                            <td><span class="badge bg-${i.category === 'equipment' ? 'primary' : 'purple'} bg-opacity-10 text-${i.category === 'equipment' ? 'primary' : 'purple'}">${i.category === 'equipment' ? 'Equipment' : 'Material'}</span></td>
+                            <td><span class="badge ${i.category === 'equipment' ? 'bg-primary bg-opacity-10 text-primary' : 'bg-purple text-white'}">${i.category === 'equipment' ? 'Equipment' : 'Material'}</span></td>
                             <td class="text-center">${i.pivot.quantity}</td>
                             <td>${i.unit}</td>
                         </tr>

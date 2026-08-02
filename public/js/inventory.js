@@ -26,7 +26,7 @@ async function viewItem(id) {
     const categoryEl = document.getElementById('viewCategory');
     categoryEl.innerHTML = item.category === 'equipment'
         ? '<span class="badge bg-primary bg-opacity-10 text-primary">Equipment</span>'
-        : '<span class="badge bg-purple bg-opacity-10 text-purple">Material</span>';
+        : '<span class="badge bg-purple text-white">Material</span>';
 
     const conditionLabels = { new: 'New', good: 'Good', maintenance: 'Maintenance', damaged: 'Damaged' };
     const conditionColors = { new: 'success', good: 'info', maintenance: 'warning text-dark', damaged: 'danger' };

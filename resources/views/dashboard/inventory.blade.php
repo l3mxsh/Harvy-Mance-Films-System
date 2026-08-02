@@ -195,7 +195,7 @@
                                             @if($item->category === 'equipment')
                                                 <span class="badge bg-primary bg-opacity-10 text-primary">Equipment</span>
                                             @else
-                                                <span class="badge bg-purple bg-opacity-10 text-purple">Material</span>
+                                                <span class="badge bg-purple text-white">Material</span>
                                             @endif
                                         </td>
                                         <td class="text-center">

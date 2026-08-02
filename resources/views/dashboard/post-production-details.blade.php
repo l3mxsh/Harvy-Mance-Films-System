@@ -63,7 +63,7 @@
                 {{-- TASKS --}}
                 <section class="surface-card panel-tasks">
                     <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <h2 class="section-title"><i class="bi bi-list-task me-2"></i>Assigned Tasks</h2>
+                        <h2 class="section-title">Assigned Tasks</h2>
                         <span class="badge bg-light text-dark border">{{ $postProduction->tasks->count() }} total</span>
                     </div>
 
@@ -262,7 +262,7 @@
                 {{-- NOTES --}}
                 <section class="surface-card panel-notes">
                     <div class="section-head">
-                        <h2 class="section-title"><i class="bi bi-journal-text me-2"></i>Production Notes</h2>
+                        <h2 class="section-title">Production Notes</h2>
                     </div>
                     <form method="POST" action="{{ route('post-production.update-notes', $postProduction->id) }}">
                         @csrf
@@ -280,7 +280,7 @@
                 {{-- BOOKING INFO --}}
                 <section class="surface-card panel-booking">
                     <div class="section-head">
-                        <h2 class="section-title"><i class="bi bi-journal-text me-2"></i>Booking Info</h2>
+                        <h2 class="section-title">Booking Info</h2>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Booking Ref</span>
@@ -309,7 +309,7 @@
 
                 <section class="surface-card panel-payment">
                     <div class="section-head">
-                        <h2 class="section-title"><i class="bi bi-cash-stack me-2"></i>Payment Status</h2>
+                        <h2 class="section-title">Payment Status</h2>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Total Price</span>
@@ -347,7 +347,7 @@
 
                 <section class="surface-card panel-summary">
                     <div class="section-head">
-                        <h2 class="section-title"><i class="bi bi-clipboard-data me-2"></i>Task Summary</h2>
+                        <h2 class="section-title">Task Summary</h2>
                     </div>
                     @php
                         $total = $postProduction->tasks->count();

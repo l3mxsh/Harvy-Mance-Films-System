@@ -105,7 +105,7 @@
                 <div class="tab-pane fade show active" id="packagesTab" role="tabpanel">
                     <section class="surface-card">
                         <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
-                            <h2 class="section-title"><i class="bi bi-box-seam me-2"></i>Packages</h2>
+                            <h2 class="section-title">Packages</h2>
                             <button class="btn btn-dark rounded-pill" onclick="openAddModal()">
                                 <i class="bi bi-plus-lg me-1"></i> Add Package
                             </button>
@@ -154,12 +154,9 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="d-flex justify-content-center gap-2">
-                                                    <button class="btn btn-sm btn-outline-secondary rounded-3" title="View" onclick="viewPackage({{ $pkg->id }})">
+                                                    <a class="btn btn-sm btn-outline-secondary rounded-3" title="View & Edit" href="{{ route('package.edit', $pkg->id) }}">
                                                         <i class="bi bi-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-outline-dark rounded-3" title="Edit" onclick="editPackage({{ $pkg->id }})">
-                                                        <i class="bi bi-pencil"></i>
-                                                    </button>
+                                                    </a>
                                                     <button class="btn btn-sm btn-outline-danger rounded-3" title="Delete" onclick="confirmDeletePackage({{ $pkg->id }}, '{{ addslashes($pkg->name) }}')">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
@@ -184,7 +181,7 @@
                 <div class="tab-pane fade" id="addonsTab" role="tabpanel">
                     <section class="surface-card">
                         <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
-                            <h2 class="section-title"><i class="bi bi-plus-circle me-2"></i>Add-Ons</h2>
+                            <h2 class="section-title">Add-Ons</h2>
                             <button class="btn btn-dark rounded-pill" onclick="openAddAddonModal()">
                                 <i class="bi bi-plus-lg me-1"></i> Add Add-On
                             </button>
@@ -337,49 +334,6 @@
                         <button type="submit" class="btn btn-dark rounded-pill" id="packageSubmitBtn">Save Package</button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- View Package Modal -->
-    <div class="modal fade" id="viewPackageModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Package Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="text-muted small">Package Name</label>
-                        <div class="fw-semibold fs-5" id="viewName"></div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-6">
-                            <label class="text-muted small">Price</label>
-                            <div class="fw-semibold text-success fs-5" id="viewPrice"></div>
-                        </div>
-                        <div class="col-6">
-                            <label class="text-muted small">Status</label>
-                            <div id="viewStatus"></div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="text-muted small">Description</label>
-                        <div id="viewDescription" class="text-secondary"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="text-muted small">Service Inclusions</label>
-                        <ul class="list-group list-group-flush" id="viewServices"></ul>
-                    </div>
-                    <div>
-                        <label class="text-muted small">Required Equipment & Materials</label>
-                        <div id="viewInventory"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Close</button>
-                </div>
             </div>
         </div>
     </div>

@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/package', [PackageController::class, 'index'])->name('package');
     Route::post('/package', [PackageController::class, 'store'])->name('package.store');
+    Route::get('/package/{package}/edit', [PackageController::class, 'edit'])->name('package.edit');
     Route::get('/package/{package}', [PackageController::class, 'show'])->name('package.show');
     Route::put('/package/{package}', [PackageController::class, 'update'])->name('package.update');
     Route::delete('/package/{package}', [PackageController::class, 'destroy'])->name('package.destroy');

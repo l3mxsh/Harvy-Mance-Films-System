@@ -39,7 +39,7 @@
 
                     <section class="surface-card">
                         <div class="section-head">
-                            <h2 class="section-title"><i class="bi bi-info-circle me-2"></i>Booking Information</h2>
+                            <h2 class="section-title">Booking Information</h2>
                         </div>
                         <div class="row g-3">
                             <div class="col-md-3">
@@ -74,7 +74,7 @@
 
                         <section class="surface-card">
                             <div class="section-head">
-                                <h2 class="section-title"><i class="bi bi-gear me-2"></i>General Settings</h2>
+                                <h2 class="section-title">General Settings</h2>
                             </div>
                             <div class="row g-3">
                                 <div class="col-md-6">
@@ -102,7 +102,7 @@
 
                         <section class="surface-card">
                             <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
-                                <h2 class="section-title"><i class="bi bi-list-task me-2"></i>Task Assignments</h2>
+                                <h2 class="section-title">Task Assignments</h2>
                                 <button type="button" class="btn btn-sm btn-outline-dark rounded-2" id="addTaskBtn">
                                     <i class="bi bi-plus-lg me-1"></i>Add Task
                                 </button>

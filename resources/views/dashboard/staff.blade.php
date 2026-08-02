@@ -167,7 +167,7 @@
                 <section class="surface-card">
                     <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
                         <h2 class="section-title">
-                            <i class="bi bi-person-lines-fill me-2"></i>Outsourced Staff
+                            Outsourced Staff
                             <span class="badge bg-warning text-dark ms-1">Record Only</span>
                         </h2>
                         <button type="button" class="btn btn-sm btn-outline-dark rounded-pill"
@@ -226,7 +226,7 @@
             @if($tab === 'teams')
                 <section class="surface-card mb-4">
                     <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <h2 class="section-title"><i class="bi bi-people-fill me-2"></i>All Teams</h2>
+                        <h2 class="section-title">All Teams</h2>
                         <span class="badge bg-light text-dark border">{{ $teams->total() }} total</span>
                     </div>
                     <form method="GET" action="{{ route('staff.admin.index') }}" id="teamFilterForm"
@@ -330,7 +330,7 @@
                 <section class="surface-card">
                     <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
                         <h2 class="section-title">
-                            <i class="bi bi-people me-2"></i>{{ $tab === 'in-house' ? 'In-House Staff' : 'All Staff' }}
+                            {{ $tab === 'in-house' ? 'In-House Staff' : 'All Staff' }}
                         </h2>
                         <div class="d-flex align-items-center gap-2">
                             <span class="badge bg-light text-dark border" id="staffTotalBadge">{{ $staff->total() }}

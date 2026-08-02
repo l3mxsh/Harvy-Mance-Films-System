@@ -62,7 +62,7 @@
 
             <section class="surface-card">
                 <div class="section-head d-flex justify-content-between align-items-center">
-                    <h2 class="section-title"><i class="bi bi-credit-card me-2"></i>Payment Submissions</h2>
+                    <h2 class="section-title">Payment Submissions</h2>
                     <span class="badge bg-light text-dark border">{{ $downpayments->total() }} total</span>
                 </div>
                 <div class="table-responsive">

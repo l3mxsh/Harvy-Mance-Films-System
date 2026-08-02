@@ -18,7 +18,7 @@ $pendingPaymentsCount = \App\Models\Downpayment::where('status', 'pending')->cou
             </a>
         </li>
         <li>
-            <a href="{{ route('package') }}" class="{{ $currentRoute === 'package' ? 'active' : '' }}">
+            <a href="{{ route('package') }}" class="{{ str_starts_with($currentRoute, 'package') ? 'active' : '' }}">
                 <i class="bi bi-film"></i> Package
             </a>
         </li>

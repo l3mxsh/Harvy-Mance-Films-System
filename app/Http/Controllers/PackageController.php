@@ -54,6 +54,12 @@ class PackageController extends Controller
         return redirect()->route('package')->with('success', 'Package created successfully.');
     }
 
+    public function edit(Package $package)
+    {
+        $package->load(['services', 'inventory']);
+        return view('dashboard.package-edit', compact('package'));
+    }
+
     public function show(Package $package)
     {
         $package->load(['services', 'inventory']);

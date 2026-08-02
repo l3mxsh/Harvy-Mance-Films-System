@@ -49,7 +49,7 @@
                 {{-- RESCHEDULE REQUESTS TAB --}}
                 <section class="surface-card">
                     <div class="section-head d-flex justify-content-between align-items-center">
-                        <h2 class="section-title"><i class="bi bi-calendar-event me-2"></i>Reschedule Requests</h2>
+                        <h2 class="section-title">Reschedule Requests</h2>
                         <span class="badge bg-light text-dark border">{{ $rescheduleRequests->count() }} total</span>
                     </div>
                     <div class="table-responsive">
@@ -131,7 +131,7 @@
                 {{-- ALL BOOKINGS TAB --}}
                 <section class="surface-card">
                     <div class="section-head d-flex justify-content-between align-items-center">
-                        <h2 class="section-title"><i class="bi bi-journal-check me-2"></i>All Bookings</h2>
+                        <h2 class="section-title">All Bookings</h2>
                         <span class="badge bg-light text-dark border">{{ $bookings->total() }} total</span>
                     </div>
                     <div class="table-responsive">
