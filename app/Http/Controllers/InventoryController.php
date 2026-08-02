@@ -37,15 +37,13 @@ class InventoryController extends Controller
         $availableItems = InventoryItem::where('availability_status', 'available')->count();
         $inUseItems = InventoryItem::where('availability_status', 'in_use')->count();
         $maintenanceItems = InventoryItem::where('condition_status', 'maintenance')->count();
-        $lowStockItems = InventoryItem::where('quantity', '<=', 2)->count();
 
         return view('dashboard.inventory', compact(
             'items',
             'totalItems',
             'availableItems',
             'inUseItems',
-            'maintenanceItems',
-            'lowStockItems'
+            'maintenanceItems'
         ));
     }
 
