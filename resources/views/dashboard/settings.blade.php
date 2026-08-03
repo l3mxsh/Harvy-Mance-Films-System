@@ -42,9 +42,6 @@
 
                             <div class="setting-item">
                                 <div class="d-flex gap-3">
-                                    <div class="setting-icon bg-warning bg-opacity-10 text-warning">
-                                        <i class="bi bi-hourglass-split"></i>
-                                    </div>
                                     <div class="flex-grow-1">
                                         <label class="setting-label">Client Account Auto-Archiving</label>
                                         <p class="setting-hint">
@@ -64,9 +61,6 @@
 
                             <div class="setting-item">
                                 <div class="d-flex gap-3">
-                                    <div class="setting-icon bg-primary bg-opacity-10 text-primary">
-                                        <i class="bi bi-calendar-event"></i>
-                                    </div>
                                     <div class="flex-grow-1">
                                         <label class="setting-label">Reschedule Minimum Lead Time</label>
                                         <p class="setting-hint">
@@ -86,9 +80,6 @@
 
                             <div class="setting-item">
                                 <div class="d-flex gap-3">
-                                    <div class="setting-icon bg-success bg-opacity-10 text-success">
-                                        <i class="bi bi-cash-stack"></i>
-                                    </div>
                                     <div class="flex-grow-1">
                                         <label class="setting-label">Refund Policy</label>
                                         <p class="setting-hint">
@@ -198,9 +189,6 @@
 
                             <div class="setting-item">
                                 <div class="d-flex gap-3">
-                                    <div class="setting-icon bg-warning bg-opacity-10 text-warning">
-                                        <i class="bi bi-person"></i>
-                                    </div>
                                     <div class="flex-grow-1">
                                         <label class="setting-label">Profile Information</label>
                                         <p class="setting-hint">Update the name and email address shown on your admin account.</p>
@@ -224,9 +212,6 @@
 
                             <div class="setting-item">
                                 <div class="d-flex gap-3">
-                                    <div class="setting-icon bg-primary bg-opacity-10 text-primary">
-                                        <i class="bi bi-bell"></i>
-                                    </div>
                                     <div class="flex-grow-1">
                                         <label class="setting-label">Sidebar Notification Badges</label>
                                         <p class="setting-hint">Show pending payment and archived client count badges in the sidebar.</p>
@@ -249,9 +234,6 @@
                         <hr class="my-3">
 
                         <div class="d-flex gap-3">
-                            <div class="setting-icon bg-success bg-opacity-10 text-success">
-                                <i class="bi bi-shield-check"></i>
-                            </div>
                             <div class="flex-grow-1">
                                 <label class="setting-label">Account Details</label>
                                 <p class="setting-hint mb-2">Read-only information about your admin account.</p>
@@ -291,9 +273,6 @@
 
                             <div class="setting-item">
                                 <div class="d-flex gap-3">
-                                    <div class="setting-icon bg-danger bg-opacity-10 text-danger">
-                                        <i class="bi bi-key"></i>
-                                    </div>
                                     <div class="flex-grow-1">
                                         <label class="setting-label">Current Password</label>
                                         <p class="setting-hint">Confirm your current password to continue.</p>
@@ -307,9 +286,6 @@
 
                             <div class="setting-item">
                                 <div class="d-flex gap-3">
-                                    <div class="setting-icon bg-info bg-opacity-10 text-info">
-                                        <i class="bi bi-pencil"></i>
-                                    </div>
                                     <div class="flex-grow-1">
                                         <label class="setting-label">New Password</label>
                                         <p class="setting-hint">Use at least 6 characters.</p>
