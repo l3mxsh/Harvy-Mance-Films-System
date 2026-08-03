@@ -1,0 +1,156 @@
+/* ============================================================
+   HarvyMance Films — Admin Dashboard
+   Minimal additions; shared styles come from sidebar.css + booking.css
+   ============================================================ */
+
+.dash-greeting {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.dash-badge {
+    background: #fff;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    font-weight: 600;
+}
+
+.section-head a.small {
+    color: var(--ink);
+}
+
+.section-head a.small:hover {
+    text-decoration: underline;
+}
+
+/* ---------------- Upcoming events ---------------- */
+.event-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    color: var(--ink);
+    transition: var(--ease);
+}
+
+.event-item:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.event-item:hover {
+    color: var(--ink);
+}
+
+.event-item:hover .fw-semibold {
+    text-decoration: underline;
+}
+
+.event-date-block {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--canvas);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.event-date-block .day {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--ink);
+}
+
+.event-date-block .mon {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 2px;
+}
+
+.event-meta {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    margin-top: 0.15rem;
+}
+
+/* ---------------- Pending actions ---------------- */
+.action-item {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    color: var(--ink);
+    transition: var(--ease);
+}
+
+.action-item:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.action-item:hover .fw-semibold {
+    text-decoration: underline;
+}
+
+.action-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+/* ---------------- Recent activity ---------------- */
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.activity-item:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.activity-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 0.45rem;
+}
+
+.dot-admin   { background: var(--ink); }
+.dot-staff   { background: #6c757d; }
+.dot-client  { background: #adb5bd; }
+.dot-system  { background: #dee2e6; }
+
+.activity-text {
+    font-size: 0.85rem;
+    color: #495057;
+    line-height: 1.45;
+}
+
+.activity-meta {
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    margin-top: 0.15rem;
+}

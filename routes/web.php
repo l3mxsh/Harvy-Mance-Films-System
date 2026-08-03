@@ -20,6 +20,7 @@ use App\Http\Controllers\CancellationController;
 use App\Http\Controllers\OutsourcedStaffController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', [BookingController::class, 'index'])->name('home');
 
@@ -64,9 +65,7 @@ Route::post('/api/otp/verify', [OtpController::class, 'verify'])->name('otp.veri
 Route::post('/api/otp/resend', [OtpController::class, 'resend'])->name('otp.resend');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('dashboard/dashboard');
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/package', [PackageController::class, 'index'])->name('package');
     Route::post('/package', [PackageController::class, 'store'])->name('package.store');
