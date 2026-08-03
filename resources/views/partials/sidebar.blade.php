@@ -75,6 +75,11 @@ $archivedClientsCount = \App\Models\ClientAccount::whereNotNull('archived_at')->
             </a>
         </li>
         <li>
+            <a href="{{ route('activity-logs.index') }}" class="{{ str_starts_with($currentRoute, 'activity-logs') ? 'active' : '' }}">
+                <i class="bi bi-activity"></i> Activity Logs
+            </a>
+        </li>
+        <li>
             <a href="{{ route('settings.index') }}" class="{{ $currentRoute === 'settings.index' ? 'active' : '' }}">
                 <i class="bi bi-gear"></i> Settings
             </a>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class UserManagementController extends Controller
@@ -55,6 +56,8 @@ class UserManagementController extends Controller
             'status' => 'active',
         ]);
 
+        ActivityLog::log('user.created', "Created admin account {$validated['name']} ({$validated['email']}).");
+
         return back()->with('success', 'Admin account created successfully.');
     }
 
@@ -82,6 +85,10 @@ class UserManagementController extends Controller
 
         $user->update($data);
 
+        ActivityLog::log('user.updated', "Updated admin account {$user->name} ({$user->email}).", [
+            'user_id' => $user->id,
+        ]);
+
         return back()->with('success', 'Admin account updated successfully.');
     }
 
@@ -99,6 +106,11 @@ class UserManagementController extends Controller
 
         $user->update(['status' => $newStatus]);
 
+        ActivityLog::log('user.status_changed', "Admin account {$user->name} is now {$newStatus}.", [
+            'user_id' => $user->id,
+            'status' => $newStatus,
+        ]);
+
         return back()->with('success', "Admin account {$user->name} is now {$newStatus}.");
     }
 
@@ -114,6 +126,8 @@ class UserManagementController extends Controller
 
         $name = $user->name;
         $user->delete();
+
+        ActivityLog::log('user.deleted', "Deleted admin account {$name} permanently.");
 
         return back()->with('success', "Admin account {$name} deleted permanently.");
     }

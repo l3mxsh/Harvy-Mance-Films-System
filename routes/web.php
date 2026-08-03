@@ -19,6 +19,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\CancellationController;
 use App\Http\Controllers\OutsourcedStaffController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\ActivityLogController;
 
 Route::get('/', [BookingController::class, 'index'])->name('home');
 
@@ -149,4 +150,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/admin/users/{user}', [UserManagementController::class, 'update'])->name('users.admin.update');
     Route::post('/admin/users/{user}/toggle-status', [UserManagementController::class, 'toggleStatus'])->name('users.admin.toggleStatus');
     Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy'])->name('users.admin.destroy');
+
+    Route::get('/admin/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -35,6 +36,7 @@ class Login extends Controller
             }
 
             $request->session()->regenerate();
+            ActivityLog::log('auth.login', "Admin {$user->name} logged in.");
             return redirect()->route('admin.dashboard');
         }
 
@@ -50,6 +52,8 @@ class Login extends Controller
 
     public function logout(Request $request)
     {
+        $user = Auth::user();
+        ActivityLog::log('auth.logout', $user ? "Admin {$user->name} logged out." : 'Session ended.');
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

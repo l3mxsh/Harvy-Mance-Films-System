@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\CancellationRequest;
 use App\Models\Setting;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -160,6 +161,11 @@ class CancellationController extends Controller
         $cancellation->booking->items()->update(['status' => 'cancelled']);
         $cancellation->booking->staffSchedules()->delete();
 
+        ActivityLog::log('cancellation.refunded', "Processed refund of ₱{$cancellation->refund_amount} for booking {$cancellation->booking->booking_ref}.", [
+            'booking_ref' => $cancellation->booking->booking_ref,
+            'refund_amount' => $cancellation->refund_amount,
+        ]);
+
         return back()->with('success', "Refund marked as processed for booking {$cancellation->booking->booking_ref}.");
     }
 
@@ -172,6 +178,10 @@ class CancellationController extends Controller
             'status'       => 'rejected',
             'admin_notes'  => $request->admin_notes,
             'processed_at' => now(),
+        ]);
+
+        ActivityLog::log('cancellation.rejected', "Rejected cancellation request for booking {$cancellation->booking->booking_ref}.", [
+            'booking_ref' => $cancellation->booking->booking_ref,
         ]);
 
         return back()->with('success', "Refund request rejected for booking {$cancellation->booking->booking_ref}. Booking remains active.");

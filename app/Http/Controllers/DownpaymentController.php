@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Downpayment;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -174,6 +175,12 @@ class DownpaymentController extends Controller
             $booking->update($updateData);
         }
 
+        ActivityLog::log('payment.verified', "Verified {$downpayment->payment_type} payment of ₱{$downpayment->amount} for booking {$booking->booking_ref}.", [
+            'booking_ref' => $booking->booking_ref,
+            'payment_type' => $downpayment->payment_type,
+            'amount' => $downpayment->amount,
+        ]);
+
         return back()->with('success', 'Payment has been verified successfully.');
     }
 
@@ -189,6 +196,12 @@ class DownpaymentController extends Controller
         ]);
 
         $downpayment->booking->update(['payment_status' => 'payment_rejected']);
+
+        ActivityLog::log('payment.rejected', "Rejected {$downpayment->payment_type} payment of ₱{$downpayment->amount} for booking {$downpayment->booking->booking_ref}.", [
+            'booking_ref' => $downpayment->booking->booking_ref,
+            'payment_type' => $downpayment->payment_type,
+            'reason' => $validated['rejection_reason'],
+        ]);
 
         return back()->with('success', 'Payment has been rejected.');
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use App\Models\Booking;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class SettingsController extends Controller
@@ -60,6 +61,12 @@ class SettingsController extends Controller
             ->values()
             ->toArray();
         Setting::setValue('refund_policy', json_encode($policy));
+
+        ActivityLog::log('settings.updated', 'System settings updated.', [
+            'client_auto_delete_days' => $validated['client_auto_delete_days'],
+            'reschedule_lead_time_days' => $validated['reschedule_lead_time_days'],
+            'refund_tiers' => $policy,
+        ]);
 
         return back()->with('success', 'Settings updated successfully.');
     }

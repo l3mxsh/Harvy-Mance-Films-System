@@ -11,6 +11,7 @@ use App\Models\ClientAccount;
 use App\Models\StaffSchedule;
 use App\Models\Team;
 use App\Models\Otp;
+use App\Models\ActivityLog;
 use App\Mail\BookingCredentialsEmail;
 use App\Mail\BookingRejectedEmail;
 use Illuminate\Http\Request;
@@ -204,6 +205,12 @@ class BookingController extends Controller
         $booking->update([
             'status' => 'approved',
             'team_id' => $team->id,
+        ]);
+
+        ActivityLog::log('booking.approved', "Booking {$booking->booking_ref} approved with team {$team->name}.", [
+            'booking_ref' => $booking->booking_ref,
+            'team' => $team->name,
+            'event_date' => $eventDate,
         ]);
 
         try {
@@ -403,6 +410,11 @@ class BookingController extends Controller
         $booking->update([
             'status' => 'rejected',
             'rejection_reason' => $request->rejection_reason,
+        ]);
+
+        ActivityLog::log('booking.rejected', "Booking {$booking->booking_ref} rejected.", [
+            'booking_ref' => $booking->booking_ref,
+            'reason' => $request->rejection_reason,
         ]);
 
         $booking->items()->update(['status' => 'cancelled']);
