@@ -193,6 +193,68 @@ body {
     flex-shrink: 0;
 }
 
+/* ---------------- Collapsible groups ---------------- */
+.sidebar-group {
+    margin-bottom: 0.1rem;
+}
+
+.sidebar-group-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    background: none;
+    border: none;
+    border-radius: var(--radius-md);
+    color: #495057;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--ease);
+    text-align: left;
+}
+
+.sidebar-group-toggle:hover {
+    color: var(--ink);
+    background: var(--canvas);
+}
+
+.sidebar-group-toggle span {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sidebar-group-toggle span i {
+    font-size: 1rem;
+    width: 1.25rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.sidebar-chevron {
+    font-size: 0.7rem;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.sidebar-group-toggle.collapsed .sidebar-chevron {
+    transform: rotate(-90deg);
+}
+
+.sidebar-group-items {
+    list-style: none;
+    padding: 0.15rem 0 0.15rem 1rem;
+    margin: 0;
+}
+
+.sidebar-group-items li a {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.1rem;
+}
+
 /* ---------------- Footer ---------------- */
 .sidebar-footer {
     padding: 1rem 1.25rem;
