@@ -69,19 +69,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
-                    <div class="summary-card">
-                        <div class="d-flex align-items-center">
-                            <div class="summary-icon bg-warning bg-opacity-10 text-warning">
-                                <i class="bi bi-key"></i>
-                            </div>
-                            <div class="ms-3">
-                                <h6 class="text-muted mb-1 small">Pending Password Change</h6>
-                                <h4 class="mb-0 fw-bold">{{ $summary['pendingChange'] }}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
             {{-- ==================== TABBED CLIENT SECTIONS ==================== --}}
