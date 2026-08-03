@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ClientAccount;
 use App\Models\Booking;
 use App\Models\Setting;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
@@ -156,6 +157,24 @@ class ClientAccountController extends Controller
             ->orderByDesc('archived_at')
             ->get();
 
+        $autoDeleteDays = (int) Setting::getValue('client_auto_delete_days', '30');
+        $upcomingDeletions = Booking::where('status', 'completed')
+            ->where('deliverables_unlocked', true)
+            ->whereNotNull('delivered_at')
+            ->with(['clientAccount' => fn ($q) => $q->whereNull('archived_at')])
+            ->get()
+            ->filter(fn($b) => $b->clientAccount)
+            ->map(function ($booking) use ($autoDeleteDays) {
+                $deliveredAt = $booking->delivered_at;
+                $deleteAt = $deliveredAt->copy()->addDays($autoDeleteDays);
+                return [
+                    'booking' => $booking,
+                    'delivered_at' => $deliveredAt,
+                    'delete_at' => $deleteAt,
+                    'days_remaining' => max(0, (int) round(now()->diffInDays($deleteAt, false))),
+                ];
+            })->sortBy('delete_at')->values();
+
         $summary = [
             'total' => ClientAccount::count(),
             'active' => ClientAccount::whereNull('archived_at')->count(),
@@ -163,7 +182,7 @@ class ClientAccountController extends Controller
             'pendingChange' => ClientAccount::whereNull('archived_at')->where('must_change_password', true)->count(),
         ];
 
-        return view('dashboard.clients', compact('accounts', 'archivedAccounts', 'summary'));
+        return view('dashboard.clients', compact('accounts', 'archivedAccounts', 'upcomingDeletions', 'summary'));
     }
 
     public function restore(string $account)

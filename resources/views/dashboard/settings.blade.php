@@ -30,7 +30,7 @@
 
             <div class="row g-4">
                 {{-- ==================== GENERAL SETTINGS ==================== --}}
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                     <section class="surface-card h-100">
                         <div class="section-head">
                             <h2 class="section-title"><i class="bi bi-gear me-2"></i>General Settings</h2>
@@ -121,58 +121,6 @@
                     </section>
                 </div>
 
-                {{-- ==================== UPCOMING ACCOUNT ARCHIVING ==================== --}}
-                <div class="col-lg-6">
-                    <section class="surface-card h-100">
-                        <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
-                            <h2 class="section-title"><i class="bi bi-clock-history me-2"></i>Upcoming Account Archiving</h2>
-                            <span class="badge bg-light text-dark border">{{ $upcomingDeletions->count() }} account(s)</span>
-                        </div>
-
-                        @if($upcomingDeletions->isEmpty())
-                            <div class="text-center py-5 text-muted">
-                                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                                No delivered bookings with active client accounts.
-                            </div>
-                        @else
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Client</th>
-                                            <th>Booking Ref</th>
-                                            <th>Delivered</th>
-                                            <th>Auto-Delete</th>
-                                            <th class="text-end">Days Left</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($upcomingDeletions as $item)
-                                            <tr>
-                                                <td>
-                                                    <div>{{ $item['booking']->client_name }}</div>
-                                                    <small class="text-muted">{{ $item['booking']->client_email }}</small>
-                                                </td>
-                                                <td><code>{{ $item['booking']->booking_ref }}</code></td>
-                                                <td>{{ $item['delivered_at']->format('M d, Y') }}</td>
-                                                <td>{{ $item['delete_at']->format('M d, Y') }}</td>
-                                                <td class="text-end">
-                                                    @if($item['days_remaining'] <= 3)
-                                                        <span class="badge bg-danger">{{ $item['days_remaining'] }} day(s)</span>
-                                                    @elseif($item['days_remaining'] <= 7)
-                                                        <span class="badge bg-warning text-dark">{{ $item['days_remaining'] }} day(s)</span>
-                                                    @else
-                                                        <span class="badge bg-success">{{ $item['days_remaining'] }} day(s)</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        @endif
-                    </section>
-                </div>
             </div>
 
             <div class="row g-4 mt-0">
