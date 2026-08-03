@@ -36,6 +36,7 @@ class Login extends Controller
             }
 
             $request->session()->regenerate();
+            $user->update(['last_login_at' => now()]);
             ActivityLog::log('auth.login', "Admin {$user->name} logged in.");
             return redirect()->route('admin.dashboard');
         }

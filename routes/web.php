@@ -143,6 +143,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::put('/admin/settings', [SettingsController::class, 'update'])->name('settings.update');
+    Route::put('/admin/settings/profile', [SettingsController::class, 'updateProfile'])->name('settings.profile.update');
+    Route::put('/admin/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password.update');
 
     Route::get('/admin/users', [UserManagementController::class, 'index'])->name('users.admin.index');
     Route::post('/admin/users', [UserManagementController::class, 'store'])->name('users.admin.store');

@@ -1,5 +1,6 @@
 @php
 $currentRoute = request()->route()->getName();
+$showSidebarBadges = \App\Models\Setting::getValue('admin_show_sidebar_badges', '1') === '1';
 $pendingPaymentsCount = \App\Models\Downpayment::where('status', 'pending')->count();
 $archivedClientsCount = \App\Models\ClientAccount::whereNotNull('archived_at')->count();
 @endphp
@@ -36,7 +37,7 @@ $archivedClientsCount = \App\Models\ClientAccount::whereNotNull('archived_at')->
         <li>
             <a href="{{ route('payment-verification.index') }}" class="{{ str_starts_with($currentRoute, 'payment-verification') ? 'active' : '' }}">
                 <i class="bi bi-credit-card"></i> Payment Verification
-                @if($pendingPaymentsCount > 0)
+                @if($showSidebarBadges && $pendingPaymentsCount > 0)
                     <span class="badge bg-danger ms-auto">{{ $pendingPaymentsCount }}</span>
                 @endif
             </a>
@@ -64,7 +65,7 @@ $archivedClientsCount = \App\Models\ClientAccount::whereNotNull('archived_at')->
         <li>
             <a href="{{ route('clients.admin.index') }}" class="{{ str_starts_with($currentRoute, 'clients.admin') ? 'active' : '' }}">
                 <i class="bi bi-people"></i> Clients
-                @if($archivedClientsCount > 0)
+                @if($showSidebarBadges && $archivedClientsCount > 0)
                     <span class="badge bg-secondary ms-auto">{{ $archivedClientsCount }}</span>
                 @endif
             </a>

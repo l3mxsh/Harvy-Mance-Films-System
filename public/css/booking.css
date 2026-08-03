@@ -1127,3 +1127,8 @@ body {
     background: #f1f3f5 !important;
     color: var(--ink) !important;
 }
+
+.setting-icon {
+    background: #f1f3f5 !important;
+    color: var(--ink) !important;
+}

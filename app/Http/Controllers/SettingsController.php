@@ -6,6 +6,7 @@ use App\Models\Setting;
 use App\Models\Booking;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class SettingsController extends Controller
 {
@@ -39,7 +40,10 @@ class SettingsController extends Controller
             ];
         })->sortBy('delete_at')->values();
 
-        return view('dashboard.settings', compact('autoDeleteDays', 'rescheduleLeadTime', 'upcomingDeletions', 'refundPolicy'));
+        $user = auth()->user();
+        $showSidebarBadges = Setting::getValue('admin_show_sidebar_badges', '1');
+
+        return view('dashboard.settings', compact('autoDeleteDays', 'rescheduleLeadTime', 'upcomingDeletions', 'refundPolicy', 'user', 'showSidebarBadges'));
     }
 
     public function update(Request $request)
@@ -69,5 +73,47 @@ class SettingsController extends Controller
         ]);
 
         return back()->with('success', 'Settings updated successfully.');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
+            'show_sidebar_badges' => 'nullable|in:1,0',
+        ]);
+
+        $user = auth()->user();
+        $user->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ]);
+
+        Setting::setValue('admin_show_sidebar_badges', ($validated['show_sidebar_badges'] ?? null) ? '1' : '0');
+
+        ActivityLog::log('admin.profile_updated', "Admin {$user->name} updated their profile.", [
+            'email' => $validated['email'],
+        ]);
+
+        return back()->with('success', 'Profile updated successfully.');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $validated = $request->validate([
+            'current_password' => ['required', function ($attribute, $value, $fail) {
+                if (!Hash::check($value, auth()->user()->password)) {
+                    $fail('The current password is incorrect.');
+                }
+            }],
+            'new_password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = auth()->user();
+        $user->update(['password' => $validated['new_password']]);
+
+        ActivityLog::log('admin.password_changed', "Admin {$user->name} changed their password.");
+
+        return back()->with('success', 'Password updated successfully.');
     }
 }
