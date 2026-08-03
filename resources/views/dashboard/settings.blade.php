@@ -29,9 +29,145 @@
         <div class="container-fluid p-4">
 
             <div class="row g-4">
-                {{-- ==================== GENERAL SETTINGS ==================== --}}
-                <div class="col-lg-12">
-                    <section class="surface-card h-100">
+                {{-- ==================== LEFT COLUMN ==================== --}}
+                <div class="col-lg-6 d-flex flex-column gap-4">
+
+                    {{-- ==================== ADMIN PREFERENCES ==================== --}}
+                    <section class="surface-card">
+                        <div class="section-head">
+                            <h2 class="section-title"><i class="bi bi-person-gear me-2"></i>Admin Preferences</h2>
+                        </div>
+
+                        <form method="POST" action="{{ route('settings.profile.update') }}">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="setting-item">
+                                <div class="d-flex gap-3">
+                                    <div class="flex-grow-1">
+                                        <label class="setting-label">Profile Information</label>
+                                        <p class="setting-hint">Update the name and email address shown on your admin account.</p>
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}" placeholder="Full name">
+                                                @error('name')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" placeholder="Email address">
+                                                @error('email')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="setting-item">
+                                <div class="d-flex gap-3">
+                                    <div class="flex-grow-1">
+                                        <label class="setting-label">Sidebar Notification Badges</label>
+                                        <p class="setting-hint">Show pending payment and archived client count badges in the sidebar.</p>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="showSidebarBadges" name="show_sidebar_badges" value="1"
+                                                {{ $showSidebarBadges === '1' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="showSidebarBadges">Show count badges</label>
+                                        </div>
+                                        <input type="hidden" name="show_sidebar_badges" value="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-save-bar">
+                                <button type="submit" class="btn btn-dark rounded-pill">Save Profile</button>
+                            </div>
+                        </form>
+
+                        <hr class="my-3">
+
+                        <div class="d-flex gap-3">
+                            <div class="flex-grow-1">
+                                <label class="setting-label">Account Details</label>
+                                <p class="setting-hint mb-2">Read-only information about your admin account.</p>
+                                <ul class="list-unstyled small mb-0">
+                                    <li class="d-flex justify-content-between py-1 border-bottom">
+                                        <span class="text-muted">Role</span>
+                                        <span class="fw-semibold text-capitalize">{{ $user->role }}</span>
+                                    </li>
+                                    <li class="d-flex justify-content-between py-1 border-bottom">
+                                        <span class="text-muted">Status</span>
+                                        <span class="fw-semibold text-capitalize">{{ $user->status }}</span>
+                                    </li>
+                                    <li class="d-flex justify-content-between py-1 border-bottom">
+                                        <span class="text-muted">Member Since</span>
+                                        <span class="fw-semibold">{{ $user->created_at?->format('M d, Y') }}</span>
+                                    </li>
+                                    <li class="d-flex justify-content-between py-1">
+                                        <span class="text-muted">Last Login</span>
+                                        <span class="fw-semibold">{{ $user->last_login_at?->format('M d, Y h:i A') ?? '—' }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    {{-- ==================== CHANGE PASSWORD ==================== --}}
+                    <section class="surface-card">
+                        <div class="section-head">
+                            <h2 class="section-title"><i class="bi bi-shield-lock me-2"></i>Change Password</h2>
+                        </div>
+
+                        <form method="POST" action="{{ route('settings.password.update') }}">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="setting-item">
+                                <div class="d-flex gap-3">
+                                    <div class="flex-grow-1">
+                                        <label class="setting-label">Current Password</label>
+                                        <p class="setting-hint">Confirm your current password to continue.</p>
+                                        <input type="password" name="current_password" class="form-control" placeholder="Current password">
+                                        @error('current_password')
+                                            <div class="text-danger small mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="setting-item">
+                                <div class="d-flex gap-3">
+                                    <div class="flex-grow-1">
+                                        <label class="setting-label">New Password</label>
+                                        <p class="setting-hint">Use at least 6 characters.</p>
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <input type="password" name="new_password" class="form-control" placeholder="New password">
+                                                @error('new_password')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="password" name="new_password_confirmation" class="form-control" placeholder="Confirm new password">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-save-bar">
+                                <button type="submit" class="btn btn-dark rounded-pill">Update Password</button>
+                            </div>
+                        </form>
+                    </section>
+
+                </div>
+
+                {{-- ==================== RIGHT COLUMN — GENERAL SETTINGS ==================== --}}
+                <div class="col-lg-6">
+                    <section class="surface-card">
                         <div class="section-head">
                             <h2 class="section-title"><i class="bi bi-gear me-2"></i>General Settings</h2>
                         </div>
@@ -116,144 +252,6 @@
                             <div class="settings-save-bar">
                                 <a href="{{ route('settings.index') }}" class="btn btn-outline-dark rounded-pill">Cancel</a>
                                 <button type="submit" class="btn btn-dark rounded-pill">Save Settings</button>
-                            </div>
-                        </form>
-                    </section>
-                </div>
-
-            </div>
-
-            <div class="row g-4 mt-0">
-                {{-- ==================== ADMIN PREFERENCES ==================== --}}
-                <div class="col-lg-6">
-                    <section class="surface-card h-100">
-                        <div class="section-head">
-                            <h2 class="section-title"><i class="bi bi-person-gear me-2"></i>Admin Preferences</h2>
-                        </div>
-
-                        <form method="POST" action="{{ route('settings.profile.update') }}">
-                            @csrf
-                            @method('PUT')
-
-                            <div class="setting-item">
-                                <div class="d-flex gap-3">
-                                    <div class="flex-grow-1">
-                                        <label class="setting-label">Profile Information</label>
-                                        <p class="setting-hint">Update the name and email address shown on your admin account.</p>
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}" placeholder="Full name">
-                                                @error('name')
-                                                    <div class="text-danger small mt-1">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-6">
-                                                <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" placeholder="Email address">
-                                                @error('email')
-                                                    <div class="text-danger small mt-1">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="setting-item">
-                                <div class="d-flex gap-3">
-                                    <div class="flex-grow-1">
-                                        <label class="setting-label">Sidebar Notification Badges</label>
-                                        <p class="setting-hint">Show pending payment and archived client count badges in the sidebar.</p>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                id="showSidebarBadges" name="show_sidebar_badges" value="1"
-                                                {{ $showSidebarBadges === '1' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="showSidebarBadges">Show count badges</label>
-                                        </div>
-                                        <input type="hidden" name="show_sidebar_badges" value="0">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="settings-save-bar">
-                                <button type="submit" class="btn btn-dark rounded-pill">Save Profile</button>
-                            </div>
-                        </form>
-
-                        <hr class="my-3">
-
-                        <div class="d-flex gap-3">
-                            <div class="flex-grow-1">
-                                <label class="setting-label">Account Details</label>
-                                <p class="setting-hint mb-2">Read-only information about your admin account.</p>
-                                <ul class="list-unstyled small mb-0">
-                                    <li class="d-flex justify-content-between py-1 border-bottom">
-                                        <span class="text-muted">Role</span>
-                                        <span class="fw-semibold text-capitalize">{{ $user->role }}</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between py-1 border-bottom">
-                                        <span class="text-muted">Status</span>
-                                        <span class="fw-semibold text-capitalize">{{ $user->status }}</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between py-1 border-bottom">
-                                        <span class="text-muted">Member Since</span>
-                                        <span class="fw-semibold">{{ $user->created_at?->format('M d, Y') }}</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between py-1">
-                                        <span class="text-muted">Last Login</span>
-                                        <span class="fw-semibold">{{ $user->last_login_at?->format('M d, Y h:i A') ?? '—' }}</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-
-                {{-- ==================== CHANGE PASSWORD ==================== --}}
-                <div class="col-lg-6">
-                    <section class="surface-card h-100">
-                        <div class="section-head">
-                            <h2 class="section-title"><i class="bi bi-shield-lock me-2"></i>Change Password</h2>
-                        </div>
-
-                        <form method="POST" action="{{ route('settings.password.update') }}">
-                            @csrf
-                            @method('PUT')
-
-                            <div class="setting-item">
-                                <div class="d-flex gap-3">
-                                    <div class="flex-grow-1">
-                                        <label class="setting-label">Current Password</label>
-                                        <p class="setting-hint">Confirm your current password to continue.</p>
-                                        <input type="password" name="current_password" class="form-control" placeholder="Current password">
-                                        @error('current_password')
-                                            <div class="text-danger small mt-1">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="setting-item">
-                                <div class="d-flex gap-3">
-                                    <div class="flex-grow-1">
-                                        <label class="setting-label">New Password</label>
-                                        <p class="setting-hint">Use at least 6 characters.</p>
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <input type="password" name="new_password" class="form-control" placeholder="New password">
-                                                @error('new_password')
-                                                    <div class="text-danger small mt-1">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-6">
-                                                <input type="password" name="new_password_confirmation" class="form-control" placeholder="Confirm new password">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="settings-save-bar">
-                                <button type="submit" class="btn btn-dark rounded-pill">Update Password</button>
                             </div>
                         </form>
                     </section>

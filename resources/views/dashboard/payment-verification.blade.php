@@ -104,11 +104,6 @@
                                                                 <td>{{ $downpayment->submitted_at ? $downpayment->submitted_at->format('M d, Y g:i A') : '—' }}</td>
                                                                 <td>
                                                                     @include('partials.status-badge', ['status' => $downpayment->status])
-                                                                    @if($downpayment->status === 'verified')
-                                                                        <div class="mt-1">
-                                                                            <span class="badge bg-success">Payment Received</span>
-                                                                        </div>
-                                                                    @endif
                                                                 </td>
                                                                 <td class="text-center">
                                                                     @php
