@@ -20,8 +20,7 @@ class DatabaseSeeder extends Seeder
             AddonSeeder::class,
             PackageInventorySeeder::class,
             AddonInventorySeeder::class,
-            StaffTableSeeder::class,
-            TeamTableSeeder::class,
+            DemoDataSeeder::class,
         ]);
     }
 }

@@ -112,7 +112,7 @@ class CancellationController extends Controller
 
         if ($request->ajax()) {
             $rowsHtml = view('dashboard.partials.cancellation-rows', compact('cancellations'))->render();
-            $paginationHtml = $cancellations->hasPages() ? $cancellations->links()->render() : '';
+            $paginationHtml = $cancellations->hasPages() ? $cancellations->links('vendor.pagination.bootstrap-5')->render() : '';
 
             return response()->json([
                 'rows' => $rowsHtml,

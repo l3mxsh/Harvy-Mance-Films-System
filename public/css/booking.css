@@ -1127,3 +1127,61 @@ body {
     background: #f1f3f5 !important;
     color: var(--ink) !important;
 }
+
+/* ---------------- Pagination (shared) ---------------- */
+.pag-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+}
+
+.pag-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.pag-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+    cursor: pointer;
+}
+
+a.pag-btn:hover {
+    background: var(--line);
+    border-color: var(--line);
+    color: var(--ink);
+}
+
+.pag-item.active .pag-btn {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+}
+
+.pag-item.disabled .pag-btn {
+    color: var(--ink-soft);
+    cursor: default;
+}
+
+.pag-dots {
+    letter-spacing: 0.05em;
+}

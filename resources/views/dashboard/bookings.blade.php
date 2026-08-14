@@ -255,8 +255,8 @@
                         </table>
                     </div>
                     @if($bookings->hasPages())
-                        <div class="border-top pt-3 mt-3">
-                            {{ $bookings->links() }}
+                        <div>
+                            {{ $bookings->links('vendor.pagination.bootstrap-5') }}
                         </div>
                     @endif
                 </section>

@@ -61,12 +61,15 @@ class PackageInventorySeeder extends Seeder
             $package = Package::where('name', $packageName)->first();
             if (!$package) continue;
 
+            $itemsToSync = [];
             foreach ($items as $item) {
                 $inventoryItem = InventoryItem::where('name', $item['name'])->first();
                 if ($inventoryItem) {
-                    $package->inventory()->attach($inventoryItem->id, ['quantity' => $item['quantity']]);
+                    $itemsToSync[$inventoryItem->id] = ['quantity' => $item['quantity']];
                 }
             }
+
+            $package->inventory()->sync($itemsToSync);
         }
     }
 }

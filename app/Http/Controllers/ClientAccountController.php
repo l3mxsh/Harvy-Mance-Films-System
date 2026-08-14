@@ -143,7 +143,7 @@ class ClientAccountController extends Controller
 
         if ($request->ajax()) {
             $rowsHtml = view('dashboard.partials.client-rows', compact('accounts'))->render();
-            $paginationHtml = $accounts->hasPages() ? $accounts->links()->render() : '';
+            $paginationHtml = $accounts->hasPages() ? $accounts->links('vendor.pagination.bootstrap-5')->render() : '';
 
             return response()->json([
                 'rows' => $rowsHtml,

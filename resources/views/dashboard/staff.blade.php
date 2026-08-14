@@ -270,9 +270,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="teamPagination" class="border-top pt-3 mt-3 @if(!$teams->hasPages()) d-none @endif">
+                    <div id="teamPagination" class="@if(!$teams->hasPages()) d-none @endif">
                         @if($teams->hasPages())
-                            {{ $teams->links() }}
+                            {{ $teams->links('vendor.pagination.bootstrap-5') }}
                         @endif
                     </div>
                 </section>
@@ -310,9 +310,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="staffPagination" class="border-top pt-3 mt-3 @if(!$staff->hasPages()) d-none @endif">
+                    <div id="staffPagination" class="@if(!$staff->hasPages()) d-none @endif">
                         @if($staff->hasPages())
-                            {{ $staff->links() }}
+                            {{ $staff->links('vendor.pagination.bootstrap-5') }}
                         @endif
                     </div>
                 </section>

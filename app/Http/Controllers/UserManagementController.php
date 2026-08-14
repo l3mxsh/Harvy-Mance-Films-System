@@ -28,7 +28,7 @@ class UserManagementController extends Controller
 
         if ($request->ajax()) {
             $rowsHtml = view('dashboard.partials.user-rows', compact('users'))->render();
-            $paginationHtml = $users->hasPages() ? $users->links()->render() : '';
+            $paginationHtml = $users->hasPages() ? $users->links('vendor.pagination.bootstrap-5')->render() : '';
 
             return response()->json([
                 'rows' => $rowsHtml,

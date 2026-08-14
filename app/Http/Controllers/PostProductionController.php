@@ -32,7 +32,7 @@ class PostProductionController extends Controller
 
         if ($request->ajax()) {
             $rowsHtml = view('dashboard.partials.post-production-rows', compact('postProductions'))->render();
-            $paginationHtml = $postProductions->hasPages() ? $postProductions->links()->render() : '';
+            $paginationHtml = $postProductions->hasPages() ? $postProductions->links('vendor.pagination.bootstrap-5')->render() : '';
 
             return response()->json([
                 'rows' => $rowsHtml,

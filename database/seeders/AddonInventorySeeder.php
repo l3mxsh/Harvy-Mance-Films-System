@@ -73,12 +73,15 @@ class AddonInventorySeeder extends Seeder
             $addon = Addon::where('name', $addonName)->first();
             if (!$addon) continue;
 
+            $itemsToSync = [];
             foreach ($items as $item) {
                 $inventoryItem = InventoryItem::where('name', $item['name'])->first();
                 if ($inventoryItem) {
-                    $addon->inventory()->attach($inventoryItem->id, ['quantity' => $item['quantity']]);
+                    $itemsToSync[$inventoryItem->id] = ['quantity' => $item['quantity']];
                 }
             }
+
+            $addon->inventory()->sync($itemsToSync);
         }
     }
 }

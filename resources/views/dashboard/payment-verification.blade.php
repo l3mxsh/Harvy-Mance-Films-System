@@ -166,8 +166,8 @@
                     </table>
                 </div>
                 @if($downpayments->hasPages())
-                    <div class="border-top pt-3 mt-3">
-                        {{ $downpayments->links() }}
+                    <div>
+                        {{ $downpayments->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @endif
             </section>

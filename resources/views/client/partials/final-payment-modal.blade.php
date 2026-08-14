@@ -6,7 +6,7 @@
     $fpIsRejected = $fpLatest && $fpLatest->status === 'rejected';
 @endphp
 <div class="modal fade" id="finalPaymentModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><i class="bi bi-credit-card me-2"></i>{{ $fpIsRejected ? 'Resubmit Final Payment' : 'Submit Final Payment' }}</h5>

@@ -295,7 +295,10 @@ class InventorySeeder extends Seeder
         ];
 
         foreach ($items as $item) {
-            InventoryItem::create($item);
+            InventoryItem::updateOrCreate(
+                ['name' => $item['name']],
+                $item
+            );
         }
     }
 }

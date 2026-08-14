@@ -50,7 +50,12 @@ class PackageSeeder extends Seeder
             $services = $data['services'];
             unset($data['services']);
 
-            $package = Package::create($data);
+            $package = Package::updateOrCreate(
+                ['name' => $data['name']],
+                $data
+            );
+
+            $package->services()->delete();
             foreach ($services as $index => $service) {
                 $package->services()->create([
                     'service_name' => $service,

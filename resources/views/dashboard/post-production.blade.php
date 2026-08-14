@@ -110,9 +110,9 @@
                         </tbody>
                     </table>
                 </div>
-                <div id="ppPagination" class="border-top pt-3 mt-3 @if(!$postProductions->hasPages()) d-none @endif">
+                <div id="ppPagination" class="@if(!$postProductions->hasPages()) d-none @endif">
                     @if($postProductions->hasPages())
-                        {{ $postProductions->links() }}
+                        {{ $postProductions->links('vendor.pagination.bootstrap-5') }}
                     @endif
                 </div>
             </section>

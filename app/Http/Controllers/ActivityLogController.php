@@ -40,7 +40,7 @@ class ActivityLogController extends Controller
 
         if ($request->ajax()) {
             $rowsHtml = view('dashboard.partials.activity-log-rows', compact('logs'))->render();
-            $paginationHtml = $logs->hasPages() ? $logs->links()->render() : '';
+            $paginationHtml = $logs->hasPages() ? $logs->links('vendor.pagination.bootstrap-5')->render() : '';
 
             return response()->json([
                 'rows' => $rowsHtml,

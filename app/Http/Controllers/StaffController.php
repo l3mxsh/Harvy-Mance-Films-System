@@ -41,7 +41,7 @@ class StaffController extends Controller
 
             if ($request->ajax()) {
                 $rowsHtml = view('dashboard.partials.team-rows', compact('teams'))->render();
-                $paginationHtml = $teams->hasPages() ? $teams->links()->render() : '';
+                $paginationHtml = $teams->hasPages() ? $teams->links('vendor.pagination.bootstrap-5')->render() : '';
 
                 return response()->json([
                     'rows' => $rowsHtml,
@@ -84,7 +84,7 @@ class StaffController extends Controller
 
         if ($request->ajax()) {
             $rowsHtml = view('dashboard.partials.staff-rows', compact('staff'))->render();
-            $paginationHtml = $staff->hasPages() ? $staff->links()->render() : '';
+            $paginationHtml = $staff->hasPages() ? $staff->links('vendor.pagination.bootstrap-5')->render() : '';
 
             return response()->json([
                 'rows' => $rowsHtml,

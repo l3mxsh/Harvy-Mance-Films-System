@@ -174,7 +174,7 @@
                     </div>
                 </div>
                 @if($teams->hasPages())
-                    <div class="card-footer bg-white border-top">{{ $teams->links() }}</div>
+                    <div class="card-footer bg-white border-top">{{ $teams->links('vendor.pagination.bootstrap-5') }}</div>
                 @endif
             </div>
         </div>
