@@ -12,6 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/booking.css') }}">
     <link rel="stylesheet" href="{{ asset('css/client-dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/invoice.css') }}">
 </head>
 
 <body>
@@ -396,6 +397,10 @@
                     </div>
                     <hr class="soft-divider">
 
+                    <button type="button" class="btn btn-outline-dark-soft w-100 rounded-pill btn-action" data-bs-toggle="modal" data-bs-target="#invoiceModal">
+                        <i class="bi bi-receipt me-2"></i>View Invoice
+                    </button>
+
                     {{-- DOWNPAYMENT STATUS --}}
                     @if($latestDownpayment)
                         <div class="d-flex align-items-center justify-content-between mb-2">
@@ -623,10 +628,13 @@
     @include('client.partials.cancel-modal')
     @include('client.partials.reschedule-modal')
     @include('client.partials.refund-proof-modal')
+    @include('client.partials.invoice-modal')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="{{ asset('js/client-downpayment.js') }}"></script>
     <script src="{{ asset('js/client-dashboard.js') }}"></script>
+    <script src="{{ asset('js/invoice.js') }}"></script>
     @if($errors->has('amount') || $errors->has('payment_proof'))
         <script>
             document.addEventListener('DOMContentLoaded', function () {
