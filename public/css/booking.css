@@ -803,7 +803,7 @@ body {
 }
 
 .alert-soft-info {
-    border-left: 3px solid #0dcaf0;
+    border-left: 3px solid var(--line);
 }
 
 /* Download window banner */

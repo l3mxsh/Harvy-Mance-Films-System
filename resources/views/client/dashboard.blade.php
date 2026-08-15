@@ -344,10 +344,6 @@
                             <div class="alert alert-soft py-2 mb-3 mt-2">
                                 <i class="bi bi-info-circle me-1"></i>Please settle your remaining balance to unlock your deliverables.
                             </div>
-                        @elseif(!$allApproved)
-                            <div class="alert alert-soft alert-soft-warning py-2 mb-3 mt-2">
-                                <i class="bi bi-hourglass me-1"></i>Your deliverables are still being prepared. You can download files once all tasks are completed and admin has unlocked them.
-                            </div>
                         @endif
 
                         @if($deliverablesReady && $hasFinalPayment)
