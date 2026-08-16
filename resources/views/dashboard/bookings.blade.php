@@ -218,11 +218,18 @@
                                                     <small
                                                         class="text-success text-muted fst-italic align-self-center">Approved</small>
                                                 @elseif($booking->status === 'ongoing')
-                                                    <button type="button" class="btn btn-sm btn-outline-success rounded-pill"
-                                                        title="Complete Booking"
-                                                        onclick="openCompleteModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}')">
-                                                        <i class="bi bi-check-lg me-1"></i> Complete
-                                                    </button>
+                                                    @if($booking->event_date->lt(\Carbon\Carbon::today()))
+                                                        <button type="button" class="btn btn-sm btn-outline-success rounded-pill"
+                                                            title="Complete Booking"
+                                                            onclick="openCompleteModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}')">
+                                                            <i class="bi bi-check-lg me-1"></i> Complete
+                                                        </button>
+                                                    @else
+                                                        <small class="text-muted fst-italic align-self-center"
+                                                            title="Available after the event date {{ $booking->event_date->format('M d, Y') }}">
+                                                            After event
+                                                        </small>
+                                                    @endif
                                                 @elseif($booking->status === 'completed')
                                                     @if($booking->postProduction)
                                                         <a href="{{ route('post-production.show', $booking->postProduction->id) }}"

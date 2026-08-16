@@ -176,6 +176,10 @@ class PostProductionController extends Controller
             return back()->with('error', 'Only ongoing bookings can be marked as completed.');
         }
 
+        if ($booking->event_date->gte(today())) {
+            return back()->with('error', 'The event must be finished before the booking can be marked as completed.');
+        }
+
         $booking->update([
             'status' => 'completed',
             'event_completed_at' => now(),
