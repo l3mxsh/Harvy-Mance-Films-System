@@ -115,6 +115,7 @@
                                         <th>Last Login</th>
                                         <th>Created</th>
                                         <th>Status</th>
+                                        <th class="text-end">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="clientTableBody">
@@ -173,12 +174,24 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-end">
-                                                    <form method="POST" action="{{ route('clients.admin.restore', $archived->id) }}" class="d-inline">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-sm btn-outline-dark rounded-pill" onclick="return confirm('Restore this client account?')">
-                                                            <i class="bi bi-arrow-counterclockwise me-1"></i>Restore
-                                                        </button>
-                                                    </form>
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-outline-dark rounded-pill"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#restoreModal"
+                                                            data-id="{{ $archived->id }}"
+                                                            data-name="{{ $archived->client_name }}"
+                                                            data-control="{{ $archived->control_number }}">
+                                                        <i class="bi bi-arrow-counterclockwise me-1"></i>Restore
+                                                    </button>
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-outline-danger rounded-pill"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal"
+                                                            data-id="{{ $archived->id }}"
+                                                            data-name="{{ $archived->client_name }}"
+                                                            data-control="{{ $archived->control_number }}">
+                                                        <i class="bi bi-trash me-1"></i>Delete
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -235,6 +248,76 @@
                     </div>
                 </div>
             </section>
+        </div>
+    </div>
+
+    {{-- ==================== RESTORE CLIENT MODAL ==================== --}}
+    <div class="modal fade" id="restoreModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Restore Client Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" id="restoreForm">
+                    @csrf
+                    <div class="modal-body">
+                        <p class="mb-0">Are you sure you want to restore <strong id="restoreClientName"></strong> (<code id="restoreClientControl"></code>)?</p>
+                        <p class="text-muted small mt-2 mb-0">The client will be able to log in again with their control number and password.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-dark rounded-pill">Restore</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- ==================== ARCHIVE CLIENT MODAL ==================== --}}
+    <div class="modal fade" id="archiveModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Archive Client Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" id="archiveForm">
+                    @csrf
+                    <div class="modal-body">
+                        <p class="mb-0">Are you sure you want to archive <strong id="archiveClientName"></strong> (<code id="archiveClientControl"></code>)?</p>
+                        <p class="text-muted small mt-2 mb-0">The client will no longer be able to log in. You can restore it later from the Archived tab.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-warning rounded-pill">Archive</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- ==================== DELETE CLIENT MODAL ==================== --}}
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Client Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" id="deleteForm">
+                    @csrf
+                    @method('DELETE')
+                    <div class="modal-body">
+                        <p class="mb-0">Are you sure you want to permanently delete <strong id="deleteClientName"></strong> (<code id="deleteClientControl"></code>)?</p>
+                        <p class="text-danger small mt-2 mb-0">This action cannot be undone. The client will permanently lose access.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger rounded-pill">Delete</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 

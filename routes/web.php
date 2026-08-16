@@ -139,7 +139,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/cancellations/{cancellation}/reject', [CancellationController::class, 'reject'])->name('cancellation.reject');
 
     Route::get('/admin/clients', [ClientAccountController::class, 'adminIndex'])->name('clients.admin.index');
+    Route::post('/admin/clients/{account}/archive', [ClientAccountController::class, 'archive'])->name('clients.admin.archive');
     Route::post('/admin/clients/{account}/restore', [ClientAccountController::class, 'restore'])->name('clients.admin.restore');
+    Route::delete('/admin/clients/{account}', [ClientAccountController::class, 'destroy'])->name('clients.admin.destroy');
 
     Route::get('/admin/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::put('/admin/settings', [SettingsController::class, 'update'])->name('settings.update');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\ClientAccount;
 use App\Models\Booking;
 use App\Models\Setting;
@@ -191,9 +192,45 @@ class ClientAccountController extends Controller
 
         if ($account->archived_at) {
             $account->update(['archived_at' => null]);
+            ActivityLog::log('client.restored', "Restored client account {$account->control_number} ({$account->client_name}).", [
+                'control_number' => $account->control_number,
+                'client_name' => $account->client_name,
+            ]);
         }
 
         return back()->with('success', "Account for {$account->client_name} has been restored.");
+    }
+
+    public function archive(string $account)
+    {
+        $account = ClientAccount::findOrFail($account);
+
+        if (!$account->archived_at) {
+            $account->update(['archived_at' => now()]);
+            ActivityLog::log('client.archived', "Archived client account {$account->control_number} ({$account->client_name}).", [
+                'control_number' => $account->control_number,
+                'client_name' => $account->client_name,
+            ]);
+        }
+
+        return back()->with('success', "Account for {$account->client_name} has been archived.");
+    }
+
+    public function destroy(string $account)
+    {
+        $account = ClientAccount::findOrFail($account);
+
+        $name = $account->client_name;
+        $controlNumber = $account->control_number;
+
+        ActivityLog::log('client.deleted', "Permanently deleted client account {$controlNumber} ({$name}).", [
+            'control_number' => $controlNumber,
+            'client_name' => $name,
+        ]);
+
+        $account->delete();
+
+        return back()->with('success', "Account for {$name} has been permanently deleted.");
     }
 
     public static function generateControlNumber(): string
