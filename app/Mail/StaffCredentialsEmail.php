@@ -39,36 +39,52 @@ class StaffCredentialsEmail extends Mailable
 
         return <<<HTML
         <!DOCTYPE html>
-        <html>
-        <head><meta charset="utf-8"></head>
-        <body style="font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px;">
-            <div style="max-width: 500px; margin: 0 auto; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                <div style="background: #1a1a2e; color: #fff; padding: 20px; text-align: center;">
-                    <h2 style="margin: 0;">HarvyMance Films</h2>
-                    <p style="margin: 5px 0 0; opacity: 0.8;">Staff Account</p>
-                </div>
-                <div style="padding: 30px;">
-                    <p style="color: #333; font-size: 16px;">Hello <strong>{$this->staffName}</strong>,</p>
-                    <p style="color: #666;">{$bookingLine}</p>
+        <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Your Staff Account Access - HarvyMance Films</title>
+        </head>
+        <body style="margin: 0; padding: 0; background: #fafafa; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #111111; -webkit-font-smoothing: antialiased;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 32px 16px;">
 
-                    <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                        <p style="margin: 0 0 10px; color: #666;">Login Email:</p>
-                        <p style="margin: 0 0 15px; font-size: 18px; font-weight: bold; color: #1a1a2e;">{$this->email}</p>
-                        <p style="margin: 0 0 10px; color: #666;">Temporary Password:</p>
-                        <p style="margin: 0; font-size: 22px; font-weight: bold; color: #dc3545;">{$this->tempPassword}</p>
+                <div style="background: #ffffff; border: 1px solid #e9ecef; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 18px rgba(17,17,17,0.06);">
+
+                    <div style="background: #111111; padding: 28px 32px; text-align: center;">
+                        <h1 style="margin: 0; font-size: 20px; font-weight: 700; color: #ffffff; letter-spacing: -0.01em;">HarvyMance Films</h1>
+                        <span style="display: inline-block; margin-top: 10px; background: #333333; color: #ffffff; font-size: 12px; font-weight: 500; padding: 4px 14px; border-radius: 999px;">Staff Account</span>
                     </div>
 
-                    <p style="color: #666;">Please log in and change your password after your first login.</p>
+                    <div style="padding: 32px;">
+                        <p style="margin: 0 0 12px; font-size: 16px; color: #111111;">Hello <strong>{$this->staffName}</strong>,</p>
+                        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #6c757d;">{$bookingLine}</p>
 
-                    <div style="text-align: center; margin: 25px 0;">
-                        <a href="{$this->getLoginUrl()}" style="background: #1a1a2e; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">Log In to Staff Portal</a>
+                        <div style="margin: 24px 0; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 16px; padding: 20px 24px;">
+                            <div style="margin-bottom: 18px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #6c757d; margin-bottom: 4px;">Login Email</div>
+                                <div style="font-size: 18px; font-weight: 700; color: #111111;">{$this->email}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 12px; font-weight: 500; color: #6c757d; margin-bottom: 4px;">Temporary Password</div>
+                                <div style="font-size: 20px; font-weight: 700; color: #dc3545;">{$this->tempPassword}</div>
+                            </div>
+                        </div>
+
+                        <p style="margin: 0 0 24px; font-size: 14px; line-height: 1.6; color: #6c757d;">Please log in and change your password after your first login.</p>
+
+                        <div style="text-align: center; margin: 28px 0;">
+                            <a href="{$this->getLoginUrl()}" style="display: inline-block; background: #111111; color: #ffffff; padding: 13px 32px; text-decoration: none; border-radius: 999px; font-weight: 600; font-size: 14px;">Log In to Staff Portal</a>
+                        </div>
+
+                        <p style="margin: 0; font-size: 12px; color: #6c757d;">Do not share these credentials.</p>
                     </div>
 
-                    <p style="color: #999; font-size: 13px;">Do not share these credentials.</p>
+                    <div style="background: #f8f9fa; border-top: 1px solid #e9ecef; padding: 16px 32px; text-align: center; color: #adb5bd; font-size: 12px;">
+                        &copy; {$year} HarvyMance Films. All rights reserved.
+                    </div>
                 </div>
-                <div style="background: #f8f9fa; padding: 15px; text-align: center; color: #999; font-size: 12px;">
-                    &copy; {$year} HarvyMance Films. All rights reserved.
-                </div>
+
+                <p style="text-align: center; margin: 20px 0 0; font-size: 11px; color: #adb5bd;">This email was sent by HarvyMance Films regarding your staff account.</p>
             </div>
         </body>
         </html>

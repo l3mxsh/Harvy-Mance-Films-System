@@ -39,34 +39,48 @@ class BookingRejectedEmail extends Mailable
 
     private function buildHtml(): string
     {
+        $year = date('Y');
+
         return <<<HTML
         <!DOCTYPE html>
-        <html>
-        <head><meta charset="utf-8"></head>
-        <body style="font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px;">
-            <div style="max-width: 500px; margin: 0 auto; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                <div style="background: #1a1a2e; color: #fff; padding: 20px; text-align: center;">
-                    <h2 style="margin: 0;">HarvyMance Films</h2>
-                    <p style="margin: 5px 0 0; opacity: 0.8;">Booking Rejected</p>
-                </div>
-                <div style="padding: 30px;">
-                    <p style="color: #333; font-size: 16px;">Hello <strong>{$this->clientName}</strong>,</p>
-                    <p style="color: #666;">We regret to inform you that your booking <strong>{$this->bookingRef}</strong> has been rejected.</p>
+        <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Your Booking Was Rejected - HarvyMance Films</title>
+        </head>
+        <body style="margin: 0; padding: 0; background: #fafafa; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; color: #111111; -webkit-font-smoothing: antialiased;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 32px 16px;">
 
-                    <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                        <p style="margin: 0 0 10px; color: #666;">Reason for Rejection:</p>
-                        <p style="margin: 0; font-size: 15px; color: #dc3545;">{$this->rejectionReason}</p>
+                <div style="background: #ffffff; border: 1px solid #e9ecef; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 18px rgba(17,17,17,0.06);">
+
+                    <div style="background: #111111; padding: 28px 32px; text-align: center;">
+                        <h1 style="margin: 0; font-size: 20px; font-weight: 700; color: #ffffff; letter-spacing: -0.01em;">HarvyMance Films</h1>
+                        <span style="display: inline-block; margin-top: 10px; background: #333333; color: #ffffff; font-size: 12px; font-weight: 500; padding: 4px 14px; border-radius: 999px;">Booking Rejected</span>
                     </div>
 
-                    <p style="color: #666;">You may submit a new booking request with the necessary changes. For questions, please contact us and we'll be happy to assist.</p>
+                    <div style="padding: 32px;">
+                        <p style="margin: 0 0 12px; font-size: 16px; color: #111111;">Hello <strong>{$this->clientName}</strong>,</p>
+                        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #6c757d;">We regret to inform you that your booking <strong style="color: #111111;">{$this->bookingRef}</strong> has been rejected.</p>
 
-                    <div style="text-align: center; margin: 25px 0;">
-                        <a href="{$this->getBookingUrl()}" style="background: #1a1a2e; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">Book Again</a>
+                        <div style="margin: 24px 0; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 16px; padding: 20px 24px;">
+                            <div style="font-size: 12px; font-weight: 500; color: #6c757d; margin-bottom: 6px;">Reason for Rejection</div>
+                            <div style="font-size: 15px; font-weight: 600; color: #111111;">{$this->rejectionReason}</div>
+                        </div>
+
+                        <p style="margin: 0 0 24px; font-size: 14px; line-height: 1.6; color: #6c757d;">You may submit a new booking request with the necessary changes. For questions, please contact us and we'll be happy to assist.</p>
+
+                        <div style="text-align: center; margin: 28px 0;">
+                            <a href="{$this->getBookingUrl()}" style="display: inline-block; background: #111111; color: #ffffff; padding: 13px 32px; text-decoration: none; border-radius: 999px; font-weight: 600; font-size: 14px;">Book Again</a>
+                        </div>
+                    </div>
+
+                    <div style="background: #f8f9fa; border-top: 1px solid #e9ecef; padding: 16px 32px; text-align: center; color: #adb5bd; font-size: 12px;">
+                        &copy; {$year} HarvyMance Films. All rights reserved.
                     </div>
                 </div>
-                <div style="background: #f8f9fa; padding: 15px; text-align: center; color: #999; font-size: 12px;">
-                    &copy; {{ date('Y') }} HarvyMance Films. All rights reserved.
-                </div>
+
+                <p style="text-align: center; margin: 20px 0 0; font-size: 11px; color: #adb5bd;">This email was sent by HarvyMance Films regarding your booking.</p>
             </div>
         </body>
         </html>
