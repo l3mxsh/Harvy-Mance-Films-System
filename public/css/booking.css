@@ -790,20 +790,11 @@ body {
     padding-left: 1.1rem;
 }
 
-.alert-soft-success {
-    border-left: 3px solid #198754;
-}
-
-.alert-soft-danger {
-    border-left: 3px solid #dc3545;
-}
-
-.alert-soft-warning {
-    border-left: 3px solid #ffc107;
-}
-
+.alert-soft-success,
+.alert-soft-danger,
+.alert-soft-warning,
 .alert-soft-info {
-    border-left: 3px solid var(--line);
+    border-left: 1px solid var(--line);
 }
 
 /* Download window banner */
