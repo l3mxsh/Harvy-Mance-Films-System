@@ -70,6 +70,7 @@ class CancellationController extends Controller
             $booking->update(['status' => 'cancelled']);
             $booking->items()->update(['status' => 'cancelled']);
             $booking->staffSchedules()->delete();
+            $booking->clientAccount?->update(['archived_at' => now()]);
             return back()->with('success', 'Booking cancelled successfully.');
         }
 
@@ -160,6 +161,7 @@ class CancellationController extends Controller
         $cancellation->booking->update(['status' => 'cancelled']);
         $cancellation->booking->items()->update(['status' => 'cancelled']);
         $cancellation->booking->staffSchedules()->delete();
+        $cancellation->booking->clientAccount?->update(['archived_at' => now()]);
 
         ActivityLog::log('cancellation.refunded', "Processed refund of ₱{$cancellation->refund_amount} for booking {$cancellation->booking->booking_ref}.", [
             'booking_ref' => $cancellation->booking->booking_ref,
