@@ -17,16 +17,7 @@
 <body>
 
     {{-- ==================== NAVBAR ==================== --}}
-    <nav class="navbar booking-navbar shadow-sm">
-        <div class="container d-flex align-items-center justify-content-between">
-            <a href="{{ route('home') }}" class="d-inline-flex align-items-center">
-                <img src="{{ asset('storage/images/Black Logo.png') }}" alt="HarvyMance Films" height="34">
-            </a>
-            @guest
-                <a href="{{ route('client.login') }}" class="btn btn-primary-dark btn-sm-pill btn-login">Login</a>
-            @endguest
-        </div>
-    </nav>
+    @include('partials.landing-navbar')
 
     {{-- ==================== HERO ==================== --}}
     <header class="booking-hero">
