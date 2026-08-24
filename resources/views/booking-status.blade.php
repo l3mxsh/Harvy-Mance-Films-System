@@ -18,7 +18,7 @@
     {{-- ==================== NAVBAR ==================== --}}
     <nav class="navbar booking-navbar shadow-sm">
         <div class="container d-flex align-items-center justify-content-between">
-            <a href="{{ url('/') }}" class="d-inline-flex align-items-center">
+            <a href="{{ route('home') }}" class="d-inline-flex align-items-center">
                 <img src="{{ asset('storage/images/Black Logo.png') }}" alt="HarvyMance Films" height="34">
             </a>
             @auth

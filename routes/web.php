@@ -22,7 +22,8 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\DashboardController;
 
-Route::get('/', [BookingController::class, 'index'])->name('home');
+Route::get('/', fn () => view('landing'))->name('home');
+Route::get('/book', [BookingController::class, 'index'])->name('booking.form');
 
 Route::get('/login', [ClientAccountController::class, 'showLogin'])->name('client.login');
 Route::post('/login', [ClientAccountController::class, 'login'])->middleware('throttle:client-login')->name('client.login.post');
