@@ -3,7 +3,7 @@
         <a href="{{ url('/') }}">
             <img class="landing-logo" src="{{ asset('storage/images/White Logo.png') }}"
                 data-light-logo="{{ asset('storage/images/White Logo.png') }}"
-                data-dark-logo="{{ asset('storage/images/Black Logo.png') }}" alt="Harvy Mance Films" height="38">
+                data-dark-logo="{{ asset('storage/images/Black Logo.png') }}" alt="Harvy Mance Films" height="44">
         </a>
         <ul class="nav-links">
             <li><a href="{{ url('/') }}#about">About</a></li>

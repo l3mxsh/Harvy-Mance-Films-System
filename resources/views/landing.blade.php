@@ -15,10 +15,8 @@
 
 <body>
 
-    {{-- ==================== NAVBAR ==================== --}}
     @include('partials.landing-navbar')
 
-    {{-- ==================== HERO ==================== --}}
     <header class="landing-hero">
         <div class="hero-bg"></div>
         <div class="hero-overlay"></div>
@@ -41,7 +39,6 @@
         </div>
     </header>
 
-    {{-- ==================== ABOUT ==================== --}}
     <section class="landing-section" id="about">
         <div class="container">
             <div class="row g-5 align-items-center">
@@ -74,7 +71,6 @@
         </div>
     </section>
 
-    {{-- ==================== SERVICES ==================== --}}
     <section class="landing-section" id="services">
         <div class="container">
             <div class="why-intro text-center mb-5">
@@ -119,7 +115,6 @@
         </div>
     </section>
 
-    {{-- ==================== WHY CHOOSE US ==================== --}}
     <section class="landing-section" id="why">
         <div class="container">
             <div class="row g-5 align-items-center">
@@ -156,7 +151,6 @@
         </div>
     </section>
 
-    {{-- ==================== CTA ==================== --}}
     <section class="cta-section">
         <div class="container">
             <h2 class="cta-title">Ready to Capture Your Story?</h2>
@@ -167,7 +161,6 @@
         </div>
     </section>
 
-    {{-- ==================== FOOTER ==================== --}}
     <footer class="landing-footer">
         <div class="container text-center">
             <small>&copy; {{ date('Y') }} Harvy Mance Films. All rights reserved.</small>
@@ -183,10 +176,8 @@
         window.addEventListener('scroll', () => {
             const currentScrollY = window.scrollY;
 
-            // toggle "scrolled" style once you've moved past the top
             navbar.classList.toggle('scrolled', currentScrollY > 10);
 
-            // hide on scroll down, show on scroll up
             if (currentScrollY > lastScrollY && currentScrollY > 100) {
                 navbar.classList.add('nav-hidden');
             } else {
