@@ -136,12 +136,15 @@ function updateConfirmationSummary(packagePrice, addonsTotal, total, addonNames)
         document.getElementById('confirmPackagePrice').textContent = formatPeso(packagePrice);
 
         var pkgCard = document.querySelector('.package-card[data-package-id="' + selectedPackageId + '"]');
+        var servicesContainer = document.getElementById('confirmServices');
+        servicesContainer.innerHTML = '';
         if (pkgCard) {
-            var services = [];
             pkgCard.querySelectorAll('.service-list li').forEach(function(li) {
-                services.push(li.textContent.trim());
+                var pill = document.createElement('span');
+                pill.className = 'confirm-service-pill';
+                pill.textContent = li.textContent.trim();
+                servicesContainer.appendChild(pill);
             });
-            document.getElementById('confirmServices').textContent = services.join(', ');
         }
     }
 
@@ -154,7 +157,6 @@ function updateConfirmationSummary(packagePrice, addonsTotal, total, addonNames)
         addonsSection.style.display = 'none';
     }
 
-    document.getElementById('confirmTotalAmount').textContent = formatPeso(total);
     document.getElementById('confirmDownpayment').textContent = formatPeso(Math.round(total * 0.30 * 100) / 100);
     document.getElementById('confirmBalance').textContent = formatPeso(Math.round(total * 0.70 * 100) / 100);
 }

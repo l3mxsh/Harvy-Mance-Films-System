@@ -484,32 +484,94 @@ body {
 }
 
 /* ---------------- Confirmation ---------------- */
-.confirmation-section h6 {
+.confirm-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 1rem;
+}
+
+.confirm-card-title {
     font-weight: 600;
     font-size: 0.95rem;
     color: var(--ink);
-    margin-bottom: 1rem;
-    padding-bottom: 0.85rem;
-    border-bottom: 1px solid var(--line);
+    margin: 0 0 1rem;
 }
 
-.confirmation-section .detail-row {
+.confirm-fields {
     display: flex;
-    justify-content: space-between;
-    gap: 1.5rem;
-    padding: 0.45rem 0;
-    font-size: 0.875rem;
+    flex-direction: column;
+    gap: 0.85rem;
 }
 
-.confirmation-section .detail-label {
-    color: var(--ink-soft);
-    flex-shrink: 0;
+.confirm-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
 }
 
-.confirmation-section .detail-value {
+.confirm-label {
+    font-size: 0.72rem;
     font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+}
+
+.confirm-value {
+    font-size: 0.9rem;
+    font-weight: 600;
     color: var(--ink);
-    text-align: right;
+}
+
+.confirm-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.confirm-total-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--ink);
+    color: #fff;
+    border-radius: var(--radius-lg);
+    padding: 1.1rem 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.confirm-total-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    opacity: 0.85;
+}
+
+.confirm-total-price {
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.confirm-services-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.confirm-service-pill {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #495057;
+    background: var(--canvas);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
 }
 
 .soft-divider {
@@ -1164,11 +1226,27 @@ body {
 
     .confirmation-section .detail-row {
         flex-direction: column;
-        gap: 0.1rem;
+        gap: 0.2rem;
     }
 
     .confirmation-section .detail-value {
         text-align: left;
+    }
+
+    .confirm-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .confirm-total-banner {
+        padding: 1rem 1.25rem;
+    }
+
+    .confirm-total-price {
+        font-size: 1.2rem;
+    }
+
+    .confirm-services-pills {
+        justify-content: flex-start;
     }
 }
 

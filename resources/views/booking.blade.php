@@ -289,7 +289,7 @@
                         <div class="col-12">
                             <label class="form-label">Complete Venue Address</label>
                             <input type="text" class="form-control" name="event_address" id="eventAddress"
-                                   value="{{ old('event_address', '') }}" placeholder="Full address of the venue">
+                                   value="{{ old('event_address', '') }}" placeholder="Full address of the venue" required>
                         </div>
                         <div class="col-12">
                             <label class="form-label">Event Description / Special Instructions</label>
@@ -322,91 +322,102 @@
             {{-- ==================== STEP 4: Booking Confirmation ==================== --}}
             <div class="step-content" id="step4">
 
-                <section class="surface-card confirmation-section m-2">
-                    <h6>Package Information</h6>
-                    <div class="detail-row">
-                        <span class="detail-label">Selected Package</span>
-                        <span class="detail-value" id="confirmPackageName">-</span>
+                {{-- Package Details --}}
+                <section class="confirm-card mx-2">
+                    <h6 class="confirm-card-title">Package Information</h6>
+                    <div class="confirm-fields">
+                        <div class="confirm-field">
+                            <span class="confirm-label">Selected Package</span>
+                            <span class="confirm-value" id="confirmPackageName">-</span>
+                        </div>
+                        <div class="confirm-field">
+                            <span class="confirm-label">Package Price</span>
+                            <span class="confirm-value" id="confirmPackagePrice">-</span>
+                        </div>
                     </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Package Price</span>
-                        <span class="detail-value" id="confirmPackagePrice">-</span>
-                    </div>
-                    <div class="detail-row" id="confirmServicesRow">
-                        <span class="detail-label">Included Services</span>
-                        <span class="detail-value" id="confirmServices">-</span>
+                    <div class="confirm-field" id="confirmServicesRow">
+                        <span class="confirm-label">Included Services</span>
+                        <div class="confirm-services-pills" id="confirmServices"></div>
                     </div>
                     <div id="confirmAddonsSection" style="display: none;">
-                        <hr class="soft-divider">
-                        <div class="detail-row">
-                            <span class="detail-label">Selected Add-Ons</span>
-                            <span class="detail-value" id="confirmAddons">-</span>
+                        <div class="confirm-fields" style="margin-top: 0.75rem;">
+                            <div class="confirm-field">
+                                <span class="confirm-label">Selected Add-Ons</span>
+                                <span class="confirm-value" id="confirmAddons">-</span>
+                            </div>
+                            <div class="confirm-field">
+                                <span class="confirm-label">Add-On Charges</span>
+                                <span class="confirm-value" id="confirmAddonsPrice">-</span>
+                            </div>
                         </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Add-On Charges</span>
-                            <span class="detail-value" id="confirmAddonsPrice">-</span>
+                    </div>
+                </section>
+
+                {{-- Client + Event Info side-by-side --}}
+                <div class="confirm-grid">
+                    <section class="confirm-card mx-2">
+                        <h6 class="confirm-card-title">Client Information</h6>
+                        <div class="confirm-fields">
+                            <div class="confirm-field">
+                                <span class="confirm-label">Name</span>
+                                <span class="confirm-value" id="confirmName">-</span>
+                            </div>
+                            <div class="confirm-field">
+                                <span class="confirm-label">Email</span>
+                                <span class="confirm-value" id="confirmEmail">-</span>
+                            </div>
+                            <div class="confirm-field">
+                                <span class="confirm-label">Contact Number</span>
+                                <span class="confirm-value" id="confirmPhone">-</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="confirm-card mx-2">
+                        <h6 class="confirm-card-title">Event Information</h6>
+                        <div class="confirm-fields">
+                            <div class="confirm-field">
+                                <span class="confirm-label">Event Type</span>
+                                <span class="confirm-value" id="confirmEventType">-</span>
+                            </div>
+                            <div class="confirm-field">
+                                <span class="confirm-label">Event Date</span>
+                                <span class="confirm-value" id="confirmEventDate">-</span>
+                            </div>
+                            <div class="confirm-field">
+                                <span class="confirm-label">Event Time</span>
+                                <span class="confirm-value" id="confirmEventTime">-</span>
+                            </div>
+                            <div class="confirm-field">
+                                <span class="confirm-label">Venue</span>
+                                <span class="confirm-value" id="confirmVenue">-</span>
+                            </div>
+                            <div class="confirm-field" id="confirmAddressEventRow">
+                                <span class="confirm-label">Venue Address</span>
+                                <span class="confirm-value" id="confirmEventAddress">-</span>
+                            </div>
+                            <div class="confirm-field" id="confirmDescRow">
+                                <span class="confirm-label">Description</span>
+                                <span class="confirm-value" id="confirmEventDesc">-</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                {{-- Payment Breakdown --}}
+                <section class="confirm-card mx-2">
+                    <h6 class="confirm-card-title">Payment Summary</h6>
+                    <div class="confirm-fields">
+                        <div class="confirm-field">
+                            <span class="confirm-label">Downpayment (30%)</span>
+                            <span class="confirm-value" id="confirmDownpayment">&#8369;0.00</span>
+                        </div>
+                        <div class="confirm-field">
+                            <span class="confirm-label">Remaining Balance</span>
+                            <span class="confirm-value" id="confirmBalance">&#8369;0.00</span>
                         </div>
                     </div>
-                </section>
 
-                <section class="surface-card confirmation-section">
-                    <h6>Client Information</h6>
-                    <div class="detail-row">
-                        <span class="detail-label">Name</span>
-                        <span class="detail-value" id="confirmName">-</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Email</span>
-                        <span class="detail-value" id="confirmEmail">-</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Contact Number</span>
-                        <span class="detail-value" id="confirmPhone">-</span>
-                    </div>
-                </section>
-
-                <section class="surface-card confirmation-section">
-                    <h6>Event Information</h6>
-                    <div class="detail-row">
-                        <span class="detail-label">Event Type</span>
-                        <span class="detail-value" id="confirmEventType">-</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Event Date</span>
-                        <span class="detail-value" id="confirmEventDate">-</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Event Time</span>
-                        <span class="detail-value" id="confirmEventTime">-</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Venue</span>
-                        <span class="detail-value" id="confirmVenue">-</span>
-                    </div>
-                    <div class="detail-row" id="confirmAddressEventRow">
-                        <span class="detail-label">Venue Address</span>
-                        <span class="detail-value" id="confirmEventAddress">-</span>
-                    </div>
-                    <div class="detail-row" id="confirmDescRow">
-                        <span class="detail-label">Description</span>
-                        <span class="detail-value" id="confirmEventDesc">-</span>
-                    </div>
-                </section>
-
-                <aside class="price-summary mb-4">
-                    <h6 class="summary-title">Payment Summary</h6>
-                    <div class="summary-row">
-                        <span class="summary-key">Total Amount</span>
-                        <span class="summary-val" id="confirmTotalAmount">&#8369;0.00</span>
-                    </div>
-                    <div class="summary-row">
-                        <span class="summary-key">Downpayment (30%)</span>
-                        <span class="summary-val" id="confirmDownpayment">&#8369;0.00</span>
-                    </div>
-                    <div class="summary-row total">
-                        <span>Remaining Balance</span>
-                        <span id="confirmBalance">&#8369;0.00</span>
-                    </div>
                     <div class="next-steps">
                         <div class="next-steps-title">Next Steps</div>
                         <ol>
@@ -416,9 +427,9 @@
                             <li>Receive booking confirmation</li>
                         </ol>
                     </div>
-                </aside>
+                </section>
 
-                <section class="surface-card">
+                <section class="surface-card mx-2">
                     <div class="form-check terms-check">
                         <input class="form-check-input" type="checkbox" id="termsCheck" onchange="toggleTerms()">
                         <label class="form-check-label" for="termsCheck">
@@ -447,86 +458,8 @@
         </div>
     </footer>
 
-    {{-- ==================== OTP MODAL ==================== --}}
-    <div class="modal fade" id="otpModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Email Verification</h5>
-                </div>
-                <div class="modal-body p-4">
-
-                    <div id="otpSendingState" class="text-center py-2">
-                        <div class="spinner-border text-secondary mb-3" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <p class="mb-0 text-muted small">Sending verification code to your email...</p>
-                    </div>
-
-                    <div id="otpInputState" style="display:none;">
-                        <p class="text-center text-muted small mb-4">
-                            A 6-digit code has been sent to<br>
-                            <strong id="otpEmailDisplay" class="text-dark"></strong>
-                        </p>
-
-                        <input type="text" class="form-control form-control-lg text-center otp-input mb-3"
-                               id="otpInput" maxlength="6" placeholder="000000" autocomplete="off">
-
-                        <p id="otpError" class="small text-danger text-center mb-2" style="display:none;"></p>
-                        <p id="otpSuccess" class="small text-success text-center mb-2" style="display:none;"></p>
-
-                        <div class="d-flex justify-content-between align-items-center mt-1">
-                            <span class="text-muted small" id="otpCountdown">Expires in 5:00</span>
-                            <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none"
-                                    id="otpResendBtn" onclick="resendOtp()" disabled>Resend Code</button>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer justify-content-between" id="otpFooter" style="display:none;">
-                    <button type="button" class="btn btn-outline-dark rounded-pill" onclick="cancelOtp()">Cancel</button>
-                    <button type="button" class="btn btn-dark rounded-pill" id="otpVerifyBtn" onclick="verifyOtp()">Verify</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- ==================== TERMS MODAL ==================== --}}
-    <div class="modal fade" id="termsModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Terms and Conditions</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body terms-body">
-                    <h6>1. Booking &amp; Reservation</h6>
-                    <p>All bookings are subject to availability and admin approval. A booking is not confirmed until you receive a confirmation notification.</p>
-
-                    <h6>2. Downpayment</h6>
-                    <p>A 30% downpayment is required to secure your booking. The downpayment must be paid within the deadline specified in your booking confirmation.</p>
-
-                    <h6>3. Cancellation Policy</h6>
-                    <p>Cancellations made 7 days before the event will receive a full refund of the downpayment. Cancellations within 7 days of the event will forfeit the downpayment.</p>
-
-                    <h6>4. Rescheduling</h6>
-                    <p>Rescheduling requests are subject to availability. Please contact us at least 48 hours before your original event date.</p>
-
-                    <h6>5. Equipment &amp; Materials</h6>
-                    <p>Required equipment and materials will be automatically reserved upon booking approval. Any damage to rented equipment will be charged accordingly.</p>
-
-                    <h6>6. Deliverables</h6>
-                    <p>Final edited photos and videos will be delivered within the timeframe specified in your selected package. Raw files are not included unless specified.</p>
-
-                    <h6>7. Liability</h6>
-                    <p>HarvyMance Films is not liable for events beyond our control, including natural disasters, power outages, or other force majeure events.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">I Understand</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    {{-- ==================== MODALS ==================== --}}
+    @include('partials.booking-modals')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
