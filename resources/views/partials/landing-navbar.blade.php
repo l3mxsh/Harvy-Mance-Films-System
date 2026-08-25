@@ -38,7 +38,8 @@
         const updateNavbar = () => {
             const isScrolled = window.scrollY > 60;
             navbar.classList.toggle('scrolled', isScrolled);
-            logo.src = isScrolled ? logo.dataset.darkLogo : logo.dataset.lightLogo;
+            const useDarkLogo = isScrolled || mobileMenu.classList.contains('open');
+            logo.src = useDarkLogo ? logo.dataset.darkLogo : logo.dataset.lightLogo;
         };
 
         window.addEventListener('scroll', updateNavbar, { passive: true });
@@ -47,13 +48,17 @@
         const closeMenu = () => {
             hamburger.classList.remove('active');
             mobileMenu.classList.remove('open');
+            navbar.classList.remove('menu-open');
             document.body.classList.remove('menu-open');
+            updateNavbar();
         };
 
         hamburger.addEventListener('click', () => {
             const isOpen = mobileMenu.classList.toggle('open');
             hamburger.classList.toggle('active', isOpen);
+            navbar.classList.toggle('menu-open', isOpen);
             document.body.classList.toggle('menu-open', isOpen);
+            updateNavbar();
         });
 
         document.addEventListener('keydown', event => {

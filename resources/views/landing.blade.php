@@ -49,11 +49,17 @@
                     <div class="about-img-wrap">
                         <img src="{{ asset('storage/images/2.jpg') }}" alt="Harvy Mance Films behind the scenes"
                             loading="lazy">
+                        <div class="about-img-content about-overlay-mobile">
+                            <div class="section-label">About Us</div>
+                            <h2 class="about-img-title">Crafting Stories That Move People</h2>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="section-label">About Us</div>
-                    <h2 class="section-heading">Crafting Stories That Move People</h2>
+                <div class="col-lg-6 centered-copy">
+                    <div class="about-desktop-heading">
+                        <div class="section-label">About Us</div>
+                        <h2 class="section-heading">Crafting Stories That Move People</h2>
+                    </div>
                     <p class="section-body mb-4">
                         Harvy Mance Films is a professional film production team dedicated to capturing life's most
                         meaningful moments with cinematic precision and artistic vision. From intimate ceremonies to
@@ -117,7 +123,7 @@
     <section class="landing-section" id="why">
         <div class="container">
             <div class="row g-5 align-items-center">
-                <div class="col-lg-5">
+                <div class="col-lg-5 centered-copy">
                     <div class="section-label">Why Us</div>
                     <h2 class="section-heading">Why Choose Harvy Mance Films</h2>
                     <p class="section-body">We combine technical expertise with genuine passion to deliver films that
@@ -169,7 +175,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
         let lastScrollY = window.scrollY;
         const navbar = document.querySelector('.landing-navbar');
