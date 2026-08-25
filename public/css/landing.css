@@ -26,22 +26,17 @@ body::-webkit-scrollbar {
 }
 
 body {
-    background-color: var(--canvas) !important;
-    margin: 0;
-    padding: 0;
-    overscroll-behavior: none;
-    overflow-x: clip;
-}
-
-body {
     font-family:
         "Inter",
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
+    background-color: var(--canvas) !important;
     color: var(--ink);
     -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+    overflow-x: clip;
 }
 
 .container {
@@ -97,18 +92,6 @@ body {
 
 .landing-navbar .container {
     height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
 }
 
 .nav-links a {
@@ -218,10 +201,7 @@ body {
 .nav-mobile-menu {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     z-index: 99;
     background: rgba(255, 255, 255, 1);
     opacity: 0;
@@ -248,10 +228,6 @@ body {
     list-style: none;
     margin: 0;
     padding: 1.5rem 1.25rem 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     gap: 0.5rem;
     overflow-y: auto;
     box-shadow: none;
@@ -264,9 +240,6 @@ body {
 }
 
 .nav-mobile-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     color: var(--ink);
     font-size: 0.95rem;
     font-weight: 600;
@@ -314,9 +287,6 @@ body.menu-open {
     width: 100%;
     min-height: 100vh;
     min-height: 100dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
     background: #0a0a0a;
 }
@@ -346,14 +316,9 @@ body.menu-open {
     z-index: 2;
     padding: 7rem 0 4rem;
     max-width: 720px;
-    text-align: center;
-    margin: 0 auto;
 }
 
 .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.12em;
@@ -380,30 +345,7 @@ body.menu-open {
 }
 
 .hero-actions {
-    display: flex;
     gap: 0.85rem;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.btn-hero-primary {
-    background: #fff;
-    color: var(--ink);
-    border: none;
-    border-radius: var(--radius-pill);
-    padding: 0.85rem 2rem;
-    font-size: 0.925rem;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: var(--ease);
-}
-
-.btn-hero-primary:hover {
-    background: #f0f0f0;
-    color: var(--ink);
 }
 
 .btn-hero-secondary {
@@ -415,9 +357,6 @@ body.menu-open {
     font-size: 0.925rem;
     font-weight: 500;
     text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
     transition: var(--ease);
 }
 
@@ -458,9 +397,6 @@ body.menu-open {
     padding: 2.5rem 0;
     overflow-x: clip;
 }
-.landing-section-sm {
-    padding: 4rem 0;
-}
 
 .section-label {
     font-size: 0.75rem;
@@ -469,9 +405,6 @@ body.menu-open {
     text-transform: uppercase;
     color: var(--ink-soft);
     margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
 .section-heading {
@@ -498,13 +431,6 @@ body.menu-open {
     aspect-ratio: 4/3;
 }
 
-.about-img-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
 .about-img-wrap .about-img-content {
     top: 0;
     bottom: auto;
@@ -523,26 +449,6 @@ body.menu-open {
 
 .about-desktop-heading {
     display: block;
-    text-align: center;
-}
-
-.centered-copy {
-    text-align: center;
-}
-
-.centered-copy .section-body {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.centered-copy .section-label,
-.about-desktop-heading .section-label,
-.about-overlay-mobile .section-label {
-    justify-content: center;
-}
-
-.about-overlay-mobile {
-    text-align: center;
 }
 
 .about-img-wrap .section-label {
@@ -553,28 +459,6 @@ body.menu-open {
 .about-img-wrap .about-img-title {
     max-width: 420px;
     margin-bottom: 0;
-}
-
-.about-img-badge {
-    position: absolute;
-    bottom: 1.25rem;
-    left: 1.25rem;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    padding: 0.75rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--ink);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-}
-
-.about-img-badge i {
-    font-size: 1.1rem;
-    color: var(--ink-soft);
 }
 
 /* ---------------- Services — Tilted Card Grid ---------------- */
@@ -680,14 +564,9 @@ body.menu-open {
 }
 
 .why-item {
-    text-align: center;
-}
-
-.why-item {
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
-    padding: 1.5rem;
 }
 
 .why-title {
@@ -708,7 +587,6 @@ body.menu-open {
 .cta-section {
     background: var(--ink);
     padding: 6rem 0;
-    text-align: center;
 }
 
 .cta-title {
@@ -722,10 +600,8 @@ body.menu-open {
 .cta-desc {
     font-size: 1.05rem;
     color: rgba(255, 255, 255, 0.6);
-    margin: 0 0 2.5rem;
+    margin: 0 auto 2.5rem;
     max-width: 480px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .btn-cta {
@@ -752,7 +628,6 @@ body.menu-open {
 .landing-footer {
     background: #fff;
     border-top: 1px solid var(--line);
-    padding: 2rem 0;
     color: var(--ink-soft);
 }
 
@@ -810,7 +685,6 @@ body.menu-open {
         flex-direction: column;
         align-items: stretch;
     }
-    .hero-actions .btn-hero-primary,
     .hero-actions .btn-hero-secondary {
         width: 100%;
         justify-content: center;
