@@ -100,7 +100,7 @@
                 <div class="row g-4 g-lg-5">
                     <div class="col-12">
 
-                        <section class="surface-card mb-4">
+                        <section class="surface-card m-2">
                             <div class="section-head">
                                 <h2 class="section-title">Select Your Package</h2>
                                 <p class="section-sub">Pick the coverage that fits your event.</p>
@@ -137,7 +137,7 @@
                         </section>
 
                         @if($addons->count() > 0)
-                            <section class="surface-card mb-4">
+                            <section class="surface-card m-2">
                                 <div class="section-head">
                                     <h2 class="section-title">Add-Ons <span class="section-optional">Optional</span></h2>
                                     <p class="section-sub">Enhance your package with extra services.</p>
@@ -170,7 +170,7 @@
                             </section>
                         @endif
 
-                        <aside class="price-summary mb-4" id="priceSummary">
+                        <aside class="price-summary m-2" id="priceSummary">
                             <h6 class="summary-title">Order Summary</h6>
 
                             <div id="summaryPackage" class="summary-row" style="display: none;">
@@ -197,7 +197,7 @@
                             <p class="summary-note">No payment required today.</p>
                         </aside>
 
-                        <div class="d-flex justify-content-end step-actions">
+                        <div class="d-flex justify-content-end step-actions mx-2">
                             <button type="button" class="btn btn-dark rounded-pill" onclick="goToStep(2)" id="step1Next">
                                 Continue <i class="bi bi-arrow-right ms-1"></i>
                             </button>
@@ -208,7 +208,7 @@
 
             {{-- ==================== STEP 2: Client Information ==================== --}}
             <div class="step-content" id="step2">
-                <section class="surface-card">
+                <section class="surface-card m-2">
                     <div class="section-head">
                         <h2 class="section-title">Your Information</h2>
                         <p class="section-sub">We'll use these details to contact you about your booking.</p>
@@ -239,7 +239,7 @@
                     </div>
                 </section>
 
-                <div class="step-actions d-flex justify-content-between gap-3">
+                <div class="step-actions d-flex justify-content-between gap-3 mx-2">
                     <button type="button" class="btn btn-outline-dark rounded-pill" onclick="goToStep(1)">
                         <i class="bi bi-arrow-left me-1"></i> Back
                     </button>
@@ -251,7 +251,7 @@
 
             {{-- ==================== STEP 3: Event Details ==================== --}}
             <div class="step-content" id="step3">
-                <section class="surface-card">
+                <section class="surface-card m-2">
                     <div class="section-head">
                         <h2 class="section-title">Event Details</h2>
                         <p class="section-sub">Tell us when and where your event takes place.</p>
@@ -309,7 +309,7 @@
                     </div>
                 </div>
 
-                <div class="step-actions d-flex justify-content-between gap-3">
+                <div class="step-actions d-flex justify-content-between gap-3 mx-2">
                     <button type="button" class="btn btn-outline-dark rounded-pill" onclick="goToStep(2)">
                         <i class="bi bi-arrow-left me-1"></i> Back
                     </button>
@@ -322,7 +322,7 @@
             {{-- ==================== STEP 4: Booking Confirmation ==================== --}}
             <div class="step-content" id="step4">
 
-                <section class="surface-card confirmation-section">
+                <section class="surface-card confirmation-section m-2">
                     <h6>Package Information</h6>
                     <div class="detail-row">
                         <span class="detail-label">Selected Package</span>
@@ -428,7 +428,7 @@
                     </div>
                 </section>
 
-                <div class="step-actions d-flex justify-content-between gap-3">
+                <div class="step-actions d-flex justify-content-between gap-3 mx-2">
                     <button type="button" class="btn btn-outline-dark rounded-pill" onclick="goToStep(3)">
                         <i class="bi bi-arrow-left me-1"></i> Back
                     </button>
