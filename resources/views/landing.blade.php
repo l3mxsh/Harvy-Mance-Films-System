@@ -29,11 +29,8 @@
                 <p class="hero-desc">Cinematic storytelling for weddings, debuts, corporate events, and every milestone
                     worth remembering.</p>
                 <div class="hero-actions">
-                    <a href="{{ route('booking.form') }}" class="btn-hero-primary">
+                    <a href="{{ route('booking.form') }}" class="btn-hero-secondary">
                         Book Now <i class="bi bi-arrow-right"></i>
-                    </a>
-                    <a href="#portfolio" class="btn-hero-secondary">
-                        View Our Work <i class="bi bi-play-circle"></i>
                     </a>
                 </div>
             </div>
@@ -66,64 +63,50 @@
                         With a passion for visual storytelling and a commitment to quality, every project we take on is
                         treated with the care and creativity it deserves.
                     </p>
-                    <a href="{{ route('booking.form') }}" class="btn btn-dark rounded-pill px-4">
-                        Start Your Booking <i class="bi bi-arrow-right ms-1"></i>
-                    </a>
                 </div>
             </div>
         </div>
     </section>
 
     {{-- ==================== SERVICES ==================== --}}
-    <section class="landing-section services-bg" id="services">
+    <section class="landing-section" id="services">
         <div class="container">
-            <div class="row mb-5">
-                <div class="col-lg-6">
-                    <div class="section-label">What We Do</div>
-                    <h2 class="section-heading">Our Services</h2>
-                    <p class="section-body">Full-service film and video production tailored to your event and vision.
-                    </p>
-                </div>
+            <div class="why-intro text-center mb-5">
+                <div class="section-label justify-content-center">What We Do</div>
+                <h2 class="section-heading">Our Services</h2>
+                <p class="section-body mx-auto">Full-service film and video production tailored to your event and
+                    vision.</p>
             </div>
-            <div class="row g-3">
-                <div class="col-md-6 col-lg-3">
-                    <div class="service-card">
-                        <div class="service-card-body">
-                            <div class="service-icon"><i class="bi bi-camera-video"></i></div>
-                            <h3 class="service-card-title">Wedding Films</h3>
-                            <p class="service-card-desc">Cinematic coverage of your wedding day from ceremony to
-                                reception.</p>
-                        </div>
+
+            <div class="services-grid">
+                <div class="service-card service-card-1">
+                    <img src="{{ asset('storage/images/4.jpg') }}" alt="Wedding film showcase" loading="lazy">
+                    <div class="about-img-content">
+                        <h3 class="about-img-title">Wedding Films</h3>
+                        <p class="about-img-desc">Cinematic coverage of your wedding day from ceremony to reception.</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="service-card">
-                        <div class="service-card-body">
-                            <div class="service-icon"><i class="bi bi-stars"></i></div>
-                            <h3 class="service-card-title">Debut & Birthdays</h3>
-                            <p class="service-card-desc">Elegant documentation of milestone celebrations and special
-                                occasions.</p>
-                        </div>
+                <div class="service-card service-card-2">
+                    <img src="{{ asset('storage/images/3.jpg') }}" alt="Debut and birthday celebration" loading="lazy">
+                    <div class="about-img-content">
+                        <h3 class="about-img-title">Debut & Birthdays</h3>
+                        <p class="about-img-desc">Elegant documentation of milestone celebrations and special occasions.
+                        </p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="service-card">
-                        <div class="service-card-body">
-                            <div class="service-icon"><i class="bi bi-briefcase"></i></div>
-                            <h3 class="service-card-title">Corporate Events</h3>
-                            <p class="service-card-desc">Professional video production for conferences, launches, and
-                                company events.</p>
-                        </div>
+                <div class="service-card service-card-3">
+                    <img src="{{ asset('storage/images/5.jpg') }}" alt="Corporate event production" loading="lazy">
+                    <div class="about-img-content">
+                        <h3 class="about-img-title">Corporate Events</h3>
+                        <p class="about-img-desc">Professional video production for conferences, launches, and company
+                            events.</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="service-card">
-                        <div class="service-card-body">
-                            <div class="service-icon"><i class="bi bi-film"></i></div>
-                            <h3 class="service-card-title">Post Production</h3>
-                            <p class="service-card-desc">Expert editing, color grading, and delivery of your final film.
-                            </p>
-                        </div>
+                <div class="service-card service-card-4">
+                    <img src="{{ asset('storage/images/6.jpg') }}" alt="Post production editing" loading="lazy">
+                    <div class="about-img-content">
+                        <h3 class="about-img-title">Post Production</h3>
+                        <p class="about-img-desc">Expert editing, color grading, and delivery of your final film.</p>
                     </div>
                 </div>
             </div>
@@ -143,68 +126,25 @@
                 <div class="col-lg-7">
                     <div class="why-grid">
                         <div class="why-item">
-                            <div class="why-icon"><i class="bi bi-camera-video-fill"></i></div>
                             <div class="why-title">Cinematic Quality</div>
                             <p class="why-desc">Professional-grade equipment and techniques for a premium visual result.
                             </p>
                         </div>
                         <div class="why-item">
-                            <div class="why-icon"><i class="bi bi-people-fill"></i></div>
                             <div class="why-title">Experienced Team</div>
                             <p class="why-desc">A dedicated crew that works seamlessly to capture every important
                                 moment.</p>
                         </div>
                         <div class="why-item">
-                            <div class="why-icon"><i class="bi bi-clock-fill"></i></div>
                             <div class="why-title">On-Time Delivery</div>
                             <p class="why-desc">We respect your timeline and deliver your final film as promised.</p>
                         </div>
                         <div class="why-item">
-                            <div class="why-icon"><i class="bi bi-heart-fill"></i></div>
                             <div class="why-title">Personal Approach</div>
                             <p class="why-desc">Every event is unique. We tailor our coverage to your story and vision.
                             </p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- ==================== PORTFOLIO ==================== --}}
-    <section class="landing-section portfolio-bg" id="portfolio">
-        <div class="container">
-            <div class="row mb-5">
-                <div class="col-lg-6">
-                    <div class="section-label">Featured Work</div>
-                    <h2 class="section-heading">Our Portfolio</h2>
-                    <p class="section-body">A glimpse of the stories we've had the privilege to tell.</p>
-                </div>
-            </div>
-            <div class="bento-portfolio">
-                <div class="portfolio-item bp-1">
-                    <img src="{{ asset('storage/images/1.jpg') }}" alt="Featured work" loading="lazy">
-                    <div class="portfolio-overlay"><span class="portfolio-tag">Wedding</span></div>
-                </div>
-                <div class="portfolio-item bp-2">
-                    <img src="{{ asset('storage/images/3.jpg') }}" alt="Portfolio" loading="lazy">
-                    <div class="portfolio-overlay"><span class="portfolio-tag">Debut</span></div>
-                </div>
-                <div class="portfolio-item bp-3">
-                    <img src="{{ asset('storage/images/4.jpg') }}" alt="Portfolio" loading="lazy">
-                    <div class="portfolio-overlay"><span class="portfolio-tag">Wedding</span></div>
-                </div>
-                <div class="portfolio-item bp-4">
-                    <img src="{{ asset('storage/images/5.jpg') }}" alt="Portfolio" loading="lazy">
-                    <div class="portfolio-overlay"><span class="portfolio-tag">Wedding</span></div>
-                </div>
-                <div class="portfolio-item bp-5">
-                    <img src="{{ asset('storage/images/2.jpg') }}" alt="Portfolio" loading="lazy">
-                    <div class="portfolio-overlay"><span class="portfolio-tag">Wedding</span></div>
-                </div>
-                <div class="portfolio-item bp-6">
-                    <img src="{{ asset('storage/images/6.jpg') }}" alt="Portfolio" loading="lazy">
-                    <div class="portfolio-overlay"><span class="portfolio-tag">Debut</span></div>
                 </div>
             </div>
         </div>
@@ -229,6 +169,27 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let lastScrollY = window.scrollY;
+        const navbar = document.querySelector('.landing-navbar');
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+
+            // toggle "scrolled" style once you've moved past the top
+            navbar.classList.toggle('scrolled', currentScrollY > 10);
+
+            // hide on scroll down, show on scroll up
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                navbar.classList.add('nav-hidden');
+            } else {
+                navbar.classList.remove('nav-hidden');
+            }
+
+            lastScrollY = currentScrollY;
+        }, { passive: true });
+    </script>
 </body>
 
 </html>
