@@ -251,7 +251,7 @@
 
                 {{-- ==================== ACTIONS ==================== --}}
                 <div class="d-flex flex-wrap justify-content-center gap-2 step-actions">
-                    <a href="{{ url('/') }}" class="btn btn-primary-dark mx-2">
+                    <a href="{{ url('/') }}" class="btn btn-primary-dark">
                         Book Another Event
                     </a>
                 </div>
