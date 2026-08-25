@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
     <link rel="stylesheet" href="{{ asset('css/booking.css') }}">
 </head>
 
@@ -18,6 +19,16 @@
 
     {{-- ==================== NAVBAR ==================== --}}
     @include('partials.landing-navbar')
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var logo = document.querySelector('.landing-logo');
+            if (logo) logo.src = logo.dataset.darkLogo;
+            window.addEventListener('scroll', function () {
+                if (logo) logo.src = logo.dataset.darkLogo;
+            }, { passive: true });
+        });
+    </script>
 
     {{-- ==================== HERO ==================== --}}
     <header class="booking-hero">
@@ -518,6 +529,29 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let lastScrollY = window.scrollY;
+        const navbar = document.querySelector('.landing-navbar');
+        const bookingNav = document.querySelector('.booking-nav');
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+
+            navbar.classList.toggle('scrolled', currentScrollY > 10);
+
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                navbar.classList.add('nav-hidden');
+                bookingNav.classList.add('nav-hidden');
+            } else {
+                navbar.classList.remove('nav-hidden');
+                bookingNav.classList.remove('nav-hidden');
+            }
+
+            lastScrollY = currentScrollY;
+        }, { passive: true });
+    </script>
+
     <script src="{{ asset('js/booking.js') }}"></script>
 </body>
 

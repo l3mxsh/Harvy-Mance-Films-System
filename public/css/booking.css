@@ -31,67 +31,50 @@ body {
     max-width: 1320px;
 }
 
-/* ---------------- Navbar ---------------- */
+/* ---------------- Navbar (booking page always white) ---------------- */
 .landing-navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 200;
-    padding: 0;
     background: #fff;
-    box-shadow: 0 1px 0 var(--line);
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--line);
 }
 
-.landing-navbar .container {
-    min-height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-links a {
+.landing-navbar .nav-links a {
     color: var(--ink-soft);
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-decoration: none;
-    padding: 0.45rem 0.9rem;
-    border-radius: var(--radius-pill);
-    transition: var(--ease);
 }
 
-.nav-links a:hover { color: var(--ink); background: var(--canvas); }
+.landing-navbar .nav-links a:hover {
+    color: var(--ink);
+    background: var(--canvas);
+}
 
-.btn-nav-book {
+.landing-navbar .btn-nav-book {
     background: var(--ink);
     color: #fff !important;
-    padding: 0.5rem 1.35rem !important;
-    border-radius: var(--radius-pill) !important;
-    font-weight: 600 !important;
 }
 
-.btn-nav-book:hover { background: #333 !important; color: #fff !important; }
+.landing-navbar .btn-nav-book:hover {
+    background: #333 !important;
+    color: #fff !important;
+}
 
-.btn-nav-login {
-    background: transparent;
+.landing-navbar .btn-nav-login {
     color: var(--ink) !important;
-    padding: 0.5rem 1.35rem !important;
-    border-radius: var(--radius-pill) !important;
-    font-weight: 600 !important;
-    border: 1px solid var(--ink);
+    border-color: var(--ink);
 }
 
-.btn-nav-login:hover { background: var(--ink) !important; color: #fff !important; }
+.landing-navbar .btn-nav-login:hover {
+    background: var(--ink) !important;
+    color: #fff !important;
+}
+
+.landing-navbar .nav-hamburger span {
+    background: var(--ink);
+}
+
+.landing-navbar.menu-open .nav-hamburger span {
+    background: var(--ink);
+}
 
 /* ---------------- Hero ---------------- */
 .booking-hero {
@@ -120,8 +103,14 @@ body {
     border-bottom: 1px solid var(--line);
     position: sticky;
     top: 72px;
-    z-index: 100;
+    z-index: 50;
     padding: 1.5rem 0 1.25rem;
+    transition: transform 0.3s ease, top 0.3s ease;
+}
+
+.booking-nav.nav-hidden {
+    transform: translateY(-100%);
+    top: 0;
 }
 
 .stepper {
