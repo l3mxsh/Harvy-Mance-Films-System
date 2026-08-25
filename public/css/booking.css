@@ -105,7 +105,9 @@ body {
     top: 72px;
     z-index: 50;
     padding: 1.5rem 0 1.25rem;
-    transition: transform 0.3s ease, top 0.3s ease;
+    transition:
+        transform 0.3s ease,
+        top 0.3s ease;
 }
 
 .booking-nav.nav-hidden {
@@ -536,8 +538,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: var(--ink);
-    color: #fff;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     padding: 1.1rem 1.5rem;
     margin-bottom: 1rem;
@@ -1111,7 +1114,7 @@ body {
 
 @media (max-width: 767.98px) {
     .booking-hero {
-        padding: 2.5rem 0 1.75rem;
+        padding: 6.5rem 0 1.75rem;
     }
 
     .booking-hero-title {
@@ -1330,7 +1333,9 @@ body {
     border: 1px solid transparent;
     border-radius: 6px;
     text-decoration: none;
-    transition: background 0.15s, border-color 0.15s;
+    transition:
+        background 0.15s,
+        border-color 0.15s;
     cursor: pointer;
 }
 
