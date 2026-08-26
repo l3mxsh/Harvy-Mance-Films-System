@@ -17,3 +17,18 @@
 .bg-purple {
     background-color: #6f42c1 !important;
 }
+
+/* ---------------- Mobile cards ---------------- */
+.pkg-mobile-card {
+    background: var(--surface, #fff);
+    border: 1px solid var(--line, #e9ecef);
+    border-radius: var(--radius-md, 16px);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.pkg-mobile-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink, #111);
+}

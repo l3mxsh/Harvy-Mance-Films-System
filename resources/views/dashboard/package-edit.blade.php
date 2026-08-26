@@ -102,7 +102,7 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Item</th>
-                                            <th class="text-center" style="width: 100px;">Qty</th>
+                                            <th class="text-center" style="width: 60px;">Qty</th>
                                             <th class="text-center" style="width: 50px;"></th>
                                         </tr>
                                     </thead>
