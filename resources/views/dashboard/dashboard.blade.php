@@ -28,16 +28,6 @@
 
         <div class="container-fluid p-4">
 
-            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
-                <div>
-                    <h1 class="dash-greeting mb-1">Welcome back, {{ Auth::user()->name }}!</h1>
-                    <span class="text-muted small">Here's what's happening with HarvyMance Films today.</span>
-                </div>
-                <a href="{{ route('booking.admin.index') }}" class="btn btn-dark rounded-pill">
-                    Manage Bookings
-                </a>
-            </div>
-
             {{-- ==================== SUMMARY CARDS ==================== --}}
             <div class="row g-3 mb-4">
                 <div class="col-lg-4 col-md-6 col-sm-6">
