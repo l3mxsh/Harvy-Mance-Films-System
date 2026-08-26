@@ -287,7 +287,7 @@
                                    value="{{ old('event_venue', '') }}" placeholder="e.g. Grand Ballroom" required>
                         </div>
                         <div class="col-12">
-                            <label class="form-label">Complete Venue Address</label>
+                            <label class="form-label">Complete Venue Address <span class="req">*</span></label>
                             <input type="text" class="form-control" name="event_address" id="eventAddress"
                                    value="{{ old('event_address', '') }}" placeholder="Full address of the venue" required>
                         </div>

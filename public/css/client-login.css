@@ -19,14 +19,17 @@
     font-size: 0.8rem;
 }
 
-html {
-    height: 100%;
+.landing-navbar {
+    position: static;
+    background: #fff;
+    box-shadow: none;
 }
 
 body {
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
 }
 
 main.booking-main {
@@ -34,6 +37,7 @@ main.booking-main {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding: 0;
 }
 
 main.booking-main > .row {
@@ -42,6 +46,6 @@ main.booking-main > .row {
     margin-right: 0;
 }
 
-footer.booking-footer {
+.booking-footer {
     flex-shrink: 0;
 }

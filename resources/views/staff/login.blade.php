@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
     <link rel="stylesheet" href="{{ asset('css/booking.css') }}">
     <link rel="stylesheet" href="{{ asset('css/client-login.css') }}">
 </head>
@@ -17,7 +18,21 @@
 <body>
 
     {{-- ==================== NAVBAR ==================== --}}
-    @include('partials.auth-navbar')
+    @include('partials.landing-navbar')
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var logo = document.querySelector('.landing-logo');
+            function forceDarkLogo() { if (logo) logo.src = logo.dataset.darkLogo; }
+            forceDarkLogo();
+            document.querySelector('.nav-hamburger')?.addEventListener('click', function () {
+                setTimeout(forceDarkLogo, 0);
+            });
+            document.querySelectorAll('.nav-mobile-links a').forEach(function (link) {
+                link.addEventListener('click', function () { setTimeout(forceDarkLogo, 0); });
+            });
+        });
+    </script>
 
     <main class="container booking-main">
         <div class="row justify-content-center">
@@ -32,6 +47,7 @@
 
                 <section class="surface-card">
                     <div class="login-header text-center mb-4">
+                        <h1 class="section-title fs-4">Staff Login</h1>
                         <p class="section-sub text-muted mb-0">Sign in to view and manage your tasks.</p>
                     </div>
 

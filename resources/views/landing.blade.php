@@ -21,12 +21,12 @@
         <div class="hero-bg"></div>
         <div class="hero-overlay"></div>
         <div class="container">
-            <div class="hero-content mx-auto text-center">
+            <div class="hero-content">
                 <div class="hero-eyebrow d-inline-flex align-items-center gap-2">Harvy Mance Films</div>
                 <h1 class="hero-title">Every Moment<br>Deserves to Last Forever</h1>
                 <p class="hero-desc">Cinematic storytelling for weddings, debuts, corporate events, and every milestone
                     worth remembering.</p>
-                <div class="hero-actions d-flex flex-column flex-md-row flex-wrap justify-content-center">
+                <div class="hero-actions d-flex flex-column flex-md-row flex-wrap">
                     <a href="{{ route('booking.form') }}"
                         class="btn-hero-secondary d-inline-flex align-items-center gap-2">
                         Book Now <i class="bi bi-arrow-right"></i>

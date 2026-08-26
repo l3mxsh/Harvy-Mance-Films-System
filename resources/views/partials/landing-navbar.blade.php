@@ -8,8 +8,8 @@
         <ul class="nav-links d-none d-lg-flex align-items-center gap-2 list-unstyled m-0 p-0">
             <li><a href="{{ url('/') }}#about">About</a></li>
             <li><a href="{{ url('/') }}#services">Services</a></li>
-            <li><a href="{{ route('booking.form') }}" class="btn-nav-book">Book Now</a></li>
-            <li><a href="{{ route('login') }}" class="btn-nav-login">Login</a></li>
+            <li><a href="{{ route('booking.form') }}">Book Now</a></li>
+            <li><a href="{{ route('client.login') }}" class="btn-nav-login">Login</a></li>
         </ul>
         <button class="nav-hamburger" aria-label="Menu">
             <span></span>
@@ -25,7 +25,7 @@
         <li><a href="{{ url('/') }}#services" class="d-flex align-items-center justify-content-center">Services</a></li>
         <li><a href="{{ route('booking.form') }}"
                 class="btn-mobile-book d-flex align-items-center justify-content-center">Book Now</a></li>
-        <li><a href="{{ route('login') }}"
+        <li><a href="{{ route('client.login') }}"
                 class="btn-mobile-login d-flex align-items-center justify-content-center">Login</a></li>
     </ul>
 </div>
