@@ -30,7 +30,7 @@
 
             {{-- ==================== SUMMARY CARDS ==================== --}}
             <div class="row g-3 mb-4">
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-lg col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-primary bg-opacity-10 text-primary">
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-lg col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-success bg-opacity-10 text-success">
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-lg col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-info bg-opacity-10 text-info">
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-lg col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-warning bg-opacity-10 text-warning">
@@ -87,11 +87,11 @@
             {{-- ==================== FILTERS ==================== --}}
             <section class="surface-card mb-4">
                 <div class="row g-3 align-items-end">
-                    <div class="col-md-4">
+                    <div class="col-12 col-md-4">
                         <label class="form-label small text-muted mb-1">Search</label>
                         <input type="text" id="inventorySearchInput" class="form-control form-control-sm" placeholder="Search items..." value="{{ request('search') }}" autocomplete="off">
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-12 col-md-2">
                         <label class="form-label small text-muted mb-1">Category</label>
                         <select id="inventoryCategoryFilter" class="form-select form-select-sm">
                             <option value="">All Categories</option>
@@ -99,7 +99,7 @@
                             <option value="material" {{ request('category') === 'material' ? 'selected' : '' }}>Material</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-12 col-md-2">
                         <label class="form-label small text-muted mb-1">Availability</label>
                         <select id="inventoryAvailabilityFilter" class="form-select form-select-sm">
                             <option value="">All Status</option>
@@ -109,7 +109,7 @@
                             <option value="unavailable" {{ request('availability_status') === 'unavailable' ? 'selected' : '' }}>Unavailable</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-12 col-md-2">
                         <label class="form-label small text-muted mb-1">Condition</label>
                         <select id="inventoryConditionFilter" class="form-select form-select-sm">
                             <option value="">All Conditions</option>
@@ -133,7 +133,9 @@
                         </button>
                     </div>
                 </div>
-                <div class="table-responsive">
+
+                {{-- Desktop table (hidden on mobile) --}}
+                <div class="table-responsive d-none d-md-block">
                     <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
@@ -150,6 +152,11 @@
                             @include('dashboard.partials.inventory-rows', compact('items'))
                         </tbody>
                     </table>
+                </div>
+
+                {{-- Mobile cards (hidden on desktop) --}}
+                <div class="d-md-none" id="inventoryMobileBody">
+                    @include('dashboard.partials.inventory-mobile-rows', compact('items'))
                 </div>
             </section>
 
@@ -187,15 +194,15 @@
                                 <label class="form-label">Description</label>
                                 <textarea class="form-control" name="description" id="itemDescription" rows="2"></textarea>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3">
                                 <label class="form-label">Quantity <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control" name="quantity" id="itemQuantity" min="0" required>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3">
                                 <label class="form-label">Unit <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="unit" id="itemUnit" placeholder="e.g. pcs, sets" required>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3">
                                 <label class="form-label">Condition <span class="text-danger">*</span></label>
                                 <select class="form-select" name="condition_status" id="itemCondition" required>
                                     <option value="new">New</option>
@@ -204,7 +211,7 @@
                                     <option value="damaged">Damaged</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3">
                                 <label class="form-label">Availability <span class="text-danger">*</span></label>
                                 <select class="form-select" name="availability_status" id="itemAvailability" required>
                                     <option value="available">Available</option>

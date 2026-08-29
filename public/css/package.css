@@ -32,3 +32,10 @@
     font-weight: 700;
     color: var(--ink, #111);
 }
+
+/* ---------------- Mobile responsive ---------------- */
+@media (max-width: 767.98px) {
+    textarea.form-control[name="description"] {
+        min-height: 140px;
+    }
+}

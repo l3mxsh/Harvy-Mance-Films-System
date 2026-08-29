@@ -85,7 +85,7 @@
             </div>
 
             {{-- ==================== TABS ==================== --}}
-            <ul class="nav nav-pills mb-4" id="packageTabs" role="tablist">
+            <ul class="nav nav-pills mb-4 justify-content-center justify-content-md-start" id="packageTabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#packagesTab" type="button" role="tab">
                         <i class="bi bi-box-seam me-1"></i> Packages
@@ -154,8 +154,8 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="d-flex justify-content-center gap-2">
-                                                    <a class="btn btn-sm btn-outline-secondary rounded-3" title="View & Edit" href="{{ route('package.edit', $pkg->id) }}">
-                                                        <i class="bi bi-eye"></i>
+                                                    <a class="btn btn-sm btn-outline-secondary rounded-3" title="Edit" href="{{ route('package.edit', $pkg->id) }}">
+                                                        <i class="bi bi-pencil"></i>
                                                     </a>
                                                     <button class="btn btn-sm btn-outline-danger rounded-3" title="Delete" onclick="confirmDeletePackage({{ $pkg->id }}, '{{ addslashes($pkg->name) }}')">
                                                         <i class="bi bi-trash"></i>
@@ -185,7 +185,7 @@
                                     <div class="pkg-mobile-price mb-2">&#8369;{{ number_format($pkg->price, 2) }}</div>
                                     <div class="d-flex gap-2">
                                         <a class="btn btn-sm btn-outline-secondary rounded-3 flex-fill" href="{{ route('package.edit', $pkg->id) }}">
-                                            <i class="bi bi-eye me-1"></i> View
+                                            <i class="bi bi-pencil me-1"></i> Edit
                                         </a>
                                         <button class="btn btn-sm btn-outline-danger rounded-3" onclick="confirmDeletePackage({{ $pkg->id }}, '{{ addslashes($pkg->name) }}')">
                                             <i class="bi bi-trash"></i>

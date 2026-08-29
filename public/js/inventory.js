@@ -75,6 +75,7 @@ function confirmDeleteItem(id, name) {
     var availabilitySelect = document.getElementById('inventoryAvailabilityFilter');
     var conditionSelect = document.getElementById('inventoryConditionFilter');
     var tableBody = document.getElementById('inventoryTableBody');
+    var mobileBody = document.getElementById('inventoryMobileBody');
     var paginationWrap = document.getElementById('inventoryPagination');
     var totalBadge = document.getElementById('inventoryTotalBadge');
     var debounceTimer = null;
@@ -102,6 +103,7 @@ function confirmDeleteItem(id, name) {
             .then(function (r) { return r.json(); })
             .then(function (data) {
                 if (data.rows !== undefined) tableBody.innerHTML = data.rows;
+                if (data.mobileRows !== undefined && mobileBody) mobileBody.innerHTML = data.mobileRows;
                 if (data.pagination !== undefined) {
                     paginationWrap.innerHTML = data.pagination;
                     if (data.pagination.trim() === '') {

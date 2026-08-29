@@ -35,10 +35,12 @@ class InventoryController extends Controller
 
         if ($request->ajax()) {
             $rowsHtml = view('dashboard.partials.inventory-rows', compact('items'))->render();
+            $mobileRowsHtml = view('dashboard.partials.inventory-mobile-rows', compact('items'))->render();
             $paginationHtml = $items->hasPages() ? $items->links('vendor.pagination.bootstrap-5')->render() : '';
 
             return response()->json([
                 'rows' => $rowsHtml,
+                'mobileRows' => $mobileRowsHtml,
                 'pagination' => $paginationHtml,
                 'total' => $items->total(),
             ]);

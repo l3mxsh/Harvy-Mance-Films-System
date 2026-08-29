@@ -22,7 +22,7 @@
     <div class="sidebar-content">
         <div class="sidebar-topnav">
             <button id="sidebarToggle" class="sidebar-toggle">&#9776;</button>
-            <span class="fw-semibold">Edit Package</span>
+            <span class="fw-semibold">{{ $package->name }}</span>
             <span></span>
         </div>
 
@@ -34,93 +34,108 @@
             </div>
 
             {{-- ==================== EDIT PACKAGE ==================== --}}
-            <section class="surface-card">
-                <div class="section-head">
-                    <h2 class="section-title">Edit Package</h2>
-                </div>
-                <form id="packageForm" method="POST" action="{{ route('package.update', $package->id) }}">
-                    @csrf
-                    @method('PUT')
-                    <div class="row g-4">
-                        <div class="col-12">
-                            <h6 class="section-title mb-3">Basic Information</h6>
-                        </div>
-                        <div class="col-md-8">
-                            <label class="form-label fw-semibold">Package Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="name" value="{{ old('name', $package->name) }}" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-semibold">Price <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text">&#8369;</span>
-                                <input type="number" class="form-control" name="price" step="0.01" min="0" value="{{ old('price', $package->price) }}" required>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label fw-semibold">Description</label>
-                            <textarea class="form-control" name="description" rows="2" placeholder="Describe what this package includes...">{{ old('description', $package->description) }}</textarea>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex justify-content-between align-items-center bg-body-tertiary rounded-3 p-3">
-                                <div>
-                                    <div class="fw-semibold" id="packageStatusLabel">Active</div>
-                                    <small class="text-muted">Active packages are available for clients to book.</small>
-                                </div>
-                                <div class="form-check form-switch mb-0">
-                                    <input class="form-check-input" type="checkbox" id="packageStatusSwitch" role="switch"
-                                           {{ old('status', $package->status) === 'active' ? 'checked' : '' }}>
-                                    <input type="hidden" name="status" id="packageStatus" value="{{ old('status', $package->status) }}">
-                                </div>
-                            </div>
-                        </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
 
-                        <div class="col-12">
-                            <hr class="my-4">
-                            <h6 class="section-title mb-3">Service Inclusions</h6>
-                            <div id="servicesContainer">
-                                <div class="input-group mb-2 service-row">
-                                    <input type="text" class="form-control" name="services[]" placeholder="e.g. Pre-nuptial shoot" required>
-                                    <button type="button" class="btn btn-outline-danger border-0" onclick="removeService(this)" title="Remove service"><i class="bi bi-x-lg"></i></button>
+                    {{-- Basic Information --}}
+                    <form id="packageForm" method="POST" action="{{ route('package.update', $package->id) }}">
+                        @csrf
+                        @method('PUT')
+                    <section class="surface-card">
+                        <div class="section-head">
+                            <h2 class="section-title">{{ $package->name }}</h2>
+                        </div>
+                            <div class="row g-3">
+                                <div class="col-md-8">
+                                    <label class="form-label fw-semibold">Package Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $package->name) }}" required>
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Price <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">&#8369;</span>
+                                        <input type="number" class="form-control @error('price') is-invalid @enderror" name="price" step="0.01" min="0" value="{{ old('price', $package->price) }}" required>
+                                        @error('price')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Description</label>
+                                    <textarea class="form-control @error('description') is-invalid @enderror" name="description" rows="2" placeholder="Describe what this package includes...">{{ old('description', $package->description) }}</textarea>
+                                    @error('description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between align-items-center bg-body-tertiary rounded-3 p-3 flex-wrap gap-2">
+                                        <div>
+                                            <div class="fw-semibold" id="packageStatusLabel">Active</div>
+                                            <small class="text-muted">Active packages are available for clients to book.</small>
+                                        </div>
+                                        <div class="form-check form-switch mb-0">
+                                            <input class="form-check-input" type="checkbox" id="packageStatusSwitch" role="switch"
+                                                   {{ old('status', $package->status) === 'active' ? 'checked' : '' }}>
+                                            <input type="hidden" name="status" id="packageStatus" value="{{ old('status', $package->status) }}">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-sm btn-outline-dark" onclick="addService()">
-                                <i class="bi bi-plus"></i> Add Service
+                    </section>
+
+                    {{-- Service Inclusions --}}
+                    <section class="surface-card">
+                        <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <h2 class="section-title">Service Inclusions</h2>
+                            <button type="button" class="btn btn-sm btn-outline-dark rounded-2" onclick="addService()">
+                                <i class="bi bi-plus-lg me-1"></i> Add Service
                             </button>
                         </div>
-
-                        {{-- Inventory Assignment --}}
-                        <div class="col-12">
-                            <hr class="my-4">
-                            <h6 class="section-title mb-3">Required Equipment &amp; Materials</h6>
-                            <div class="dropdown">
-                                <input type="text" class="form-control mb-2" id="pkgInventorySearch"
-                                       placeholder="Click here to browse or type to search inventory items..." autocomplete="off">
-                                <div class="dropdown-menu w-100" id="pkgInventoryDropdown" style="max-height: 240px; overflow-y: auto;"></div>
+                        <div id="servicesContainer">
+                            <div class="input-group mb-2 service-row">
+                                <input type="text" class="form-control" name="services[]" placeholder="e.g. Pre-nuptial shoot" required>
+                                <button type="button" class="btn btn-outline-danger border-0" onclick="removeService(this)" title="Remove service"><i class="bi bi-x-lg"></i></button>
                             </div>
-                            <div class="table-responsive">
-                                <table class="table table-sm align-middle mb-0" id="pkgInventoryTable" style="display: none;">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Item</th>
-                                            <th class="text-center" style="width: 60px;">Qty</th>
-                                            <th class="text-center" style="width: 50px;"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="pkgInventoryBody"></tbody>
-                                </table>
-                            </div>
-                            <div id="pkgInventoryEmpty" class="text-muted small mt-1">No items assigned yet.</div>
                         </div>
+                    </section>
 
-                        <div class="col-12 d-flex justify-content-end gap-2">
-                            <a href="{{ route('package') }}" class="btn btn-outline-dark rounded-pill">Cancel</a>
-                            <button type="submit" class="btn btn-dark rounded-pill">
-                                <i class="bi bi-check-lg me-1"></i> Update Package
-                            </button>
+                    {{-- Inventory Assignment --}}
+                    <section class="surface-card">
+                        <div class="section-head">
+                            <h2 class="section-title">Required Equipment &amp; Materials</h2>
                         </div>
+                        <div class="dropdown">
+                            <input type="text" class="form-control mb-2" id="pkgInventorySearch"
+                                   placeholder="Click here to browse or type to search inventory items..." autocomplete="off">
+                            <div class="dropdown-menu w-100" id="pkgInventoryDropdown" style="max-height: 240px; overflow-y: auto;"></div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm align-middle mb-0" id="pkgInventoryTable" style="display: none;">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Item</th>
+                                        <th class="text-center" style="width: 60px;">Qty</th>
+                                        <th class="text-center" style="width: 50px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pkgInventoryBody"></tbody>
+                            </table>
+                        </div>
+                        <div id="pkgInventoryEmpty" class="text-muted small mt-1">No items assigned yet.</div>
+                    </section>
+
+                    <div class="d-flex justify-content-end gap-2 mb-4">
+                        <a href="{{ route('package') }}" class="btn btn-outline-dark rounded-pill">Cancel</a>
+                        <button type="submit" class="btn btn-dark rounded-pill">
+                            <i class="bi bi-check-lg me-1"></i> Update Package
+                        </button>
                     </div>
-                </form>
-            </section>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
