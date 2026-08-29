@@ -279,3 +279,55 @@ function confirmDeleteAddon(id, name) {
     document.getElementById('deleteAddonForm').action = `/addon/${id}`;
     deleteAddonModal.show();
 }
+
+// ==================== PACKAGE / ADD-ON LIVE SEARCH ====================
+
+(function () {
+    var pkgInput = document.getElementById('packageSearchInput');
+    var addonInput = document.getElementById('addonSearchInput');
+    if (!pkgInput && !addonInput) return;
+
+    var packageTableBody = document.getElementById('packageTableBody');
+    var packageMobileBody = document.getElementById('packageMobileBody');
+    var addonTableBody = document.getElementById('addonTableBody');
+    var addonMobileBody = document.getElementById('addonMobileBody');
+    var packageTotalBadge = document.getElementById('packageTotalBadge');
+    var addonTotalBadge = document.getElementById('addonTotalBadge');
+    var debounceTimer = null;
+
+    function fetchResults() {
+        var params = new URLSearchParams();
+        if (pkgInput && pkgInput.value.trim()) params.set('search', pkgInput.value.trim());
+        else if (addonInput && addonInput.value.trim()) params.set('search', addonInput.value.trim());
+
+        var qs = params.toString();
+        fetch('/package' + (qs ? '?' + qs : ''), {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (packageTableBody) packageTableBody.innerHTML = data.packageRows;
+                if (packageMobileBody) packageMobileBody.innerHTML = data.packageMobileRows;
+                if (addonTableBody) addonTableBody.innerHTML = data.addonRows;
+                if (addonMobileBody) addonMobileBody.innerHTML = data.addonMobileRows;
+                if (packageTotalBadge) packageTotalBadge.textContent = data.packageTotal + ' total';
+                if (addonTotalBadge) addonTotalBadge.textContent = data.addonTotal + ' total';
+            });
+    }
+
+    if (pkgInput) {
+        pkgInput.addEventListener('input', function () {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(fetchResults, 400);
+        });
+    }
+    if (addonInput) {
+        addonInput.addEventListener('input', function () {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(fetchResults, 400);
+        });
+    }
+})();

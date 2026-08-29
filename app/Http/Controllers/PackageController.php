@@ -8,10 +8,41 @@ use Illuminate\Http\Request;
 
 class PackageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $packages = Package::with(['services', 'inventory'])->latest()->get();
-        $addons = Addon::with('inventory')->latest()->get();
+        $search = $request->get('search');
+
+        $packages = Package::with(['services', 'inventory'])
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($sub) use ($search) {
+                    $sub->where('name', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get();
+
+        $addons = Addon::with('inventory')
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($sub) use ($search) {
+                    $sub->where('name', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'packageRows' => view('dashboard.partials.package-rows', compact('packages'))->render(),
+                'packageMobileRows' => view('dashboard.partials.package-mobile-rows', compact('packages'))->render(),
+                'addonRows' => view('dashboard.partials.addon-rows', compact('addons'))->render(),
+                'addonMobileRows' => view('dashboard.partials.addon-mobile-rows', compact('addons'))->render(),
+                'packageTotal' => $packages->count(),
+                'addonTotal' => $addons->count(),
+            ]);
+        }
+
         return view('dashboard.package', compact('packages', 'addons'));
     }
 

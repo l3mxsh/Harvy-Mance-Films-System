@@ -103,12 +103,24 @@
             <div class="tab-content">
                 {{-- ==================== PACKAGES TAB ==================== --}}
                 <div class="tab-pane fade show active" id="packagesTab" role="tabpanel">
+                    <section class="surface-card mb-4">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Search Packages</label>
+                                <input type="text" id="packageSearchInput" class="form-control form-control-sm" placeholder="Search packages by name or description..." value="{{ request('search') }}" autocomplete="off">
+                            </div>
+                        </div>
+                    </section>
+
                     <section class="surface-card">
                         <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
                             <h2 class="section-title">Packages</h2>
-                            <button class="btn btn-dark rounded-pill" onclick="openAddModal()">
-                                <i class="bi bi-plus-lg me-1"></i> Add Package
-                            </button>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-light text-dark border" id="packageTotalBadge">{{ $packages->count() }} total</span>
+                                <button class="btn btn-dark rounded-pill" onclick="openAddModal()">
+                                    <i class="bi bi-plus-lg me-1"></i> Add Package
+                                </button>
+                            </div>
                         </div>
                         <div class="table-responsive d-none d-md-block">
                             <table class="table table-hover align-middle mb-0">
@@ -122,94 +134,38 @@
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @forelse($packages as $pkg)
-                                        <tr>
-                                            <td>
-                                                <div class="fw-semibold">{{ $pkg->name }}</div>
-                                                @if($pkg->description)
-                                                    <small class="text-muted">{{ Str::limit($pkg->description, 50) }}</small>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @foreach($pkg->services->take(3) as $service)
-                                                    <span class="badge bg-light text-dark border me-1">{{ $service->service_name }}</span>
-                                                @endforeach
-                                                @if($pkg->services->count() > 3)
-                                                    <span class="badge bg-secondary">+{{ $pkg->services->count() - 3 }} more</span>
-                                                @endif
-                                            </td>
-                                            <td class="text-center">
-                                                @if($pkg->inventory->count() > 0)
-                                                    <span class="badge bg-primary bg-opacity-10 text-primary">
-                                                        <i class="bi bi-tools me-1"></i>{{ $pkg->inventory->count() }} items
-                                                    </span>
-                                                @else
-                                                    <span class="text-muted small">None</span>
-                                                @endif
-                                            </td>
-                                            <td class="text-end fw-semibold">&#8369;{{ number_format($pkg->price, 2) }}</td>
-                                            <td class="text-center">
-                                                @include('partials.status-badge', ['status' => $pkg->status])
-                                            </td>
-                                            <td class="text-center">
-                                                <div class="d-flex justify-content-center gap-2">
-                                                    <a class="btn btn-sm btn-outline-secondary rounded-3" title="Edit" href="{{ route('package.edit', $pkg->id) }}">
-                                                        <i class="bi bi-pencil"></i>
-                                                    </a>
-                                                    <button class="btn btn-sm btn-outline-danger rounded-3" title="Delete" onclick="confirmDeletePackage({{ $pkg->id }}, '{{ addslashes($pkg->name) }}')">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="6" class="text-center py-5 text-muted">
-                                                <i class="bi bi-box-seam fs-1 d-block mb-2"></i>
-                                                No packages found. Click "Add Package" to create one.
-                                            </td>
-                                        </tr>
-                                    @endforelse
+                                <tbody id="packageTableBody">
+                                    @include('dashboard.partials.package-rows', compact('packages'))
                                 </tbody>
                             </table>
                         </div>
 
-                        <div class="d-md-none">
-                            @forelse($packages as $pkg)
-                                <div class="pkg-mobile-card">
-                                    <div class="d-flex justify-content-between align-items-start mb-1">
-                                        <div class="fw-semibold">{{ $pkg->name }}</div>
-                                        @include('partials.status-badge', ['status' => $pkg->status])
-                                    </div>
-                                    <div class="pkg-mobile-price mb-2">&#8369;{{ number_format($pkg->price, 2) }}</div>
-                                    <div class="d-flex gap-2">
-                                        <a class="btn btn-sm btn-outline-secondary rounded-3 flex-fill" href="{{ route('package.edit', $pkg->id) }}">
-                                            <i class="bi bi-pencil me-1"></i> Edit
-                                        </a>
-                                        <button class="btn btn-sm btn-outline-danger rounded-3" onclick="confirmDeletePackage({{ $pkg->id }}, '{{ addslashes($pkg->name) }}')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="text-center py-5 text-muted">
-                                    <i class="bi bi-box-seam fs-1 d-block mb-2"></i>
-                                    No packages found. Click "Add Package" to create one.
-                                </div>
-                            @endforelse
+                        <div class="d-md-none" id="packageMobileBody">
+                            @include('dashboard.partials.package-mobile-rows', compact('packages'))
                         </div>
                     </section>
                 </div>
 
                 {{-- ==================== ADD-ONS TAB ==================== --}}
                 <div class="tab-pane fade" id="addonsTab" role="tabpanel">
+                    <section class="surface-card mb-4">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-12">
+                                <label class="form-label small text-muted mb-1">Search Add-Ons</label>
+                                <input type="text" id="addonSearchInput" class="form-control form-control-sm" placeholder="Search add-ons by name or description..." autocomplete="off">
+                            </div>
+                        </div>
+                    </section>
+
                     <section class="surface-card">
                         <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
                             <h2 class="section-title">Add-Ons</h2>
-                            <button class="btn btn-dark rounded-pill" onclick="openAddAddonModal()">
-                                <i class="bi bi-plus-lg me-1"></i> Add Add-On
-                            </button>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-light text-dark border" id="addonTotalBadge">{{ $addons->count() }} total</span>
+                                <button class="btn btn-dark rounded-pill" onclick="openAddAddonModal()">
+                                    <i class="bi bi-plus-lg me-1"></i> Add Add-On
+                                </button>
+                            </div>
                         </div>
                         <div class="table-responsive d-none d-md-block">
                             <table class="table table-hover align-middle mb-0">
@@ -223,72 +179,14 @@
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @forelse($addons as $addon)
-                                        <tr>
-                                            <td class="fw-semibold">{{ $addon->name }}</td>
-                                            <td>
-                                                <small class="text-muted">{{ Str::limit($addon->description, 60) }}</small>
-                                            </td>
-                                            <td class="text-center">
-                                                @if($addon->inventory->count() > 0)
-                                                    <span class="badge bg-primary bg-opacity-10 text-primary">
-                                                        <i class="bi bi-tools me-1"></i>{{ $addon->inventory->count() }} items
-                                                    </span>
-                                                @else
-                                                    <span class="text-muted small">None</span>
-                                                @endif
-                                            </td>
-                                            <td class="text-end fw-semibold">&#8369;{{ number_format($addon->price, 2) }}</td>
-                                            <td class="text-center">
-                                                @include('partials.status-badge', ['status' => $addon->status])
-                                            </td>
-                                            <td class="text-center">
-                                                <div class="d-flex justify-content-center gap-2">
-                                                    <a class="btn btn-sm btn-outline-secondary rounded-3" title="View & Edit" href="{{ route('addon.edit', $addon->id) }}">
-                                                        <i class="bi bi-eye"></i>
-                                                    </a>
-                                                    <button class="btn btn-sm btn-outline-danger rounded-3" title="Delete" onclick="confirmDeleteAddon({{ $addon->id }}, '{{ addslashes($addon->name) }}')">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="6" class="text-center py-5 text-muted">
-                                                <i class="bi bi-plus-circle fs-1 d-block mb-2"></i>
-                                                No add-ons found. Click "Add Add-On" to create one.
-                                            </td>
-                                        </tr>
-                                    @endforelse
+                                <tbody id="addonTableBody">
+                                    @include('dashboard.partials.addon-rows', compact('addons'))
                                 </tbody>
                             </table>
                         </div>
 
-                        <div class="d-md-none">
-                            @forelse($addons as $addon)
-                                <div class="pkg-mobile-card">
-                                    <div class="d-flex justify-content-between align-items-start mb-1">
-                                        <div class="fw-semibold">{{ $addon->name }}</div>
-                                        @include('partials.status-badge', ['status' => $addon->status])
-                                    </div>
-                                    <div class="pkg-mobile-price mb-2">&#8369;{{ number_format($addon->price, 2) }}</div>
-                                    <div class="d-flex gap-2">
-                                        <a class="btn btn-sm btn-outline-secondary rounded-3 flex-fill" href="{{ route('addon.edit', $addon->id) }}">
-                                            <i class="bi bi-eye me-1"></i> View
-                                        </a>
-                                        <button class="btn btn-sm btn-outline-danger rounded-3" onclick="confirmDeleteAddon({{ $addon->id }}, '{{ addslashes($addon->name) }}')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="text-center py-5 text-muted">
-                                    <i class="bi bi-plus-circle fs-1 d-block mb-2"></i>
-                                    No add-ons found. Click "Add Add-On" to create one.
-                                </div>
-                            @endforelse
+                        <div class="d-md-none" id="addonMobileBody">
+                            @include('dashboard.partials.addon-mobile-rows', compact('addons'))
                         </div>
                     </section>
                 </div>
