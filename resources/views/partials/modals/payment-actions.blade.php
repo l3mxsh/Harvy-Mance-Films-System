@@ -1,9 +1,9 @@
-{{-- VERIFY PAYMENT MODAL --}}
+{{-- VERIFY/APPROVE PAYMENT MODAL --}}
 <div class="modal fade" id="verifyModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><i class="bi bi-check-circle me-2 text-success"></i>Verify Payment</h5>
+                <h5 class="modal-title"><i class="bi bi-check-circle me-2 text-success"></i>Approve Payment</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form method="POST" id="verifyForm">
@@ -15,7 +15,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" id="verifyPaymentBtn" class="btn btn-success rounded-pill">
-                        <i class="bi bi-check-lg me-1"></i> Verify Payment
+                        <i class="bi bi-check-lg me-1"></i> Approve Payment
                     </button>
                 </div>
             </form>

@@ -273,7 +273,7 @@
                             <label class="form-label">Event Date <span class="req">*</span></label>
                             <input type="date" class="form-control" name="event_date" id="eventDate"
                                    min="{{ date('Y-m-d', strtotime('+1 day')) }}"
-                                   value="{{ old('event_date', '') }}" required onchange="checkDateAvailability()">
+                                   value="{{ old('event_date', '') }}" required oninput="checkDateAvailability()" onchange="checkDateAvailability()">
                             <div id="dateStatus" class="mt-1"></div>
                         </div>
                         <div class="col-md-6">

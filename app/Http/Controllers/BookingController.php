@@ -284,6 +284,13 @@ class BookingController extends Controller
             return response()->json(['available' => false, 'message' => 'No date provided.']);
         }
 
+        if (!\Carbon\Carbon::parse($date)->startOfDay()->gt(today())) {
+            return response()->json([
+                'available' => false,
+                'message' => 'Please choose a future date. Today and past dates are not allowed.',
+            ]);
+        }
+
         $conflicts = Booking::where('event_date', $date)
             ->whereIn('status', ['approved', 'ongoing'])
             ->count();

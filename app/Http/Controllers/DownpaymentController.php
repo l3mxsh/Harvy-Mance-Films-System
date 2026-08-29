@@ -136,7 +136,8 @@ class DownpaymentController extends Controller
             ->with(['booking.package.services', 'booking.addons', 'booking.team'])
             ->when(request('status'), fn ($query, $status) => $query->where('status', $status))
             ->orderBy('submitted_at', 'desc')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         $stats = [
             'total' => Downpayment::count(),
@@ -146,6 +147,19 @@ class DownpaymentController extends Controller
             'verified' => Downpayment::where('status', 'verified')->count(),
             'rejected' => Downpayment::where('status', 'rejected')->count(),
         ];
+
+        if (request()->ajax()) {
+            $rowsHtml = view('dashboard.partials.payment-rows', compact('downpayments'))->render();
+            $mobileRowsHtml = view('dashboard.partials.payment-mobile-rows', compact('downpayments'))->render();
+            $paginationHtml = $downpayments->hasPages() ? $downpayments->links('vendor.pagination.bootstrap-5')->render() : '';
+
+            return response()->json([
+                'rows' => $rowsHtml,
+                'mobileRows' => $mobileRowsHtml,
+                'pagination' => $paginationHtml,
+                'total' => $downpayments->total(),
+            ]);
+        }
 
         return view('dashboard.payment-verification', compact('downpayments', 'stats'));
     }

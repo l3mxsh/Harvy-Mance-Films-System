@@ -139,7 +139,7 @@ function openRejectModal(downpaymentId, bookingRef) {
 document.getElementById('verifyForm').addEventListener('submit', function () {
     var submitBtn = document.getElementById('verifyPaymentBtn');
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Verifying...';
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Approving...';
 });
 
 document.getElementById('rejectForm').addEventListener('submit', function () {
@@ -147,3 +147,66 @@ document.getElementById('rejectForm').addEventListener('submit', function () {
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Rejecting...';
 });
+
+// ==================== AJAX TAB SWITCHING (no page reload) ====================
+
+(function () {
+    var tabs = document.getElementById('paymentTabs');
+    var tableBody = document.getElementById('paymentTableBody');
+    var mobileBody = document.getElementById('paymentMobileBody');
+    var paginationWrap = document.getElementById('paymentPagination');
+    var totalBadge = document.getElementById('paymentTotalBadge');
+
+    if (!tabs || !tableBody) return;
+
+    function fetchData(url) {
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+            .then(function (r) {
+                if (!r.ok) throw new Error('Request failed');
+                return r.json();
+            })
+            .then(function (data) {
+                tableBody.innerHTML = data.rows;
+                if (mobileBody) mobileBody.innerHTML = data.mobileRows;
+                if (paginationWrap) {
+                    paginationWrap.innerHTML = data.pagination;
+                    if (data.pagination.trim() === '') {
+                        paginationWrap.classList.add('d-none');
+                    } else {
+                        paginationWrap.classList.remove('d-none');
+                    }
+                }
+                if (totalBadge) totalBadge.textContent = data.total + ' total';
+            })
+            .catch(function (err) {
+                console.error('Payment tab fetch error:', err);
+            });
+    }
+
+    tabs.addEventListener('click', function (e) {
+        var link = e.target.closest ? e.target.closest('a') : null;
+        if (!link || !tabs.contains(link)) return;
+        e.preventDefault();
+
+        tabs.querySelectorAll('.nav-link').forEach(function (el) {
+            el.classList.remove('active');
+        });
+        link.classList.add('active');
+
+        fetchData(link.href);
+    });
+
+    if (paginationWrap) {
+        paginationWrap.addEventListener('click', function (e) {
+            var link = e.target.closest ? e.target.closest('a') : null;
+            if (!link) return;
+            e.preventDefault();
+            fetchData(link.href);
+        });
+    }
+})();

@@ -3,6 +3,7 @@ let selectedPackageId = null;
 let selectedPackageData = null;
 let selectedAddonIds = [];
 let dateCheckTimeout = null;
+let dateValid = false;
 let emailExists = false;
 let emailExistsMessage = '';
 
@@ -303,6 +304,10 @@ function validateStep(step) {
             showValidationAlert('Please select an event date.');
             return false;
         }
+        if (!dateValid) {
+            showValidationAlert('Please choose a future, available date. Today and past dates are not allowed.');
+            return false;
+        }
         if (!eventTime) {
             showValidationAlert('Please select an event start time.');
             return false;
@@ -396,6 +401,20 @@ function checkDateAvailability() {
 
     if (!date) {
         statusDiv.innerHTML = '';
+        dateValid = false;
+        updateSubmitState();
+        return;
+    }
+
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var selected = new Date(date + 'T00:00:00');
+
+    if (selected <= today) {
+        dateValid = false;
+        updateSubmitState();
+        statusDiv.innerHTML = '<span class="date-unavailable"><i class="bi bi-exclamation-triangle me-1"></i>Please choose a future date. Today and past dates are not allowed.</span>';
+        if (typeof checkInventoryAvailability === 'function') checkInventoryAvailability();
         return;
     }
 
@@ -407,14 +426,18 @@ function checkDateAvailability() {
         fetch('/api/booking/check-date?date=' + encodeURIComponent(date))
             .then(function(response) { return response.json(); })
             .then(function(data) {
+                dateValid = !!data.available;
                 if (data.available) {
                     statusDiv.innerHTML = '<span class="date-available"><i class="bi bi-check-circle me-1"></i>' + data.message + '</span>';
                 } else {
                     statusDiv.innerHTML = '<span class="date-unavailable"><i class="bi bi-exclamation-triangle me-1"></i>' + data.message + '</span>';
                 }
+                updateSubmitState();
                 checkInventoryAvailability();
             })
             .catch(function() {
+                dateValid = false;
+                updateSubmitState();
                 statusDiv.innerHTML = '<span class="text-muted small">Could not check availability.</span>';
             });
     }, 500);
@@ -458,7 +481,17 @@ function checkInventoryAvailability() {
 function toggleTerms() {
     var checked = document.getElementById('termsCheck').checked;
     document.getElementById('hiddenTermsAgreed').value = checked ? '1' : '0';
-    document.getElementById('submitBookingBtn').disabled = !checked;
+    updateSubmitState();
+}
+
+function updateSubmitState() {
+    var btn = document.getElementById('submitBookingBtn');
+    var termsChecked = document.getElementById('termsCheck').checked;
+    var invalid = !termsChecked || !dateValid;
+    btn.disabled = invalid;
+    if (!invalid) {
+        btn.title = '';
+    }
 }
 
 // ==================== OTP VERIFICATION ====================
@@ -585,6 +618,10 @@ function verifyOtp() {
             setTimeout(function() {
                 var otpModal = bootstrap.Modal.getInstance(document.getElementById('otpModal'));
                 otpModal.hide();
+                if (!dateValid) {
+                    document.getElementById('submitBookingBtn').disabled = true;
+                    return;
+                }
                 document.getElementById('otpVerified').value = '1';
                 document.getElementById('bookingForm').submit();
             }, 1000);

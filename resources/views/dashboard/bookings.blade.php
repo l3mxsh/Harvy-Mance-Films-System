@@ -27,7 +27,7 @@
 
         <div class="container-fluid p-4">
             {{-- TABS --}}
-            <ul class="nav nav-pills mb-4" id="bookingTabs">
+            <ul class="nav nav-pills mb-4 justify-content-center justify-content-md-start" id="bookingTabs">
                 <li class="nav-item">
                     <a class="nav-link {{ request('tab') !== 'reschedule' ? 'active' : '' }}"
                         href="{{ route('booking.admin.index') }}">
