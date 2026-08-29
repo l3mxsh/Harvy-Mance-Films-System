@@ -52,7 +52,7 @@
                         <h2 class="section-title">Reschedule Requests</h2>
                         <span class="badge bg-light text-dark border">{{ $rescheduleRequests->count() }} total</span>
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive d-none d-md-block">
                         <table class="table table-hover align-middle mb-0">
                             <thead>
                                 <tr>
@@ -95,7 +95,7 @@
                                         <td class="text-center">
                                             @if($rr->status === 'pending')
                                                 <div class="d-flex gap-2 justify-content-center">
-                                                    <button type="button" class="btn btn-sm btn-outline-success rounded-pill"
+                                                    <button type="button" class="btn btn-sm btn-outline-success rounded-3"
                                                         onclick="openRescheduleApproveModal(
                                                                         '{{ $rr->id }}',
                                                                         '{{ $rr->booking->booking_ref }}',
@@ -105,7 +105,7 @@
                                                                     )">
                                                         <i class="bi bi-check-lg me-1"></i> Approve
                                                     </button>
-                                                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"
+                                                    <button type="button" class="btn btn-sm btn-outline-danger rounded-3"
                                                         onclick="openRescheduleRejectModal('{{ $rr->id }}', '{{ $rr->booking->booking_ref }}')">
                                                         <i class="bi bi-x-lg me-1"></i> Reject
                                                     </button>
@@ -126,6 +126,76 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div class="d-md-none">
+                        @forelse($rescheduleRequests->filter(fn($rr) => $rr->booking) as $rr)
+                            <div class="mobile-card">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <div class="fw-semibold">{{ $rr->booking->client_name }}</div>
+                                        <small class="text-muted"><code>{{ $rr->booking->booking_ref }}</code></small>
+                                    </div>
+                                    <div class="flex-shrink-0 ms-2">
+                                        @include('partials.status-badge', ['status' => $rr->status])
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2">
+                                    <div class="col-6">
+                                        <div class="mobile-card-label">Original Date</div>
+                                        <div class="mobile-card-value">{{ $rr->booking->event_date->format('M d, Y') }}</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mobile-card-label">Requested Date</div>
+                                        <div class="mobile-card-value">{{ $rr->requested_date->format('M d, Y') }}</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mobile-card-label">Requested Time</div>
+                                        <div class="mobile-card-value">{{ date('g:i A', strtotime($rr->requested_time)) }}</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mobile-card-label">Current Team</div>
+                                        <div class="mobile-card-value">
+                                            @if($rr->booking->team)
+                                                {{ $rr->booking->team->name }}
+                                            @else
+                                                <span class="text-muted fst-italic">—</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                @if($rr->status === 'approved' && $rr->newTeam)
+                                    <div class="small text-muted mb-1">New Team: {{ $rr->newTeam->name }}</div>
+                                @elseif($rr->status === 'rejected' && $rr->rejection_reason)
+                                    <div class="small text-muted mb-1">Reason: {{ $rr->rejection_reason }}</div>
+                                @endif
+                                @if($rr->status === 'pending')
+                                    <div class="d-flex gap-2 border-top pt-2">
+                                        <button type="button" class="btn btn-sm btn-outline-success rounded-3 flex-fill"
+                                            onclick="openRescheduleApproveModal(
+                                                                        '{{ $rr->id }}',
+                                                                        '{{ $rr->booking->booking_ref }}',
+                                                                        '{{ $rr->booking->client_name }}',
+                                                                        '{{ $rr->requested_date->format('Y-m-d') }}',
+                                                                        '{{ $rr->requested_time }}'
+                                                                    )">
+                                            <i class="bi bi-check-lg me-1"></i> Approve
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger rounded-3 flex-fill"
+                                            onclick="openRescheduleRejectModal('{{ $rr->id }}', '{{ $rr->booking->booking_ref }}')">
+                                            <i class="bi bi-x-lg me-1"></i> Reject
+                                        </button>
+                                    </div>
+                                @else
+                                    <div class="text-muted fst-italic small border-top pt-2">Processed</div>
+                                @endif
+                            </div>
+                        @empty
+                            <div class="text-center py-4 text-muted">
+                                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                No reschedule requests found.
+                            </div>
+                        @endforelse
+                    </div>
                 </section>
             @else
                 {{-- ALL BOOKINGS TAB --}}
@@ -134,7 +204,7 @@
                         <h2 class="section-title">All Bookings</h2>
                         <span class="badge bg-light text-dark border">{{ $bookings->total() }} total</span>
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive d-none d-md-block">
                         <table class="table table-hover align-middle mb-0">
                             <thead>
                                 <tr>
@@ -201,12 +271,12 @@
                                             <div class="d-flex gap-2 justify-content-center flex-wrap">
 
                                                 @if($booking->status === 'pending')
-                                                    <button type="button" class="btn btn-sm btn-outline-success rounded-pill"
+                                                    <button type="button" class="btn btn-sm btn-outline-success rounded-3"
                                                         title="Approve Booking"
                                                         onclick="openApproveModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}', '{{ $booking->event_date->format('Y-m-d') }}')">
                                                         <i class="bi bi-check-lg me-1"></i> Approve
                                                     </button>
-                                                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"
+                                                    <button type="button" class="btn btn-sm btn-outline-danger rounded-3"
                                                         title="Reject Booking"
                                                         onclick="openRejectModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}')">
                                                         <i class="bi bi-x-lg me-1"></i> Reject
@@ -219,7 +289,7 @@
                                                         class="text-success text-muted fst-italic align-self-center">Approved</small>
                                                 @elseif($booking->status === 'ongoing')
                                                     @if($booking->event_date->lt(\Carbon\Carbon::today()))
-                                                        <button type="button" class="btn btn-sm btn-outline-success rounded-pill"
+                                                        <button type="button" class="btn btn-sm btn-outline-success rounded-3"
                                                             title="Complete Booking"
                                                             onclick="openCompleteModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}')">
                                                             <i class="bi bi-check-lg me-1"></i> Complete
@@ -233,17 +303,17 @@
                                                 @elseif($booking->status === 'completed')
                                                     @if($booking->postProduction)
                                                         <a href="{{ route('post-production.show', $booking->postProduction->id) }}"
-                                                            class="btn btn-sm btn-outline-dark">
+                                                            class="btn btn-sm btn-outline-dark rounded-3">
                                                             <i class="bi bi-film me-1"></i>View Post-Production
                                                         </a>
                                                     @else
                                                         <a href="{{ route('post-production.create', $booking->id) }}"
-                                                            class="btn btn-sm btn-outline-dark rounded-2">
+                                                            class="btn btn-sm btn-outline-dark rounded-3">
                                                             <i class="bi bi-film me-1"></i>Proceed to Post-Production
                                                         </a>
                                                     @endif
                                                 @endif
-                                                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill"
+                                                <button type="button" class="btn btn-sm btn-outline-secondary rounded-3"
                                                     title="View Details" onclick='window.viewPayloads = window.viewPayloads || {}; window.viewPayloads[{{ $booking->id }}] = @json($viewPayload); openViewModal(window.viewPayloads[{{ $booking->id }}])'>
                                                     <i class="bi bi-eye"></i>
                                                 </button>
@@ -260,6 +330,113 @@
                                 @endforelse
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="d-md-none" id="bookingsMobileList">
+                        @forelse($bookings as $booking)
+                            @php
+        $viewPayload = [
+            'booking_ref' => $booking->booking_ref,
+            'status' => $booking->status,
+            'client_name' => $booking->client_name,
+            'client_email' => $booking->client_email,
+            'client_phone' => $booking->client_phone,
+            'package_name' => $booking->package->name ?? null,
+            'package_price' => (float) ($booking->package->price ?? 0),
+            'services' => $booking->package ? $booking->package->services->pluck('service_name')->toArray() : [],
+            'addons' => $booking->addons->map(fn($a) => ['name' => $a->name, 'price' => (float) $a->pivot->price])->values()->toArray(),
+            'addons_total' => (float) $booking->addons->sum('pivot.price'),
+            'event_type' => $booking->event_type,
+            'event_date' => \Carbon\Carbon::parse($booking->event_date)->format('F d, Y'),
+            'event_time' => $booking->event_time ? date('g:i A', strtotime($booking->event_time)) : null,
+            'event_venue' => $booking->event_venue,
+            'event_address' => $booking->event_address,
+            'event_description' => $booking->event_description,
+            'total_price' => (float) $booking->total_price,
+            'downpayment' => (float) $booking->downpayment_amount,
+            'balance' => (float) ($booking->total_price - $booking->downpayment_amount),
+            'team_name' => $booking->team->name ?? null,
+            'payment_status' => $booking->latestDownpayment->status ?? null,
+            'notes' => $booking->notes,
+            'created_at' => $booking->created_at->format('M d, Y g:i A'),
+        ];
+                                            @endphp
+                            <div class="mobile-card">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <div class="fw-semibold">{{ $booking->client_name }}</div>
+                                        <small class="text-muted">{{ $booking->booking_ref }}</small>
+                                    </div>
+                                    <div class="text-end flex-shrink-0 ms-2">
+                                        <div class="mb-1">
+                                            @include('partials.status-badge', ['status' => $booking->status, 'id' => 'status-badge-m-'.$booking->id])
+                                        </div>
+                                        <small id="payment-cell-m-{{ $booking->id }}">
+                                            @php $dp = $booking->latestDownpayment; @endphp
+                                            @if($dp)
+                                                @include('partials.status-badge', ['status' => $dp->status === 'pending' ? 'submitted' : $dp->status, 'label' => $dp->status === 'pending' ? 'Submitted' : null])
+                                            @elseif($booking->status === 'approved')
+                                                @include('partials.status-badge', ['status' => 'awaiting', 'label' => 'Awaiting'])
+                                            @else
+                                                <span class="text-muted">—</span>
+                                            @endif
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-wrap gap-1 mb-2 small">
+                                    <span class="mobile-card-label w-100 mb-0">Event Date</span>
+                                    <span class="mobile-card-value">{{ \Carbon\Carbon::parse($booking->event_date)->format('M d, Y') }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-top pt-2 mb-2">
+                                    <span class="mobile-card-label mb-0 align-self-center">Total</span>
+                                    <span class="fw-semibold">&#8369;{{ number_format($booking->total_price, 2) }}</span>
+                                </div>
+                                <div id="actions-cell-m-{{ $booking->id }}" class="d-flex gap-2 flex-wrap">
+                                    @if($booking->status === 'pending')
+                                        <button type="button" class="btn btn-sm btn-outline-success rounded-3"
+                                            onclick="openApproveModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}', '{{ $booking->event_date->format('Y-m-d') }}')">
+                                            <i class="bi bi-check-lg me-1"></i> Approve
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger rounded-3"
+                                            onclick="openRejectModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}')">
+                                            <i class="bi bi-x-lg me-1"></i> Reject
+                                        </button>
+                                    @elseif($booking->status === 'rejected')
+                                        <small class="text-danger text-muted fst-italic">Rejected</small>
+                                    @elseif($booking->status === 'approved')
+                                        <small class="text-success text-muted fst-italic">Approved</small>
+                                    @elseif($booking->status === 'ongoing')
+                                        @if($booking->event_date->lt(\Carbon\Carbon::today()))
+                                            <button type="button" class="btn btn-sm btn-outline-success rounded-3"
+                                                onclick="openCompleteModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}')">
+                                                <i class="bi bi-check-lg me-1"></i> Complete
+                                            </button>
+                                        @else
+                                            <small class="text-muted fst-italic">After event</small>
+                                        @endif
+                                    @elseif($booking->status === 'completed')
+                                        @if($booking->postProduction)
+                                            <a href="{{ route('post-production.show', $booking->postProduction->id) }}" class="btn btn-sm btn-outline-dark rounded-3">
+                                                <i class="bi bi-film me-1"></i>View Post-Production
+                                            </a>
+                                        @else
+                                            <a href="{{ route('post-production.create', $booking->id) }}" class="btn btn-sm btn-outline-dark rounded-3">
+                                                <i class="bi bi-film me-1"></i>Proceed to Post-Production
+                                            </a>
+                                        @endif
+                                    @endif
+                                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-3 ms-auto"
+                                        onclick='window.viewPayloads = window.viewPayloads || {}; window.viewPayloads[{{ $booking->id }}] = @json($viewPayload); openViewModal(window.viewPayloads[{{ $booking->id }}])'>
+                                        <i class="bi bi-eye"></i> View
+                                    </button>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="text-center py-4 text-muted">
+                                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                No bookings found.
+                            </div>
+                        @endforelse
                     </div>
                     @if($bookings->hasPages())
                         <div>

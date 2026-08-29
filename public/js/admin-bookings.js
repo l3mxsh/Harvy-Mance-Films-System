@@ -184,9 +184,20 @@ function refreshApprovedRow(bookingId, teamName) {
         badge.textContent = 'Approved';
     }
 
+    var badgeM = document.getElementById('status-badge-m-' + bookingId);
+    if (badgeM) {
+        badgeM.className = 'badge bg-success';
+        badgeM.textContent = 'Approved';
+    }
+
     var payment = document.getElementById('payment-cell-' + bookingId);
     if (payment) {
         payment.innerHTML = '<span class="badge bg-info">Awaiting</span>';
+    }
+
+    var paymentM = document.getElementById('payment-cell-m-' + bookingId);
+    if (paymentM) {
+        paymentM.innerHTML = '<span class="badge bg-info">Awaiting</span>';
     }
 
     var actions = document.getElementById('actions-cell-' + bookingId);
@@ -194,6 +205,16 @@ function refreshApprovedRow(bookingId, teamName) {
         actions.innerHTML = '<div class="d-flex gap-2 justify-content-center flex-wrap">'
             + '<small class="text-success text-muted fst-italic align-self-center">Approved</small>'
             + '<button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" title="View Details" onclick="openViewModal(window.viewPayloads[' + bookingId + '])">'
+            + '<i class="bi bi-eye"></i>'
+            + '</button>'
+            + '</div>';
+    }
+
+    var actionsM = document.getElementById('actions-cell-m-' + bookingId);
+    if (actionsM) {
+        actionsM.innerHTML = '<div class="d-flex gap-2 justify-content-center flex-wrap">'
+            + '<small class="text-success text-muted fst-italic">Approved</small>'
+            + '<button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" onclick="openViewModal(window.viewPayloads[' + bookingId + '])">'
             + '<i class="bi bi-eye"></i>'
             + '</button>'
             + '</div>';
