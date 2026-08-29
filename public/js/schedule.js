@@ -90,13 +90,15 @@
              data-id="${ev.id}" data-booking-id="${ev.booking_id}" data-date="${ev.date}"
              aria-label="${esc(st.label)} — ${esc(ev.package_name)} — ${esc(names)} at ${esc(times)}"
              title="${esc(ev.package_name)} — ${esc(names)} · ${esc(times)}">
-          <div class="sched-time">${esc(times)}</div>
+          <div class="sched-time">
+            <span>${esc(times)}</span>
+            <span class="badge ${st.badge} sched-status">${st.label}</span>
+          </div>
           <div class="sched-main">
             <div class="sched-title">${esc(ev.package_name)}</div>
             <div class="sched-staff"><i class="bi bi-person"></i>${esc(names)}</div>
             <div class="sched-venue"><i class="bi bi-geo-alt"></i>${esc(ev.venue)}</div>
           </div>
-          <span class="badge ${st.badge} sched-status">${st.label}</span>
         </div>`;
     }
 
@@ -178,27 +180,53 @@
         const st = STATUS_META[ev.status] || STATUS_META.assigned;
         const staffNames = [...new Set(group.map((x) => x.staff_name))].join(', ');
 
-        const box = (label, value, icon) => `
-        <div class="detail-box">
-          <div class="detail-label"><i class="bi ${icon} me-1"></i>${label}</div>
-          <div class="detail-value">${esc(value)}</div>
-        </div>`;
+        const field = (label, value, cls) => `
+            <div class="${cls || 'col-sm-6'}">
+                <div class="text-muted small">${label}</div>
+                <div class="fw-medium">${esc(value)}</div>
+            </div>`;
 
         document.getElementById('evStatusBadge').className = `badge ${st.badge || ''}`;
         document.getElementById('evStatusBadge').innerHTML = st.label;
-        document.getElementById('evTitle').textContent = ev.package_name;
+        document.getElementById('evBookingRef').textContent = ev.booking_ref;
+
+        const times = [...new Set(group.map((x) => x.time_display))].join(' · ');
+
         document.getElementById('evMeta').innerHTML = `
-        <div class="row g-2">
-          <div class="col-sm-6">${box('Staff', staffNames, 'bi-people')}</div>
-          <div class="col-sm-6">${box('Booking Ref', ev.booking_ref, 'bi-hash')}</div>
-          <div class="col-sm-6">${box('Event Type', ev.event_type, 'bi-tag')}</div>
-          <div class="col-sm-6">${box('Client', ev.client_name, 'bi-person-badge')}</div>
-          <div class="col-sm-6">${box('Date', ev.date, 'bi-calendar2-event')}</div>
-          <div class="col-sm-6">${box('Time', [...new Set(group.map((x) => x.time_display))].join(' · '), 'bi-clock')}</div>
-          <div class="col-sm-6">${box('Venue', ev.venue, 'bi-geo-alt')}</div>
-          <div class="col-sm-6">${box('Address', ev.address, 'bi-map')}</div>
-          <div class="col-12">${box('Contact', ev.client_phone + ' · ' + ev.client_email, 'bi-telephone')}</div>
-        </div>`;
+            <div class="mb-4">
+                <h6 class="fw-semibold small text-uppercase text-muted mb-2">Package</h6>
+                <div class="row g-3">
+                    ${field('Package', ev.package_name)}
+                    ${field('Event Type', ev.event_type)}
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h6 class="fw-semibold small text-uppercase text-muted mb-2">Client</h6>
+                <div class="row g-3">
+                    ${field('Name', ev.client_name)}
+                    ${field('Contact', ev.client_phone, 'col-sm-6')}
+                    <div class="col-12">${field('Email', ev.client_email)}</div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h6 class="fw-semibold small text-uppercase text-muted mb-2">Event</h6>
+                <div class="row g-3">
+                    ${field('Date', ev.date)}
+                    ${field('Time', times)}
+                    ${field('Venue', ev.venue)}
+                    ${field('Address', ev.address)}
+                </div>
+            </div>
+
+            <div>
+                <h6 class="fw-semibold small text-uppercase text-muted mb-2">Schedule</h6>
+                <div class="row g-3">
+                    ${field('Assigned Staff', staffNames, 'col-sm-6')}
+                    ${field('Status', st.label, 'col-sm-6')}
+                </div>
+            </div>`;
 
         const viewBooking = document.getElementById('evViewBooking');
         viewBooking.href = `/admin/booking?tab=all`;
