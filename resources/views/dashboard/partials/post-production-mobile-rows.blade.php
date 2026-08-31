@@ -23,32 +23,32 @@
                 ])
             </div>
         </div>
-        <div class="mb-2">
+        <div class="d-flex flex-wrap gap-1 mb-2 small">
             <span class="mobile-card-label w-100 mb-0">Event</span>
-            <span class="mobile-card-value d-block">{{ $pp->booking->event_type ?? '' }}</span>
+            <span class="mobile-card-value">{{ $pp->booking->event_type ?? '—' }}</span>
         </div>
-        <div class="mb-2">
+        <div class="d-flex flex-wrap gap-1 mb-2 small">
             <span class="mobile-card-label w-100 mb-0">Tasks</span>
-            <div class="d-flex flex-wrap gap-1">
-                <span class="badge bg-light text-dark border">{{ $totalTasks }}</span>
-                @if($pendingReview > 0)
-                    <span class="badge bg-warning text-dark">{{ $pendingReview }} to review</span>
-                @endif
-            </div>
+            <span class="badge bg-light text-dark border">{{ $totalTasks }}</span>
+            @if($pendingReview > 0)
+                <span class="badge bg-warning text-dark">{{ $pendingReview }} to review</span>
+            @endif
         </div>
-        <div class="mb-2">
+        <div class="d-flex flex-wrap gap-1 mb-2 small">
             <span class="mobile-card-label w-100 mb-0">Progress</span>
-            <div class="progress" style="height: 6px;">
-                <div class="progress-bar bg-success" style="width: {{ $progress }}%"></div>
-            </div>
-            <small class="text-muted">{{ $completedTasks }}/{{ $totalTasks }} · {{ $progress }}%</small>
+            <span class="mobile-card-value w-100">
+                <span class="progress d-block" style="height: 6px;">
+                    <span class="progress-bar bg-success" style="width: {{ $progress }}%"></span>
+                </span>
+                <small class="text-muted">{{ $completedTasks }}/{{ $totalTasks }} · {{ $progress }}%</small>
+            </span>
         </div>
-        <div class="mb-2">
+        <div class="d-flex flex-wrap gap-1 mb-2 small">
             <span class="mobile-card-label w-100 mb-0">Due Date</span>
-            <span class="mobile-card-value d-block">{{ $pp->expected_completion_date ? $pp->expected_completion_date->format('M d, Y') : '—' }}</span>
+            <span class="mobile-card-value">{{ $pp->expected_completion_date ? $pp->expected_completion_date->format('M d, Y') : '—' }}</span>
         </div>
-        <div class="mt-2">
-            <a href="{{ route('post-production.show', $pp->id) }}" class="btn btn-sm btn-outline-dark rounded-3 w-100">
+        <div class="mt-2 d-flex gap-2">
+            <a href="{{ route('post-production.show', $pp->id) }}" class="btn btn-sm btn-outline-dark rounded-3 flex-fill">
                 <i class="bi bi-eye me-1"></i> View
             </a>
         </div>
