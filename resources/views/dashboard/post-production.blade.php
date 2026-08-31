@@ -28,7 +28,7 @@
         <div class="container-fluid p-4">
             {{-- ==================== SUMMARY CARDS ==================== --}}
             <div class="row g-3 mb-4">
-                <div class="col-lg-3 col-md-4 col-6">
+                <div class="col-lg-3 col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-primary bg-opacity-10 text-primary">
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 col-6">
+                <div class="col-lg-3 col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-warning bg-opacity-10 text-warning">
@@ -54,7 +54,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 col-6">
+                <div class="col-lg-3 col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-info bg-opacity-10 text-info">
@@ -67,7 +67,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 col-6">
+                <div class="col-lg-3 col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-success bg-opacity-10 text-success">
@@ -92,7 +92,8 @@
                     <input type="text" id="ppSearchInput" class="form-control"
                         placeholder="Search by booking ref, client, or event..." value="{{ request('search') }}" autocomplete="off">
                 </div>
-                <div class="table-responsive">
+                {{-- Desktop table (hidden on mobile) --}}
+                <div class="table-responsive d-none d-md-block">
                     <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
@@ -109,6 +110,11 @@
                             @include('dashboard.partials.post-production-rows', compact('postProductions'))
                         </tbody>
                     </table>
+                </div>
+
+                {{-- Mobile cards (hidden on desktop) --}}
+                <div class="d-md-none" id="ppMobileBody">
+                    @include('dashboard.partials.post-production-mobile-rows', compact('postProductions'))
                 </div>
                 <div id="ppPagination" class="@if(!$postProductions->hasPages()) d-none @endif">
                     @if($postProductions->hasPages())

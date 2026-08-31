@@ -2,6 +2,7 @@
 (function () {
     var input = document.getElementById('ppSearchInput');
     var tableBody = document.getElementById('ppTableBody');
+    var mobileBody = document.getElementById('ppMobileBody');
     var paginationWrap = document.getElementById('ppPagination');
     var totalBadge = document.getElementById('ppTotalBadge');
     var debounceTimer = null;
@@ -26,6 +27,7 @@
             .then(function (r) { return r.json(); })
             .then(function (data) {
                 if (data.rows !== undefined) tableBody.innerHTML = data.rows;
+                if (data.mobileRows !== undefined && mobileBody) mobileBody.innerHTML = data.mobileRows;
                 if (data.pagination !== undefined) {
                     paginationWrap.innerHTML = data.pagination;
                     if (data.pagination.trim() === '') {

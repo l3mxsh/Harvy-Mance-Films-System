@@ -30,7 +30,7 @@
 
             {{-- ==================== SUMMARY CARDS ==================== --}}
             <div class="row g-3 mb-4">
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-lg col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-warning bg-opacity-10 text-warning">
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-lg col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-success bg-opacity-10 text-success">
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-lg col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-danger bg-opacity-10 text-danger">
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-lg col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-primary bg-opacity-10 text-primary">
@@ -109,7 +109,7 @@
                     <h2 class="section-title">Cancellation Requests</h2>
                     <span class="badge bg-light text-dark border" id="cancellationTotalBadge">{{ $cancellations->total() }} total</span>
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive d-none d-md-block">
                     <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
@@ -128,6 +128,11 @@
                             @include('dashboard.partials.cancellation-rows', compact('cancellations'))
                         </tbody>
                     </table>
+                </div>
+
+                {{-- Mobile cards (hidden on desktop) --}}
+                <div class="d-md-none" id="cancellationMobileBody">
+                    @include('dashboard.partials.cancellation-mobile-rows', compact('cancellations'))
                 </div>
             </section>
 

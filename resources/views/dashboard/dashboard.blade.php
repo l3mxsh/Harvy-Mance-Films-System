@@ -197,7 +197,7 @@
                             <h2 class="section-title"><i class="bi bi-journal-text me-2"></i>Recent Bookings</h2>
                             <a href="{{ route('booking.admin.index') }}" class="small text-decoration-none">View All <i class="bi bi-arrow-right ms-1"></i></a>
                         </div>
-                        <div class="table-responsive">
+                        <div class="table-responsive d-none d-md-block">
                             <table class="table table-hover align-middle mb-0">
                                 <thead>
                                     <tr>
@@ -224,6 +224,33 @@
                                     @endforelse
                                 </tbody>
                             </table>
+                        </div>
+
+                        <div class="d-md-none">
+                            @forelse($recentBookings as $booking)
+                                <div class="mobile-card">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div>
+                                            <div class="fw-semibold">{{ $booking->client_name }}</div>
+                                            <small class="text-muted"><code>{{ $booking->booking_ref }}</code></small>
+                                        </div>
+                                        <span class="badge dash-badge flex-shrink-0 ms-2">{{ ucwords(str_replace('_', ' ', $booking->status)) }}</span>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-1 mb-2 small">
+                                        <span class="mobile-card-label w-100 mb-0">Event Date</span>
+                                        <span class="mobile-card-value">{{ $booking->event_date->format('M d, Y') }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between border-top pt-2">
+                                        <span class="mobile-card-label mb-0 align-self-center">Package</span>
+                                        <span class="mobile-card-value">{{ $booking->package->name ?? '—' }}</span>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="empty-state">
+                                    <i class="bi bi-journal-text"></i>
+                                    No bookings yet.
+                                </div>
+                            @endforelse
                         </div>
                     </section>
                 </div>

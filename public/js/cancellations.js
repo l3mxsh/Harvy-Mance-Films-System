@@ -3,6 +3,7 @@
     var input = document.getElementById('cancellationSearchInput');
     var statusSelect = document.getElementById('cancellationStatusFilter');
     var tableBody = document.getElementById('cancellationTableBody');
+    var mobileBody = document.getElementById('cancellationMobileBody');
     var paginationWrap = document.getElementById('cancellationPagination');
     var totalBadge = document.getElementById('cancellationTotalBadge');
     var debounceTimer = null;
@@ -29,6 +30,7 @@
             .then(function (r) { return r.json(); })
             .then(function (data) {
                 if (data.rows !== undefined) tableBody.innerHTML = data.rows;
+                if (data.mobileRows !== undefined && mobileBody) mobileBody.innerHTML = data.mobileRows;
                 if (data.pagination !== undefined) {
                     paginationWrap.innerHTML = data.pagination;
                     if (data.pagination.trim() === '') {
