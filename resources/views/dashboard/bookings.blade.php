@@ -169,24 +169,26 @@
                                     <div class="small text-muted mb-1">Reason: {{ $rr->rejection_reason }}</div>
                                 @endif
                                 @if($rr->status === 'pending')
-                                    <div class="d-flex gap-2 border-top pt-2">
-                                        <button type="button" class="btn btn-sm btn-outline-success rounded-3 flex-fill"
-                                            onclick="openRescheduleApproveModal(
-                                                                        '{{ $rr->id }}',
-                                                                        '{{ $rr->booking->booking_ref }}',
-                                                                        '{{ $rr->booking->client_name }}',
-                                                                        '{{ $rr->requested_date->format('Y-m-d') }}',
-                                                                        '{{ $rr->requested_time }}'
-                                                                    )">
-                                            <i class="bi bi-check-lg me-1"></i> Approve
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-outline-danger rounded-3 flex-fill"
-                                            onclick="openRescheduleRejectModal('{{ $rr->id }}', '{{ $rr->booking->booking_ref }}')">
-                                            <i class="bi bi-x-lg me-1"></i> Reject
-                                        </button>
+                                    <div class="row g-2 border-top pt-2">
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-sm btn-outline-success rounded-3 w-100"
+                                                onclick="openRescheduleApproveModal(
+                                                                            '{{ $rr->id }}',
+                                                                            '{{ $rr->booking->booking_ref }}',
+                                                                            '{{ $rr->booking->client_name }}',
+                                                                            '{{ $rr->requested_date->format('Y-m-d') }}',
+                                                                            '{{ $rr->requested_time }}'
+                                                                        )">
+                                                <i class="bi bi-check-lg me-1"></i> Approve
+                                            </button>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-sm btn-outline-danger rounded-3 w-100"
+                                                onclick="openRescheduleRejectModal('{{ $rr->id }}', '{{ $rr->booking->booking_ref }}')">
+                                                <i class="bi bi-x-lg me-1"></i> Reject
+                                            </button>
+                                        </div>
                                     </div>
-                                @else
-                                    <div class="text-muted fst-italic small border-top pt-2">Processed</div>
                                 @endif
                             </div>
                         @empty
