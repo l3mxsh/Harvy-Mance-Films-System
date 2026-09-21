@@ -899,6 +899,45 @@ body {
     vertical-align: middle;
 }
 
+/* ---------------- Booking management tabs (single-line, scrollable) ---------------- */
+#bookingTabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    box-sizing: border-box;
+}
+
+#bookingTabs::-webkit-scrollbar {
+    display: none;
+}
+
+#bookingTabs .nav-item {
+    flex: 0 0 auto;
+}
+
+#bookingTabs .nav-link {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+#bookingTabs .nav-link > i,
+#bookingTabs .nav-link > .bi {
+    flex-shrink: 0;
+    align-self: center;
+}
+
+/* Always keep the tabs anchored to the left so the first tab is never
+   clipped when the row overflows and becomes horizontally scrollable. */
+#bookingTabs {
+    justify-content: flex-start !important;
+    min-width: 0;
+}
+
 /* ---------------- Alerts / status ---------------- */
 .alert-soft {
     border-radius: var(--radius-md);

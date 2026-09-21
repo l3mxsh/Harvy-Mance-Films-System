@@ -389,7 +389,8 @@ class BookingController extends Controller
     {
         $bookings = Booking::with(['package.services', 'addons', 'team', 'latestDownpayment', 'postProduction'])
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         $availableTeams = Team::with('members', 'outsourcedMembers')->where('status', 'active')->get();
 
@@ -400,6 +401,18 @@ class BookingController extends Controller
             ->get();
 
         $pendingRescheduleCount = $rescheduleRequests->where('status', 'pending')->count();
+
+        if (request()->ajax()) {
+            $partial = request('tab') === 'reschedule'
+                ? 'dashboard.partials.reschedule-tab'
+                : 'dashboard.partials.bookings-tab';
+
+            $html = view($partial, compact('bookings', 'availableTeams', 'rescheduleRequests', 'pendingRescheduleCount'))->render();
+
+            return response()->json([
+                'html' => $html,
+            ]);
+        }
 
         return view('dashboard.bookings', compact('bookings', 'availableTeams', 'rescheduleRequests', 'pendingRescheduleCount'));
     }

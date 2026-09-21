@@ -397,3 +397,51 @@ document.getElementById('completeForm').addEventListener('submit', function () {
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Completing...';
 });
+
+// ==================== AJAX TAB SWITCHING (no page reload) ====================
+
+(function () {
+    var tabs = document.getElementById('bookingTabs');
+    var content = document.getElementById('bookingTabContent');
+
+    if (!tabs || !content) return;
+
+    function fetchData(url) {
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+            .then(function (r) {
+                if (!r.ok) throw new Error('Request failed');
+                return r.json();
+            })
+            .then(function (data) {
+                content.innerHTML = data.html;
+            })
+            .catch(function (err) {
+                console.error('Booking tab fetch error:', err);
+            });
+    }
+
+    tabs.addEventListener('click', function (e) {
+        var link = e.target.closest ? e.target.closest('a') : null;
+        if (!link || !tabs.contains(link)) return;
+        e.preventDefault();
+
+        tabs.querySelectorAll('.nav-link').forEach(function (el) {
+            el.classList.remove('active');
+        });
+        link.classList.add('active');
+
+        fetchData(link.href);
+    });
+
+    content.addEventListener('click', function (e) {
+        var link = e.target.closest ? e.target.closest('.page-link') : null;
+        if (!link || !content.contains(link)) return;
+        e.preventDefault();
+        fetchData(link.href);
+    });
+})();
