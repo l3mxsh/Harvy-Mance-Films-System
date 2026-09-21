@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/booking.css') }}?v=2">
+    <link rel="stylesheet" href="{{ asset('css/booking.css') }}?v=3">
     <link rel="stylesheet" href="{{ asset('css/payment-verification.css') }}">
 </head>
 
@@ -73,8 +73,8 @@
                                 <th>Type</th>
                                 <th>Client</th>
                                 <th>Amount</th>
-                                <th>Payment Proof</th>
-                                <th>Submitted</th>
+                                <th class="d-none d-lg-table-cell">Payment Proof</th>
+                                <th class="d-none d-lg-table-cell">Submitted</th>
                                 <th>Status</th>
                                 <th class="text-center">Actions</th>
                             </tr>

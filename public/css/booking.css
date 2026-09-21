@@ -1434,3 +1434,15 @@ a.pag-btn:hover {
 .pag-dots {
     letter-spacing: 0.05em;
 }
+
+/* ---------------- Compact screens: shrink admin table buttons ---------------- */
+@media (max-width: 991.98px) {
+    .surface-card .table-responsive .btn.btn-sm {
+        font-size: 0.72rem;
+        padding: 0.25rem 0.45rem;
+    }
+
+    .surface-card .table-responsive .btn.btn-sm .bi {
+        font-size: 0.78rem;
+    }
+}

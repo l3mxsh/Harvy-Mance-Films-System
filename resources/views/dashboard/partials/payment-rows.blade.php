@@ -40,13 +40,13 @@
             <small class="text-muted">{{ $downpayment->booking->client_email ?? '' }}</small>
         </td>
         <td class="fw-semibold">&#8369;{{ number_format($downpayment->amount, 2) }}</td>
-        <td>
+        <td class="d-none d-lg-table-cell">
             <button type="button" class="btn btn-sm btn-outline-secondary rounded-3"
                 onclick="previewProof('{{ asset('storage/' . $downpayment->payment_proof) }}')">
                 <i class="bi bi-image me-1"></i> View
             </button>
         </td>
-        <td>{{ $downpayment->submitted_at ? $downpayment->submitted_at->format('M d, Y g:i A') : '—' }}</td>
+        <td class="d-none d-lg-table-cell">{{ $downpayment->submitted_at ? $downpayment->submitted_at->format('M d, Y g:i A') : '—' }}</td>
         <td>
             @include('partials.status-badge', ['status' => $downpayment->status])
         </td>
