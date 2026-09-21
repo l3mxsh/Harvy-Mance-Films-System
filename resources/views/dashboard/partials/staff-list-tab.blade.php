@@ -1,6 +1,6 @@
 {{-- All / In-House staff tab content (AJAX) --}}
                 <div class="row g-3 mb-4">
-                    <div class="col-lg-3 col-md-4 col-6">
+                    <div class="col-lg-3 col-md-4 col-12">
                         <div class="summary-card">
                             <div class="d-flex align-items-center">
                                 <div class="summary-icon bg-primary bg-opacity-10 text-primary">
@@ -13,7 +13,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-6">
+                    <div class="col-lg-3 col-md-4 col-12">
                         <div class="summary-card">
                             <div class="d-flex align-items-center">
                                 <div class="summary-icon bg-success bg-opacity-10 text-success">
@@ -26,7 +26,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-6">
+                    <div class="col-lg-3 col-md-4 col-12">
                         <div class="summary-card">
                             <div class="d-flex align-items-center">
                                 <div class="summary-icon bg-danger bg-opacity-10 text-danger">
@@ -39,7 +39,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-6">
+                    <div class="col-lg-3 col-md-4 col-12">
                         <div class="summary-card">
                             <div class="d-flex align-items-center">
                                 <div class="summary-icon bg-warning bg-opacity-10 text-warning">
@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="ms-3">
                                     <h6 class="text-muted mb-1 small">Outsourced</h6>
-                                    <h4 class="mb-0 fw-bold">{{ $outsourcedStaff->count() }}</h4>
+                                    <h4 class="mb-0 fw-bold">{{ $totalOutsourced }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -56,11 +56,11 @@
             @if(!in_array($tab, ['outsourced', 'teams']))
                 <section class="surface-card mb-4">
                     <div class="row g-2 align-items-center">
-                        <div class="col-9 col-md-9 col-lg-10">
+                        <div class="col-12 col-md-9 col-lg-10">
                             <input type="text" id="staffSearchInput" class="form-control"
                                 placeholder="Search by name or email..." value="{{ request('search') }}" autocomplete="off">
                         </div>
-                        <div class="col-3 col-md-3 col-lg-2">
+                        <div class="col-12 col-md-3 col-lg-2">
                             <select id="staffStatusFilter" class="form-select">
                                 <option value="">All Status</option>
                                 <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>

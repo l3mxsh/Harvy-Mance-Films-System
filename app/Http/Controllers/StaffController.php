@@ -20,7 +20,7 @@ class StaffController extends Controller
         $totalStaff = Staff::count();
         $activeStaff = Staff::where('status', 'active')->count();
         $inactiveStaff = Staff::where('status', 'inactive')->count();
-        $outsourcedStaff = OutsourcedStaff::orderBy('name')->get();
+        $totalOutsourced = OutsourcedStaff::count();
 
         if ($tab === 'teams') {
             $query = Team::with('members', 'outsourcedMembers');
@@ -46,7 +46,7 @@ class StaffController extends Controller
 
             if ($request->ajax()) {
                 if ($request->has('content')) {
-                    $html = view('dashboard.partials.staff-teams-tab', compact('teams', 'allStaff', 'allOutsourced', 'totalTeams', 'activeTeams', 'totalStaff', 'activeStaff', 'inactiveStaff', 'outsourcedStaff', 'tab'))->render();
+                    $html = view('dashboard.partials.staff-teams-tab', compact('teams', 'allStaff', 'allOutsourced', 'totalTeams', 'activeTeams', 'totalStaff', 'activeStaff', 'inactiveStaff', 'totalOutsourced', 'tab'))->render();
 
                     return response()->json(['html' => $html]);
                 }
@@ -61,17 +61,42 @@ class StaffController extends Controller
                 ]);
             }
 
-            return view('dashboard.staff', compact('teams', 'allStaff', 'allOutsourced', 'totalTeams', 'activeTeams', 'totalStaff', 'activeStaff', 'inactiveStaff', 'outsourcedStaff', 'tab'));
+            return view('dashboard.staff', compact('teams', 'allStaff', 'allOutsourced', 'totalTeams', 'activeTeams', 'totalStaff', 'activeStaff', 'inactiveStaff', 'totalOutsourced', 'tab'));
         }
 
         if ($tab === 'outsourced') {
-            if ($request->ajax() && $request->has('content')) {
-                $html = view('dashboard.partials.staff-outsourced-tab', compact('outsourcedStaff', 'totalStaff', 'activeStaff', 'inactiveStaff', 'tab'))->render();
+            $query = OutsourcedStaff::query();
 
-                return response()->json(['html' => $html]);
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%")
+                      ->orWhere('contact_number', 'like', "%{$search}%")
+                      ->orWhere('notes', 'like', "%{$search}%");
+                });
             }
 
-            return view('dashboard.staff', compact('outsourcedStaff', 'totalStaff', 'activeStaff', 'inactiveStaff', 'tab'));
+            $outsourcedStaff = $query->latest()->paginate(10)->withQueryString();
+
+            if ($request->ajax()) {
+                if ($request->has('content')) {
+                    $html = view('dashboard.partials.staff-outsourced-tab', compact('outsourcedStaff', 'totalStaff', 'activeStaff', 'inactiveStaff', 'totalOutsourced', 'tab'))->render();
+
+                    return response()->json(['html' => $html]);
+                }
+
+                $rowsHtml = view('dashboard.partials.outsourced-rows', compact('outsourcedStaff'))->render();
+                $paginationHtml = $outsourcedStaff->hasPages() ? $outsourcedStaff->links('vendor.pagination.bootstrap-5')->render() : '';
+
+                return response()->json([
+                    'rows' => $rowsHtml,
+                    'pagination' => $paginationHtml,
+                    'total' => $outsourcedStaff->total(),
+                ]);
+            }
+
+            return view('dashboard.staff', compact('outsourcedStaff', 'totalStaff', 'activeStaff', 'inactiveStaff', 'totalOutsourced', 'tab'));
         }
 
         $query = Staff::query();
@@ -96,7 +121,7 @@ class StaffController extends Controller
 
         if ($request->ajax()) {
             if ($request->has('content')) {
-                $html = view('dashboard.partials.staff-list-tab', compact('staff', 'outsourcedStaff', 'totalStaff', 'activeStaff', 'inactiveStaff', 'tab'))->render();
+                $html = view('dashboard.partials.staff-list-tab', compact('staff', 'totalOutsourced', 'totalStaff', 'activeStaff', 'inactiveStaff', 'tab'))->render();
 
                 return response()->json(['html' => $html]);
             }
@@ -111,7 +136,7 @@ class StaffController extends Controller
             ]);
         }
 
-        return view('dashboard.staff', compact('staff', 'outsourcedStaff', 'totalStaff', 'activeStaff', 'inactiveStaff', 'tab'));
+        return view('dashboard.staff', compact('staff', 'totalOutsourced', 'totalStaff', 'activeStaff', 'inactiveStaff', 'tab'));
     }
 
     public function store(Request $request)
