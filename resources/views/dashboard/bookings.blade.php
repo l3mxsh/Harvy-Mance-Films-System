@@ -391,44 +391,56 @@
                                     <span class="mobile-card-label mb-0 align-self-center">Total</span>
                                     <span class="fw-semibold">&#8369;{{ number_format($booking->total_price, 2) }}</span>
                                 </div>
-                                <div id="actions-cell-m-{{ $booking->id }}" class="d-flex gap-2 flex-wrap">
+                                <div id="actions-cell-m-{{ $booking->id }}" class="row g-2">
                                     @if($booking->status === 'pending')
-                                        <button type="button" class="btn btn-sm btn-outline-success rounded-3"
-                                            onclick="openApproveModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}', '{{ $booking->event_date->format('Y-m-d') }}')">
-                                            <i class="bi bi-check-lg me-1"></i> Approve
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-outline-danger rounded-3"
-                                            onclick="openRejectModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}')">
-                                            <i class="bi bi-x-lg me-1"></i> Reject
-                                        </button>
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-sm btn-outline-success rounded-3 w-100"
+                                                onclick="openApproveModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}', '{{ $booking->event_date->format('Y-m-d') }}')">
+                                                <i class="bi bi-check-lg me-1"></i> Approve
+                                            </button>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-sm btn-outline-danger rounded-3 w-100"
+                                                onclick="openRejectModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}')">
+                                                <i class="bi bi-x-lg me-1"></i> Reject
+                                            </button>
+                                        </div>
                                     @elseif($booking->status === 'rejected')
-                                        <small class="text-danger text-muted fst-italic">Rejected</small>
-                                    @elseif($booking->status === 'approved')
-                                        <small class="text-success text-muted fst-italic">Approved</small>
+                                        <div class="col-12">
+                                            <small class="text-danger text-muted fst-italic d-flex align-items-center">Rejected</small>
+                                        </div>
                                     @elseif($booking->status === 'ongoing')
                                         @if($booking->event_date->lt(\Carbon\Carbon::today()))
-                                            <button type="button" class="btn btn-sm btn-outline-success rounded-3"
-                                                onclick="openCompleteModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}')">
-                                                <i class="bi bi-check-lg me-1"></i> Complete
-                                            </button>
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-sm btn-outline-success rounded-3 w-100"
+                                                    onclick="openCompleteModal('{{ $booking->id }}', '{{ $booking->booking_ref }}', '{{ $booking->client_name }}')">
+                                                    <i class="bi bi-check-lg me-1"></i> Complete
+                                                </button>
+                                            </div>
                                         @else
-                                            <small class="text-muted fst-italic">After event</small>
+                                            <div class="col-12">
+                                                <small class="text-muted fst-italic d-flex align-items-center">After event</small>
+                                            </div>
                                         @endif
                                     @elseif($booking->status === 'completed')
-                                        @if($booking->postProduction)
-                                            <a href="{{ route('post-production.show', $booking->postProduction->id) }}" class="btn btn-sm btn-outline-dark rounded-3">
-                                                <i class="bi bi-film me-1"></i>View Post-Production
-                                            </a>
-                                        @else
-                                            <a href="{{ route('post-production.create', $booking->id) }}" class="btn btn-sm btn-outline-dark rounded-3">
-                                                <i class="bi bi-film me-1"></i>Proceed to Post-Production
-                                            </a>
-                                        @endif
+                                        <div class="col-12">
+                                            @if($booking->postProduction)
+                                                <a href="{{ route('post-production.show', $booking->postProduction->id) }}" class="btn btn-sm btn-outline-dark rounded-3 w-100">
+                                                    <i class="bi bi-film me-1"></i>View Post-Production
+                                                </a>
+                                            @else
+                                                <a href="{{ route('post-production.create', $booking->id) }}" class="btn btn-sm btn-outline-dark rounded-3 w-100">
+                                                    <i class="bi bi-film me-1"></i>Proceed to Post-Production
+                                                </a>
+                                            @endif
+                                        </div>
                                     @endif
-                                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-3 ms-auto"
-                                        onclick='window.viewPayloads = window.viewPayloads || {}; window.viewPayloads[{{ $booking->id }}] = @json($viewPayload); openViewModal(window.viewPayloads[{{ $booking->id }}])'>
-                                        <i class="bi bi-eye"></i> View
-                                    </button>
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-3 w-100"
+                                            onclick='window.viewPayloads = window.viewPayloads || {}; window.viewPayloads[{{ $booking->id }}] = @json($viewPayload); openViewModal(window.viewPayloads[{{ $booking->id }}])'>
+                                            <i class="bi bi-eye"></i> View
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         @empty
