@@ -51,20 +51,21 @@
             @include('partials.status-badge', ['status' => $downpayment->status])
         </td>
         <td class="text-center">
-            <div class="d-flex gap-2 justify-content-center flex-wrap">
+            <div class="d-flex gap-2 justify-content-center flex-nowrap">
                 @if($downpayment->status === 'pending')
-                    <button type="button" class="btn btn-sm btn-outline-success rounded-3"
+                    <button type="button" class="btn btn-sm btn-outline-success rounded-3 text-nowrap flex-shrink-0"
                         title="Approve Payment"
                         onclick="openVerifyModal('{{ $downpayment->id }}', '{{ $downpayment->booking->booking_ref ?? 'N/A' }}')">
                         <i class="bi bi-check-lg me-1"></i> Approve
                     </button>
-                    <button type="button" class="btn btn-sm btn-outline-danger rounded-3"
+                    <button type="button" class="btn btn-sm btn-outline-danger rounded-3 text-nowrap flex-shrink-0"
                         title="Reject Payment"
                         onclick="openRejectModal('{{ $downpayment->id }}', '{{ $downpayment->booking->booking_ref ?? 'N/A' }}')">
                         <i class="bi bi-x-lg me-1"></i> Reject
                     </button>
                 @endif
-                <button type="button" class="btn btn-sm btn-outline-secondary rounded-3" title="View Booking Details"
+                <button type="button" class="btn btn-sm btn-outline-secondary rounded-3 text-nowrap flex-shrink-0"
+                    title="View Booking Details"
                     onclick='window.viewPayloads = window.viewPayloads || {}; window.viewPayloads[{{ $downpayment->id }}] = @json($viewPayload); openViewModal(window.viewPayloads[{{ $downpayment->id }}])'>
                     <i class="bi bi-eye"></i>
                 </button>
