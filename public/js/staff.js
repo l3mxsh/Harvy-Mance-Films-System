@@ -169,39 +169,46 @@ function openDeleteTeamModal(id, name) {
     new bootstrap.Modal(document.getElementById('deleteTeamModal')).show();
 }
 
-// ---- Teams: AJAX search/filter (no page reloads) ----
+// ---- AJAX tab switching + search/filter + pagination (no page reloads) ----
 (function () {
-    var input = document.getElementById('teamSearchInput');
-    var statusSelect = document.getElementById('teamStatusFilter');
-    var tableBody = document.getElementById('teamTableBody');
-    var paginationWrap = document.getElementById('teamPagination');
-    var totalBadge = document.getElementById('teamTotalBadge');
+    var tabs = document.getElementById('staffTabs');
+    var content = document.getElementById('staffTabContent');
     var debounceTimer = null;
 
-    if (!input || !statusSelect) return;
+    if (!tabs || !content) return;
 
-    function buildUrl() {
+    function currentTab() {
+        return content.getAttribute('data-tab') || 'all';
+    }
+
+    function headers() {
+        return {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        };
+    }
+
+    function buildRowsUrl() {
         var params = new URLSearchParams();
-        params.set('tab', 'teams');
-        var s = input.value.trim();
-        var st = statusSelect.value;
-        if (s) params.set('search', s);
-        if (st) params.set('status', st);
+        params.set('tab', currentTab());
+        var s = content.querySelector('#staffSearchInput') || content.querySelector('#teamSearchInput');
+        var st = content.querySelector('#staffStatusFilter') || content.querySelector('#teamStatusFilter');
+        if (s && s.value.trim()) params.set('search', s.value.trim());
+        if (st && st.value) params.set('status', st.value);
         var qs = params.toString();
         return '/admin/staff' + (qs ? '?' + qs : '');
     }
 
-    function fetchTeams(url) {
-        fetch(url, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
-            }
-        })
+    function fetchRows(url) {
+        fetch(url, { headers: headers() })
             .then(function (r) { return r.json(); })
             .then(function (data) {
-                if (data.rows !== undefined) tableBody.innerHTML = data.rows;
-                if (data.pagination !== undefined) {
+                var isTeams = currentTab() === 'teams';
+                var tableBody = document.getElementById(isTeams ? 'teamTableBody' : 'staffTableBody');
+                var paginationWrap = document.getElementById(isTeams ? 'teamPagination' : 'staffPagination');
+                var totalBadge = document.getElementById(isTeams ? 'teamTotalBadge' : 'staffTotalBadge');
+                if (data.rows !== undefined && tableBody) tableBody.innerHTML = data.rows;
+                if (data.pagination !== undefined && paginationWrap) {
                     paginationWrap.innerHTML = data.pagination;
                     if (data.pagination.trim() === '') {
                         paginationWrap.classList.add('d-none');
@@ -210,84 +217,44 @@ function openDeleteTeamModal(id, name) {
                     }
                 }
                 if (data.total !== undefined && totalBadge) totalBadge.textContent = data.total + ' total';
-            });
+            })
+            .catch(function (err) { console.error('Staff rows fetch error:', err); });
     }
 
-    statusSelect.addEventListener('change', function () {
-        fetchTeams(buildUrl());
-    });
-
-    input.addEventListener('input', function () {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(function () { fetchTeams(buildUrl()); }, 400);
-    });
-
-    document.addEventListener('click', function (e) {
-        var link = e.target.closest ? e.target.closest('#teamPagination a') : null;
-        if (!link) return;
-        e.preventDefault();
-        fetchTeams(link.href);
-    });
-})();
-
-// ---- Client-side search/filter (AJAX, no page reloads) ----
-(function () {
-    var input = document.getElementById('staffSearchInput');
-    var statusSelect = document.getElementById('staffStatusFilter');
-    var tableBody = document.getElementById('staffTableBody');
-    var paginationWrap = document.getElementById('staffPagination');
-    var totalBadge = document.getElementById('staffTotalBadge');
-    var debounceTimer = null;
-
-    if (!input || !statusSelect) return;
-
-    function buildUrl() {
-        var params = new URLSearchParams();
-        var tab = new URLSearchParams(window.location.search).get('tab');
-        var s = input.value.trim();
-        var st = statusSelect.value;
-        if (tab) params.set('tab', tab);
-        if (s) params.set('search', s);
-        if (st) params.set('status', st);
-        var qs = params.toString();
-        return '/admin/staff' + (qs ? '?' + qs : '');
-    }
-
-    function fetchStaff(url) {
-        fetch(url, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
-            }
-        })
+    function fetchTab(url) {
+        var sep = url.indexOf('?') > -1 ? '&' : '?';
+        fetch(url + sep + 'content=tab', { headers: headers() })
             .then(function (r) { return r.json(); })
             .then(function (data) {
-                if (data.rows !== undefined) tableBody.innerHTML = data.rows;
-                if (data.pagination !== undefined) {
-                    paginationWrap.innerHTML = data.pagination;
-                    if (data.pagination.trim() === '') {
-                        paginationWrap.classList.add('d-none');
-                    } else {
-                        paginationWrap.classList.remove('d-none');
-                    }
-                }
-                if (data.total !== undefined && totalBadge) totalBadge.textContent = data.total + ' total';
-            });
+                if (data.html !== undefined) content.innerHTML = data.html;
+            })
+            .catch(function (err) { console.error('Staff tab fetch error:', err); });
     }
 
-    statusSelect.addEventListener('change', function () {
-        fetchStaff(buildUrl());
-    });
-
-    input.addEventListener('input', function () {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(function () { fetchStaff(buildUrl()); }, 400);
-    });
-
-    document.addEventListener('click', function (e) {
-        var link = e.target.closest ? e.target.closest('#staffPagination a') : null;
-        if (!link) return;
+    tabs.addEventListener('click', function (e) {
+        var link = e.target.closest ? e.target.closest('a') : null;
+        if (!link || !tabs.contains(link)) return;
         e.preventDefault();
-        fetchStaff(link.href);
+        tabs.querySelectorAll('.nav-link').forEach(function (el) { el.classList.remove('active'); });
+        link.classList.add('active');
+        fetchTab(link.href);
+    });
+
+    content.addEventListener('click', function (e) {
+        var link = e.target.closest ? e.target.closest('.page-link') : null;
+        if (!link || !content.contains(link)) return;
+        e.preventDefault();
+        fetchRows(link.href);
+    });
+
+    content.addEventListener('input', function (e) {
+        if (!e.target.matches || !e.target.matches('#staffSearchInput, #teamSearchInput')) return;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function () { fetchRows(buildRowsUrl()); }, 400);
+    });
+
+    content.addEventListener('change', function (e) {
+        if (!e.target.matches || !e.target.matches('#staffStatusFilter, #teamStatusFilter')) return;
+        fetchRows(buildRowsUrl());
     });
 })();

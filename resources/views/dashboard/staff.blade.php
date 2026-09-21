@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/booking.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/booking.css') }}?v=2">
 </head>
 
 <body>
@@ -24,97 +24,8 @@
             <span class="fw-semibold">Staff Management</span>
             <span></span>
         </div>
-
-        <div class="container-fluid p-4">
-            {{-- ==================== SUMMARY CARDS ==================== --}}
-            @if($tab === 'teams')
-                <div class="row g-3 mb-4">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="summary-card">
-                            <div class="d-flex align-items-center">
-                                <div class="summary-icon bg-primary bg-opacity-10 text-primary">
-                                    <i class="bi bi-people-fill"></i>
-                                </div>
-                                <div class="ms-3">
-                                    <h6 class="text-muted mb-1 small">Total Teams</h6>
-                                    <h4 class="mb-0 fw-bold">{{ $totalTeams }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="summary-card">
-                            <div class="d-flex align-items-center">
-                                <div class="summary-icon bg-success bg-opacity-10 text-success">
-                                    <i class="bi bi-check-circle"></i>
-                                </div>
-                                <div class="ms-3">
-                                    <h6 class="text-muted mb-1 small">Active Teams</h6>
-                                    <h4 class="mb-0 fw-bold">{{ $activeTeams }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @else
-                <div class="row g-3 mb-4">
-                    <div class="col-lg-3 col-md-4 col-6">
-                        <div class="summary-card">
-                            <div class="d-flex align-items-center">
-                                <div class="summary-icon bg-primary bg-opacity-10 text-primary">
-                                    <i class="bi bi-people"></i>
-                                </div>
-                                <div class="ms-3">
-                                    <h6 class="text-muted mb-1 small">Total In-House</h6>
-                                    <h4 class="mb-0 fw-bold">{{ $totalStaff }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-6">
-                        <div class="summary-card">
-                            <div class="d-flex align-items-center">
-                                <div class="summary-icon bg-success bg-opacity-10 text-success">
-                                    <i class="bi bi-check-circle"></i>
-                                </div>
-                                <div class="ms-3">
-                                    <h6 class="text-muted mb-1 small">Active</h6>
-                                    <h4 class="mb-0 fw-bold">{{ $activeStaff }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-6">
-                        <div class="summary-card">
-                            <div class="d-flex align-items-center">
-                                <div class="summary-icon bg-danger bg-opacity-10 text-danger">
-                                    <i class="bi bi-person-x"></i>
-                                </div>
-                                <div class="ms-3">
-                                    <h6 class="text-muted mb-1 small">Inactive</h6>
-                                    <h4 class="mb-0 fw-bold">{{ $inactiveStaff }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-6">
-                        <div class="summary-card">
-                            <div class="d-flex align-items-center">
-                                <div class="summary-icon bg-warning bg-opacity-10 text-warning">
-                                    <i class="bi bi-person-badge"></i>
-                                </div>
-                                <div class="ms-3">
-                                    <h6 class="text-muted mb-1 small">Outsourced</h6>
-                                    <h4 class="mb-0 fw-bold">{{ $outsourcedStaff->count() }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            {{-- ==================== TABS ==================== --}}
-            <ul class="nav nav-pills mb-4" id="staffTabs">
+        {{-- ==================== TABS ==================== --}}
+        <ul class="nav nav-pills mb-0 px-4 pt-4 justify-content-center justify-content-md-start" id="staffTabs">
                 <li class="nav-item">
                     <a class="nav-link {{ in_array($tab, ['in-house', 'outsourced']) ? '' : 'active' }}"
                         href="{{ route('staff.admin.index') }}">
@@ -140,183 +51,20 @@
                         <i class="bi bi-people-fill me-1"></i> Teams
                     </a>
                 </li>
-            </ul>
+        </ul>
 
-            {{-- ==================== SEARCH BAR ==================== --}}
-            @if(!in_array($tab, ['outsourced', 'teams']))
-                <section class="surface-card mb-4">
-                    <div class="row g-2 align-items-center">
-                        <div class="col-9 col-md-9 col-lg-10">
-                            <input type="text" id="staffSearchInput" class="form-control"
-                                placeholder="Search by name or email..." value="{{ request('search') }}" autocomplete="off">
-                        </div>
-                        <div class="col-3 col-md-3 col-lg-2">
-                            <select id="staffStatusFilter" class="form-select">
-                                <option value="">All Status</option>
-                                <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
-                                <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                </section>
-            @endif
+        <div class="container-fluid p-4">
+            <div id="staffTabContent" data-tab="{{ $tab }}">
+                @if($tab === 'teams')
+                    @include('dashboard.partials.staff-teams-tab')
+                @elseif($tab === 'outsourced')
+                    @include('dashboard.partials.staff-outsourced-tab')
+                @else
+                    @include('dashboard.partials.staff-list-tab')
+                @endif
+            </div>
+        </div>
 
-            {{-- ==================== OUTSOURCED STAFF TABLE ==================== --}}
-            @if($tab === 'outsourced')
-                <section class="surface-card">
-                    <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <h2 class="section-title">
-                            Outsourced Staff
-                            <span class="badge bg-warning text-dark ms-1">Record Only</span>
-                        </h2>
-                        <button type="button" class="btn btn-sm btn-outline-dark rounded-pill"
-                            onclick="openCreateOutsourcedModal()">
-                            <i class="bi bi-plus-circle me-1"></i> Add Outsourced
-                        </button>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Contact</th>
-                                    <th>Notes</th>
-                                    <th>Added</th>
-                                    <th class="text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($outsourcedStaff as $os)
-                                    <tr>
-                                        <td class="fw-semibold">{{ $os->name }}</td>
-                                        <td>{{ $os->email ?? '—' }}</td>
-                                        <td>{{ $os->contact_number ?? '—' }}</td>
-                                        <td><span class="text-muted small">{{ $os->notes ?? '—' }}</span></td>
-                                        <td>{{ $os->created_at->format('M d, Y') }}</td>
-                                        <td class="text-center">
-                                            <div class="d-flex justify-content-center gap-2">
-                                                <button class="btn btn-sm btn-outline-secondary rounded-3"
-                                                    onclick="openEditOutsourcedModal('{{ $os->id }}', '{{ addslashes($os->name) }}', '{{ addslashes($os->email ?? '') }}', '{{ $os->contact_number }}', '{{ addslashes($os->notes ?? '') }}')">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger rounded-3"
-                                                    onclick="openDeleteOutsourcedModal('{{ $os->id }}', '{{ addslashes($os->name) }}')">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center py-4 text-muted">
-                                            <i class="bi bi-person-lines-fill fs-1 d-block mb-2"></i>
-                                            No outsourced staff records yet.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-            @endif
-
-            {{-- ==================== TEAMS TABLE ==================== --}}
-            @if($tab === 'teams')
-                <section class="surface-card mb-4">
-                    <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <h2 class="section-title">All Teams</h2>
-                        <span class="badge bg-light text-dark border" id="teamTotalBadge">{{ $teams->total() }} total</span>
-                    </div>
-                    <div class="row g-2 align-items-end">
-                        <div class="col-md-6">
-                            <label class="form-label small text-muted mb-1">Search</label>
-                            <input type="text" id="teamSearchInput" class="form-control" placeholder="Search teams..."
-                                value="{{ request('search') }}" autocomplete="off">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label small text-muted mb-1">Status</label>
-                            <select id="teamStatusFilter" class="form-select">
-                                <option value="">All Status</option>
-                                <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
-                                <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 mb-1">
-                            <button type="button" class="btn btn-dark w-100 rounded-3" onclick="openCreateTeamModal()">Add
-                                Team
-                            </button>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="surface-card">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Team Name</th>
-                                    <th>Description</th>
-                                    <th>Members</th>
-                                    <th>Status</th>
-                                    <th>Created</th>
-                                    <th class="text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="teamTableBody">
-                                @include('dashboard.partials.team-rows', compact('teams'))
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id="teamPagination" class="@if(!$teams->hasPages()) d-none @endif">
-                        @if($teams->hasPages())
-                            {{ $teams->links('vendor.pagination.bootstrap-5') }}
-                        @endif
-                    </div>
-                </section>
-            @endif
-
-            {{-- ==================== IN-HOUSE STAFF TABLE ==================== --}}
-            @if(!in_array($tab, ['outsourced', 'teams']))
-                <section class="surface-card">
-                    <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <h2 class="section-title">
-                            {{ $tab === 'in-house' ? 'In-House Staff' : 'All Staff' }}
-                        </h2>
-                        <div class="d-flex align-items-center gap-2">
-                            <span class="badge bg-light text-dark border" id="staffTotalBadge">{{ $staff->total() }}
-                                total</span>
-                            <button type="button" class="btn btn-dark rounded-pill" onclick="openCreateModal()">
-                                <i class="bi bi-plus-circle me-1"></i> Add Staff
-                            </button>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Contact</th>
-                                    <th>Status</th>
-                                    <th>Joined</th>
-                                    <th class="text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="staffTableBody">
-                                @include('dashboard.partials.staff-rows', compact('staff'))
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id="staffPagination" class="@if(!$staff->hasPages()) d-none @endif">
-                        @if($staff->hasPages())
-                            {{ $staff->links('vendor.pagination.bootstrap-5') }}
-                        @endif
-                    </div>
-                </section>
-            @endif
         </div>
     </div>
 

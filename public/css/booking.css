@@ -899,10 +899,11 @@ body {
     vertical-align: middle;
 }
 
-/* ---------------- Admin tab bars (bookings & payment verification) ---------------- */
+/* ---------------- Admin tab bars (bookings, payment verification & staff) ---------------- */
 /* Single-line, horizontally scrollable, left-anchored, no label/icon wrapping. */
 #bookingTabs,
-#paymentTabs {
+#paymentTabs,
+#staffTabs {
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -912,17 +913,20 @@ body {
 }
 
 #bookingTabs::-webkit-scrollbar,
-#paymentTabs::-webkit-scrollbar {
+#paymentTabs::-webkit-scrollbar,
+#staffTabs::-webkit-scrollbar {
     display: none;
 }
 
 #bookingTabs .nav-item,
-#paymentTabs .nav-item {
+#paymentTabs .nav-item,
+#staffTabs .nav-item {
     flex: 0 0 auto;
 }
 
 #bookingTabs .nav-link,
-#paymentTabs .nav-link {
+#paymentTabs .nav-link,
+#staffTabs .nav-link {
     box-sizing: border-box;
     display: inline-flex;
     align-items: center;
@@ -933,7 +937,9 @@ body {
 #bookingTabs .nav-link > i,
 #bookingTabs .nav-link > .bi,
 #paymentTabs .nav-link > i,
-#paymentTabs .nav-link > .bi {
+#paymentTabs .nav-link > .bi,
+#staffTabs .nav-link > i,
+#staffTabs .nav-link > .bi {
     flex-shrink: 0;
     align-self: center;
 }
@@ -941,7 +947,8 @@ body {
 /* Always keep the tabs anchored to the left so the first tab is never
    clipped when the row overflows and becomes horizontally scrollable. */
 #bookingTabs,
-#paymentTabs {
+#paymentTabs,
+#staffTabs {
     justify-content: flex-start !important;
     min-width: 0;
 }
