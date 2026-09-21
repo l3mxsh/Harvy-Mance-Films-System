@@ -79,23 +79,4 @@
     .detail-value {
         text-align: left;
     }
-
-    #paymentTabs {
-        justify-content: stretch !important;
-        gap: 0.5rem;
-    }
-
-    #paymentTabs .nav-item {
-        flex: 1 1 auto;
-        max-width: calc(50% - 0.25rem);
-        min-width: 0;
-    }
-
-    #paymentTabs .nav-link {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-    }
 }

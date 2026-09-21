@@ -899,8 +899,10 @@ body {
     vertical-align: middle;
 }
 
-/* ---------------- Booking management tabs (single-line, scrollable) ---------------- */
-#bookingTabs {
+/* ---------------- Admin tab bars (bookings & payment verification) ---------------- */
+/* Single-line, horizontally scrollable, left-anchored, no label/icon wrapping. */
+#bookingTabs,
+#paymentTabs {
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -909,15 +911,18 @@ body {
     box-sizing: border-box;
 }
 
-#bookingTabs::-webkit-scrollbar {
+#bookingTabs::-webkit-scrollbar,
+#paymentTabs::-webkit-scrollbar {
     display: none;
 }
 
-#bookingTabs .nav-item {
+#bookingTabs .nav-item,
+#paymentTabs .nav-item {
     flex: 0 0 auto;
 }
 
-#bookingTabs .nav-link {
+#bookingTabs .nav-link,
+#paymentTabs .nav-link {
     box-sizing: border-box;
     display: inline-flex;
     align-items: center;
@@ -926,14 +931,17 @@ body {
 }
 
 #bookingTabs .nav-link > i,
-#bookingTabs .nav-link > .bi {
+#bookingTabs .nav-link > .bi,
+#paymentTabs .nav-link > i,
+#paymentTabs .nav-link > .bi {
     flex-shrink: 0;
     align-self: center;
 }
 
 /* Always keep the tabs anchored to the left so the first tab is never
    clipped when the row overflows and becomes horizontally scrollable. */
-#bookingTabs {
+#bookingTabs,
+#paymentTabs {
     justify-content: flex-start !important;
     min-width: 0;
 }

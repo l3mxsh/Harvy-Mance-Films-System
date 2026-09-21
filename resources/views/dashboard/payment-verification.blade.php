@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/booking.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/booking.css') }}?v=2">
     <link rel="stylesheet" href="{{ asset('css/payment-verification.css') }}">
 </head>
 
@@ -26,40 +26,40 @@
             <span></span>
         </div>
 
-        <div class="container-fluid p-4">
-            {{-- FILTER TABS --}}
-            <ul class="nav nav-pills mb-4 justify-content-center justify-content-md-start" id="paymentTabs">
-                <li class="nav-item">
-                    <a class="nav-link {{ !request('status') ? 'active' : '' }}" href="{{ route('payment-verification.index') }}">
-                        <i class="bi bi-collection me-1"></i> All Payments
-                        @if($stats['total'] > 0)
-                            <span class="badge bg-light text-dark ms-1">{{ $stats['total'] }}</span>
-                        @endif
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request('status') === 'pending' ? 'active' : '' }}"
-                        href="{{ route('payment-verification.index', ['status' => 'pending']) }}">
-                        <i class="bi bi-hourglass-split me-1"></i> Pending
-                        @if($stats['pending'] > 0)
-                            <span class="badge bg-danger ms-1">{{ $stats['pending'] }}</span>
-                        @endif
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request('status') === 'verified' ? 'active' : '' }}"
-                        href="{{ route('payment-verification.index', ['status' => 'verified']) }}">
-                        <i class="bi bi-check-circle me-1"></i> Verified
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request('status') === 'rejected' ? 'active' : '' }}"
-                        href="{{ route('payment-verification.index', ['status' => 'rejected']) }}">
-                        <i class="bi bi-x-circle me-1"></i> Rejected
-                    </a>
-                </li>
-            </ul>
+        {{-- FILTER TABS --}}
+        <ul class="nav nav-pills mb-0 px-4 pt-4 justify-content-center justify-content-md-start" id="paymentTabs">
+            <li class="nav-item">
+                <a class="nav-link {{ !request('status') ? 'active' : '' }}" href="{{ route('payment-verification.index') }}">
+                    <i class="bi bi-collection me-1"></i> All Payments
+                    @if($stats['total'] > 0)
+                        <span class="badge bg-light text-dark ms-1">{{ $stats['total'] }}</span>
+                    @endif
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request('status') === 'pending' ? 'active' : '' }}"
+                    href="{{ route('payment-verification.index', ['status' => 'pending']) }}">
+                    <i class="bi bi-hourglass-split me-1"></i> Pending
+                    @if($stats['pending'] > 0)
+                        <span class="badge bg-danger ms-1">{{ $stats['pending'] }}</span>
+                    @endif
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request('status') === 'verified' ? 'active' : '' }}"
+                    href="{{ route('payment-verification.index', ['status' => 'verified']) }}">
+                    <i class="bi bi-check-circle me-1"></i> Verified
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request('status') === 'rejected' ? 'active' : '' }}"
+                    href="{{ route('payment-verification.index', ['status' => 'rejected']) }}">
+                    <i class="bi bi-x-circle me-1"></i> Rejected
+                </a>
+            </li>
+        </ul>
 
+        <div class="container-fluid p-4">
             <section class="surface-card">
                 <div class="section-head d-flex justify-content-between align-items-center">
                     <h2 class="section-title">Payment Submissions</h2>
