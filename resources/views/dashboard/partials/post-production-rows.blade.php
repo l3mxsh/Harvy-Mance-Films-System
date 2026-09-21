@@ -18,9 +18,6 @@
             @endif
         </td>
         <td style="min-width: 130px;">
-            <div class="progress" style="height: 6px;">
-                <div class="progress-bar bg-success" style="width: {{ $progress }}%"></div>
-            </div>
             <small class="text-muted">{{ $completedTasks }}/{{ $totalTasks }}</small>
         </td>
         <td>

@@ -379,10 +379,6 @@
 
                     @if($total > 0)
                         <div class="mt-3">
-                            <div class="progress" style="height: 8px;">
-                                <div class="progress-bar bg-success"
-                                    style="width: {{ round(($approved / $total) * 100) }}%"></div>
-                            </div>
                             <small class="text-muted">{{ round(($approved / $total) * 100) }}% complete</small>
                         </div>
                     @endif

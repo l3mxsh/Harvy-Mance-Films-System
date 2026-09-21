@@ -37,9 +37,6 @@
         <div class="d-flex flex-wrap gap-1 mb-2 small">
             <span class="mobile-card-label w-100 mb-0">Progress</span>
             <span class="mobile-card-value w-100">
-                <span class="progress d-block" style="height: 6px;">
-                    <span class="progress-bar bg-success" style="width: {{ $progress }}%"></span>
-                </span>
                 <small class="text-muted">{{ $completedTasks }}/{{ $totalTasks }} · {{ $progress }}%</small>
             </span>
         </div>
