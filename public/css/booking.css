@@ -906,11 +906,12 @@ body {
     vertical-align: middle;
 }
 
-/* ---------------- Admin tab bars (bookings, payment verification & staff) ---------------- */
+/* ---------------- Admin tab bars (bookings, payment verification, staff & reports) ---------------- */
 /* Single-line, horizontally scrollable, left-anchored, no label/icon wrapping. */
 #bookingTabs,
 #paymentTabs,
-#staffTabs {
+#staffTabs,
+#reportTabs {
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -921,19 +922,22 @@ body {
 
 #bookingTabs::-webkit-scrollbar,
 #paymentTabs::-webkit-scrollbar,
-#staffTabs::-webkit-scrollbar {
+#staffTabs::-webkit-scrollbar,
+#reportTabs::-webkit-scrollbar {
     display: none;
 }
 
 #bookingTabs .nav-item,
 #paymentTabs .nav-item,
-#staffTabs .nav-item {
+#staffTabs .nav-item,
+#reportTabs .nav-item {
     flex: 0 0 auto;
 }
 
 #bookingTabs .nav-link,
 #paymentTabs .nav-link,
-#staffTabs .nav-link {
+#staffTabs .nav-link,
+#reportTabs .nav-link {
     box-sizing: border-box;
     display: inline-flex;
     align-items: center;
@@ -946,7 +950,9 @@ body {
 #paymentTabs .nav-link > i,
 #paymentTabs .nav-link > .bi,
 #staffTabs .nav-link > i,
-#staffTabs .nav-link > .bi {
+#staffTabs .nav-link > .bi,
+#reportTabs .nav-link > i,
+#reportTabs .nav-link > .bi {
     flex-shrink: 0;
     align-self: center;
 }
@@ -955,7 +961,8 @@ body {
    clipped when the row overflows and becomes horizontally scrollable. */
 #bookingTabs,
 #paymentTabs,
-#staffTabs {
+#staffTabs,
+#reportTabs {
     justify-content: flex-start !important;
     min-width: 0;
 }

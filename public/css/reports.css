@@ -10,28 +10,45 @@
     align-items: flex-end;
 }
 
+/* Presets reuse the admin nav-pills look (.nav-pills .nav-link in booking.css) */
 .report-range-presets {
     display: flex;
     flex-wrap: wrap;
     gap: 0.35rem;
 }
 
-.report-range-presets .btn {
-    font-size: 0.78rem;
-    padding: 0.35rem 0.7rem;
-    border-radius: 999px;
+.report-range-presets .nav-link {
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    white-space: nowrap;
+    font-size: 0.82rem;
 }
 
-.report-range-presets .btn.active {
-    background: #111111;
-    border-color: #111111;
-    color: #ffffff;
+/* From / To / Apply: same width inputs, Apply lined up with them */
+.report-range-dates {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.5rem;
+    margin-left: auto;
 }
 
-.report-range-note {
-    font-size: 0.75rem;
-    color: #6c757d;
-    margin-top: 0.6rem;
+.report-range-dates > div {
+    width: 9.5rem;
+}
+
+.report-range-dates .form-control,
+.report-range-dates .btn {
+    height: 2.15rem;
+}
+
+.report-range-dates .form-control {
+    min-width: 0;
+}
+
+.report-range-dates .btn {
+    min-width: 5.25rem;
     margin-bottom: 0;
 }
 
@@ -116,6 +133,7 @@
     .sidebar,
     .sidebar-overlay,
     .sidebar-topnav,
+    #reportTabs,
     .no-print {
         display: none !important;
     }

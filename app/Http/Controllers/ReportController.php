@@ -11,13 +11,76 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
+    /** Report tabs, in display order. */
+    private const TABS = ['overview', 'bookings', 'performance'];
+
     public function index(Request $request)
     {
+        $tab = (string) $request->query('tab', 'overview');
+
+        if (!in_array($tab, self::TABS, true)) {
+            $tab = 'overview';
+        }
+
         [$range, $from, $to] = $this->resolveRange($request);
 
         $fromDate = $from->format('Y-m-d');
         $toDate = $to->format('Y-m-d');
 
+        $rangeQuery = $range === 'custom'
+            ? ['range' => 'custom', 'from' => $fromDate, 'to' => $toDate]
+            : ['range' => $range];
+
+        $payload = compact('range', 'from', 'to', 'rangeQuery', 'tab');
+        $payload['url'] = route('reports.index', array_merge(['tab' => $tab], $rangeQuery));
+        $payload['rangeLabel'] = $from->format('M d, Y') . ' – ' . $to->format('M d, Y');
+
+        if ($tab === 'overview') {
+            $payload['summary'] = $this->summary($from, $to, $fromDate, $toDate);
+            $payload['trend'] = $this->buildTrend($from, $to);
+        } elseif ($tab === 'bookings') {
+            $payload['summary'] = $this->summary($from, $to, $fromDate, $toDate);
+            $payload['bookings'] = $this->bookings($request, $fromDate, $toDate);
+        } else {
+            $payload['topPackages'] = $this->topPackages($fromDate, $toDate);
+            $payload['topAddons'] = $this->topAddons($fromDate, $toDate);
+        }
+
+        if ($request->ajax()) {
+            $content = (string) $request->query('content', '');
+
+            if ($content === 'tab') {
+                return response()->json([
+                    'html' => view('dashboard.partials.report-' . $tab . '-tab', $payload)->render(),
+                    'tab' => $tab,
+                    'url' => $payload['url'],
+                    'rangeLabel' => $payload['rangeLabel'],
+                    'range' => $range,
+                    'from' => $fromDate,
+                    'to' => $toDate,
+                ]);
+            }
+
+            if ($content === 'rows' && $tab === 'bookings') {
+                $rows = $payload['bookings'];
+
+                return response()->json([
+                    'rows' => view('dashboard.partials.report-booking-rows', ['bookings' => $rows])->render(),
+                    'mobileRows' => view('dashboard.partials.report-booking-mobile-rows', ['bookings' => $rows])->render(),
+                    'pagination' => $rows->hasPages() ? $rows->links('vendor.pagination.bootstrap-5')->render() : '',
+                    'total' => $rows->total(),
+                ]);
+            }
+        }
+
+        return view('dashboard.reports', $payload);
+    }
+
+    /**
+     * Booking counts, booked value, revenue, refunds and outstanding balance.
+     */
+    private function summary(Carbon $from, Carbon $to, string $fromDate, string $toDate): array
+    {
         // Bookings are counted by event date within the range.
         $bookingsInRange = Booking::whereBetween('event_date', [$fromDate, $toDate]);
         $countableBookings = (clone $bookingsInRange)->whereNotIn('status', ['cancelled', 'rejected']);
@@ -61,11 +124,12 @@ class ReportController extends Controller
         $summary['refunds'] = (float) (clone $refundsInRange)->sum('refund_amount');
         $summary['refundCount'] = (clone $refundsInRange)->count();
 
-        $trend = $this->buildTrend($from, $to);
-        $topPackages = $this->topPackages($fromDate, $toDate);
-        $topAddons = $this->topAddons($fromDate, $toDate);
+        return $summary;
+    }
 
-        $bookings = Booking::with('package')
+    private function bookings(Request $request, string $fromDate, string $toDate)
+    {
+        return Booking::with('package')
             ->select('bookings.*')
             ->selectSub(
                 Downpayment::selectRaw('COALESCE(SUM(amount), 0)')
@@ -74,20 +138,26 @@ class ReportController extends Controller
                 'paid_amount'
             )
             ->whereBetween('event_date', [$fromDate, $toDate])
+            ->when($request->filled('q'), function ($query) use ($request) {
+                $term = trim((string) $request->query('q'));
+
+                $query->where(function ($q) use ($term) {
+                    $q->where('booking_ref', 'like', "%{$term}%")
+                        ->orWhere('client_name', 'like', "%{$term}%")
+                        ->orWhere('client_email', 'like', "%{$term}%");
+                });
+            })
+            ->when($request->filled('status'), function ($query) use ($request) {
+                $status = (string) $request->query('status');
+
+                if (in_array($status, ['pending', 'approved', 'ongoing', 'completed', 'delivered', 'cancelled', 'rejected'], true)) {
+                    $query->where('status', $status);
+                }
+            })
             ->orderBy('event_date', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(15)
             ->withQueryString();
-
-        return view('dashboard.reports', compact(
-            'summary',
-            'trend',
-            'topPackages',
-            'topAddons',
-            'bookings',
-            'range',
-            'from',
-            'to'
-        ));
     }
 
     /**
@@ -178,13 +248,10 @@ class ReportController extends Controller
             $byDay ? $cursor->addDay() : $cursor->addMonth();
         }
 
-        $maxBookings = max(1, (int) collect($rows)->max('bookings'));
-        $maxRevenue = max(1, (float) collect($rows)->max('revenue'));
-
         return [
             'rows' => $rows,
-            'maxBookings' => $maxBookings,
-            'maxRevenue' => $maxRevenue,
+            'maxBookings' => max(1, (int) collect($rows)->max('bookings')),
+            'maxRevenue' => max(1, (float) collect($rows)->max('revenue')),
             'granularity' => $bucket,
             'firstLabel' => $rows[0]['label'] ?? '',
             'lastLabel' => $rows ? $rows[count($rows) - 1]['label'] : '',
