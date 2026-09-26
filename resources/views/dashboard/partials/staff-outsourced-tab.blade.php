@@ -55,28 +55,25 @@
                 </div>
             @if($tab === 'outsourced')
                 <section class="surface-card mb-4">
-                    <div class="row g-2 align-items-center">
-                        <div class="col-12 col-md-9 col-lg-10">
+                    <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <h2 class="section-title">Outsourced Staff</h2>
+                        <span class="badge bg-light text-dark border" id="staffTotalBadge">{{ $outsourcedStaff->total() }} total</span>
+                    </div>
+                    <div class="row g-2 align-items-end">
+                        <div class="col-12 col-md-10">
+                            <label class="form-label small text-muted mb-1">Search</label>
                             <input type="text" id="staffSearchInput" class="form-control"
                                 placeholder="Search outsourced by name, email, contact..." value="{{ request('search') }}" autocomplete="off">
                         </div>
-                        <div class="col-12 col-md-3 col-lg-2">
-                            <button type="button" class="btn btn-outline-dark rounded-pill w-100"
-                                onclick="openCreateOutsourcedModal()">
-                                <i class="bi bi-plus-circle me-1"></i> Add Outsourced
+                        <div class="col-12 col-md-2 mb-1">
+                            <button type="button" class="btn btn-dark w-100 rounded-3" onclick="openCreateOutsourcedModal()">Add
+                                Outsourced
                             </button>
                         </div>
                     </div>
                 </section>
 
                 <section class="surface-card">
-                    <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <h2 class="section-title">
-                            Outsourced Staff
-                            <span class="badge bg-warning text-dark ms-1">Record Only</span>
-                        </h2>
-                        <span class="badge bg-light text-dark border" id="staffTotalBadge">{{ $outsourcedStaff->total() }} total</span>
-                    </div>
                     {{-- Desktop table (hidden on mobile) --}}
                     <div class="table-responsive d-none d-md-block">
                         <table class="table table-hover align-middle mb-0">

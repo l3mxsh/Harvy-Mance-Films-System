@@ -42,7 +42,6 @@
                     <a class="nav-link {{ $tab === 'outsourced' ? 'active' : '' }}"
                         href="{{ route('staff.admin.index', ['tab' => 'outsourced']) }}">
                         <i class="bi bi-person-lines-fill me-1"></i> Outsourced Staff
-                        <span class="badge bg-success text-light ms-1">Record Only</span>
                     </a>
                 </li>
                 <li class="nav-item">

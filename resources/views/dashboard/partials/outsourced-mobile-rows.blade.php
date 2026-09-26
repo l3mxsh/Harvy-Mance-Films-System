@@ -1,14 +1,11 @@
 @forelse($outsourcedStaff as $os)
     <div class="mobile-card">
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center mb-3">
             <div class="d-flex align-items-center mobile-card-head">
                 <div class="staff-avatar me-2">
                     {{ strtoupper(substr($os->name, 0, 1)) }}
                 </div>
                 <div class="fw-semibold text-truncate">{{ $os->name }}</div>
-            </div>
-            <div class="flex-shrink-0 ms-2">
-                <span class="badge bg-warning text-dark">Record Only</span>
             </div>
         </div>
         <div class="mb-2">

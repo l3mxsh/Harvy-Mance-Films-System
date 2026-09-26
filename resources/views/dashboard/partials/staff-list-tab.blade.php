@@ -55,12 +55,20 @@
                 </div>
             @if(!in_array($tab, ['outsourced', 'teams']))
                 <section class="surface-card mb-4">
-                    <div class="row g-2 align-items-center">
-                        <div class="col-12 col-md-9 col-lg-10">
+                    <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <h2 class="section-title">
+                            {{ $tab === 'in-house' ? 'In-House Staff' : 'All Staff' }}
+                        </h2>
+                        <span class="badge bg-light text-dark border" id="staffTotalBadge">{{ $staff->total() }} total</span>
+                    </div>
+                    <div class="row g-2 align-items-end">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small text-muted mb-1">Search</label>
                             <input type="text" id="staffSearchInput" class="form-control"
                                 placeholder="Search by name or email..." value="{{ request('search') }}" autocomplete="off">
                         </div>
-                        <div class="col-12 col-md-3 col-lg-2">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label small text-muted mb-1">Status</label>
                             <select id="staffStatusFilter" class="form-select">
                                 <option value="">All Status</option>
                                 <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
@@ -68,23 +76,16 @@
                                 </option>
                             </select>
                         </div>
+                        <div class="col-12 col-md-2 mb-1">
+                            <button type="button" class="btn btn-dark w-100 rounded-3" onclick="openCreateModal()">Add
+                                Staff
+                            </button>
+                        </div>
                     </div>
                 </section>
             @endif
             @if(!in_array($tab, ['outsourced', 'teams']))
                 <section class="surface-card">
-                    <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <h2 class="section-title">
-                            {{ $tab === 'in-house' ? 'In-House Staff' : 'All Staff' }}
-                        </h2>
-                        <div class="d-flex align-items-center gap-2">
-                            <span class="badge bg-light text-dark border" id="staffTotalBadge">{{ $staff->total() }}
-                                total</span>
-                            <button type="button" class="btn btn-dark rounded-pill" onclick="openCreateModal()">
-                                <i class="bi bi-plus-circle me-1"></i> Add Staff
-                            </button>
-                        </div>
-                    </div>
                     {{-- Desktop table (hidden on mobile) --}}
                     <div class="table-responsive d-none d-md-block">
                         <table class="table table-hover align-middle mb-0">
