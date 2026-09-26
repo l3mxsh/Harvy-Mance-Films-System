@@ -2,23 +2,10 @@
 function openLogModal(btn) {
     var d = btn.dataset;
     document.getElementById('logDetailAction').textContent = d.action;
-    document.getElementById('logDetailActor').textContent = d.actor;
     document.getElementById('logDetailType').textContent = d.type.charAt(0).toUpperCase() + d.type.slice(1);
+    document.getElementById('logDetailActor').textContent = d.actor;
     document.getElementById('logDetailTime').textContent = d.time;
     document.getElementById('logDetailDescription').textContent = d.description;
-
-    var contextWrap = document.getElementById('logDetailContextWrap');
-    var contextPre = document.getElementById('logDetailContext');
-    if (d.context && d.context.trim() !== 'null' && d.context.trim() !== '') {
-        try {
-            contextPre.textContent = JSON.stringify(JSON.parse(d.context), null, 2);
-            contextWrap.style.display = '';
-        } catch (e) {
-            contextWrap.style.display = 'none';
-        }
-    } else {
-        contextWrap.style.display = 'none';
-    }
 
     new bootstrap.Modal(document.getElementById('logDetailsModal')).show();
 }
@@ -30,6 +17,7 @@ function openLogModal(btn) {
     var dateFrom = document.getElementById('logDateFrom');
     var dateTo = document.getElementById('logDateTo');
     var tableBody = document.getElementById('logTableBody');
+    var mobileBody = document.getElementById('logMobileBody');
     var paginationWrap = document.getElementById('logPagination');
     var totalBadge = document.getElementById('logTotalBadge');
     var debounceTimer = null;
@@ -62,6 +50,7 @@ function openLogModal(btn) {
             .then(function (r) { return r.json(); })
             .then(function (data) {
                 if (data.rows !== undefined) tableBody.innerHTML = data.rows;
+                if (data.mobileRows !== undefined && mobileBody) mobileBody.innerHTML = data.mobileRows;
                 if (data.pagination !== undefined) {
                     paginationWrap.innerHTML = data.pagination;
                     if (data.pagination.trim() === '') {

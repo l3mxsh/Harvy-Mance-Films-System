@@ -3,48 +3,13 @@
    Minimal additions; shared styles come from sidebar.css + booking.css
    ============================================================ */
 
-.log-actor {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 600;
-}
-
-.log-actor-dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: inline-block;
-}
-
-.dot-admin   { background: var(--ink); }
-.dot-staff   { background: #f59e0b; }
-.dot-client  { background: #0dcaf0; }
-.dot-system  { background: #adb5bd; }
-
-.log-user-type {
-    display: block;
-    font-size: 0.72rem;
-    color: var(--ink-soft);
-    margin-top: 0.1rem;
-}
+.list-avatar.avatar-admin  { background: var(--ink); }
+.list-avatar.avatar-staff  { background: #f59e0b; }
+.list-avatar.avatar-client { background: #0dcaf0; }
+.list-avatar.avatar-system { background: #adb5bd; }
 
 .log-desc {
     font-size: 0.875rem;
     color: #495057;
     max-width: 420px;
-}
-
-.log-context {
-    font-size: 0.78rem;
-    background: var(--canvas);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 0.75rem 1rem;
-    white-space: pre-wrap;
-    word-break: break-word;
-    color: #495057;
-    max-height: 240px;
-    overflow-y: auto;
 }

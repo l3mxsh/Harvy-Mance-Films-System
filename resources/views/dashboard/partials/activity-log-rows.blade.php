@@ -1,14 +1,15 @@
 @forelse($logs as $log)
     <tr>
         <td>
-            <span class="log-actor">
-                <span class="log-actor-dot dot-{{ $log->user_type ?? 'system' }}"></span>
-                {{ $log->actor_name ?? 'System' }}
-            </span>
-            <span class="log-user-type">{{ ucfirst($log->user_type ?? 'system') }}</span>
+            <div class="d-flex align-items-center">
+                <div class="list-avatar me-2 avatar-{{ $log->user_type ?? 'system' }}">
+                    {{ strtoupper(substr($log->actor_name ?? 'System', 0, 1)) }}
+                </div>
+                <div class="fw-semibold">{{ $log->actor_label }}</div>
+            </div>
         </td>
         <td>
-            <span class="badge bg-light text-dark border">{{ $log->action }}</span>
+            <span class="badge bg-light text-dark border">{{ $log->friendly_action }}</span>
         </td>
         <td class="log-desc">{{ \Illuminate\Support\Str::limit($log->description, 95) }}</td>
         <td class="text-nowrap">
@@ -21,10 +22,9 @@
                 data-id="{{ $log->id }}"
                 data-actor="{{ $log->actor_name ?? 'System' }}"
                 data-type="{{ $log->user_type ?? 'system' }}"
-                data-action="{{ $log->action }}"
+                data-action="{{ $log->friendly_action }}"
                 data-time="{{ $log->created_at->format('M d, Y · h:i A') }}"
-                data-description="{{ $log->description }}"
-                data-context="{{ json_encode($log->context) }}">
+                data-description="{{ $log->description }}">
                 <i class="bi bi-eye"></i>
             </button>
         </td>

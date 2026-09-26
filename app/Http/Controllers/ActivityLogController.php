@@ -40,10 +40,12 @@ class ActivityLogController extends Controller
 
         if ($request->ajax()) {
             $rowsHtml = view('dashboard.partials.activity-log-rows', compact('logs'))->render();
+            $mobileRowsHtml = view('dashboard.partials.activity-log-mobile-rows', compact('logs'))->render();
             $paginationHtml = $logs->hasPages() ? $logs->links('vendor.pagination.bootstrap-5')->render() : '';
 
             return response()->json([
                 'rows' => $rowsHtml,
+                'mobileRows' => $mobileRowsHtml,
                 'pagination' => $paginationHtml,
                 'total' => $logs->total(),
             ]);
@@ -51,9 +53,17 @@ class ActivityLogController extends Controller
 
         $distinctActions = ActivityLog::select('action')->distinct()->orderBy('action')->pluck('action');
 
+        $summary = [
+            'total' => ActivityLog::count(),
+            'today' => ActivityLog::whereDate('created_at', today())->count(),
+            'week' => ActivityLog::where('created_at', '>=', now()->subDays(7))->count(),
+            'actions' => $distinctActions->count(),
+        ];
+
         return view('dashboard.activity-logs', compact(
             'logs',
-            'distinctActions'
+            'distinctActions',
+            'summary'
         ));
     }
 }

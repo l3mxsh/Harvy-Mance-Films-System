@@ -12,8 +12,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/booking.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/activity-logs.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/booking.css') }}?v=7">
+    <link rel="stylesheet" href="{{ asset('css/activity-logs.css') }}?v=2">
 </head>
 
 <body>
@@ -28,55 +28,111 @@
 
         <div class="container-fluid p-4">
 
+            {{-- ==================== SUMMARY CARDS ==================== --}}
+            <div class="row g-3 mb-4">
+                <div class="col-lg-3 col-md-4 col-12">
+                    <div class="summary-card">
+                        <div class="d-flex align-items-center">
+                            <div class="summary-icon bg-primary bg-opacity-10 text-primary">
+                                <i class="bi bi-activity"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="text-muted mb-1 small">Total Entries</h6>
+                                <h4 class="mb-0 fw-bold">{{ $summary['total'] }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-12">
+                    <div class="summary-card">
+                        <div class="d-flex align-items-center">
+                            <div class="summary-icon bg-success bg-opacity-10 text-success">
+                                <i class="bi bi-calendar-check"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="text-muted mb-1 small">Today</h6>
+                                <h4 class="mb-0 fw-bold">{{ $summary['today'] }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-12">
+                    <div class="summary-card">
+                        <div class="d-flex align-items-center">
+                            <div class="summary-icon bg-warning bg-opacity-10 text-warning">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="text-muted mb-1 small">Last 7 Days</h6>
+                                <h4 class="mb-0 fw-bold">{{ $summary['week'] }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-12">
+                    <div class="summary-card">
+                        <div class="d-flex align-items-center">
+                            <div class="summary-icon bg-secondary bg-opacity-10 text-secondary">
+                                <i class="bi bi-list-check"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="text-muted mb-1 small">Action Types</h6>
+                                <h4 class="mb-0 fw-bold">{{ $summary['actions'] }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {{-- ==================== FILTERS ==================== --}}
             <section class="surface-card mb-4">
-                <div class="d-flex align-items-end flex-wrap gap-2">
-                    <div class="flex-grow-1" style="min-width: 220px;">
+                <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <h2 class="section-title">Activity Entries</h2>
+                    <span class="badge bg-light text-dark border" id="logTotalBadge">{{ $logs->total() }} total</span>
+                </div>
+                <div class="row g-2 align-items-end">
+                    <div class="col-12 col-md-4">
                         <label class="form-label small text-muted mb-1">Search</label>
-                        <input type="text" id="logSearchInput" class="form-control form-control-sm" placeholder="Search actor, action or description..." value="{{ request('search') }}" autocomplete="off">
+                        <input type="text" id="logSearchInput" class="form-control"
+                            placeholder="Search actor, action or description..." value="{{ request('search') }}" autocomplete="off">
                     </div>
-                    <div style="width: 200px;">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <label class="form-label small text-muted mb-1">Action</label>
-                        <select id="logActionFilter" class="form-select form-select-sm">
+                        <select id="logActionFilter" class="form-select">
                             <option value="">All Actions</option>
                             @foreach($distinctActions as $action)
-                                <option value="{{ $action }}" {{ request('action') === $action ? 'selected' : '' }}>{{ $action }}</option>
+                                <option value="{{ $action }}" {{ request('action') === $action ? 'selected' : '' }}>{{ \App\Models\ActivityLog::labelFor($action) }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div style="width: 160px;">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <label class="form-label small text-muted mb-1">User Type</label>
-                        <select id="logUserTypeFilter" class="form-select form-select-sm">
+                        <select id="logUserTypeFilter" class="form-select">
                             <option value="">All Users</option>
                             <option value="admin" {{ request('user_type') === 'admin' ? 'selected' : '' }}>Admin</option>
                             <option value="staff" {{ request('user_type') === 'staff' ? 'selected' : '' }}>Staff</option>
                             <option value="client" {{ request('user_type') === 'client' ? 'selected' : '' }}>Client</option>
                         </select>
                     </div>
-                    <div style="width: 160px;">
+                    <div class="col-6 col-md-3 col-lg-2">
                         <label class="form-label small text-muted mb-1">From</label>
-                        <input type="date" id="logDateFrom" class="form-control form-control-sm" value="{{ request('date_from') }}">
+                        <input type="date" id="logDateFrom" class="form-control" value="{{ request('date_from') }}">
                     </div>
-                    <div style="width: 160px;">
+                    <div class="col-6 col-md-3 col-lg-2">
                         <label class="form-label small text-muted mb-1">To</label>
-                        <input type="date" id="logDateTo" class="form-control form-control-sm" value="{{ request('date_to') }}">
+                        <input type="date" id="logDateTo" class="form-control" value="{{ request('date_to') }}">
                     </div>
                 </div>
             </section>
 
-            {{-- ==================== ACTIVITY LOG TABLE ==================== --}}
+            {{-- ==================== ACTIVITY LOG LIST ==================== --}}
             <section class="surface-card">
-                <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <h2 class="section-title">Activity Entries</h2>
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="badge bg-light text-dark border" id="logTotalBadge">{{ $logs->total() }} total</span>
-                    </div>
-                </div>
-                <div class="table-responsive">
+                {{-- Desktop table (hidden on mobile) --}}
+                <div class="table-responsive d-none d-md-block">
                     <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>Actor</th>
+                                <th>Account</th>
                                 <th>Action</th>
                                 <th>Description</th>
                                 <th>Timestamp</th>
@@ -88,13 +144,18 @@
                         </tbody>
                     </table>
                 </div>
-            </section>
 
-            <div id="logPagination" class="border-top pt-3 mt-3 @if(!$logs->hasPages()) d-none @endif">
-                @if($logs->hasPages())
-                    {{ $logs->links('vendor.pagination.bootstrap-5') }}
-                @endif
-            </div>
+                {{-- Mobile cards (hidden on desktop) --}}
+                <div class="d-md-none" id="logMobileBody">
+                    @include('dashboard.partials.activity-log-mobile-rows', compact('logs'))
+                </div>
+
+                <div id="logPagination" class="@if(!$logs->hasPages()) d-none @endif">
+                    @if($logs->hasPages())
+                        {{ $logs->links('vendor.pagination.bootstrap-5') }}
+                    @endif
+                </div>
+            </section>
         </div>
     </div>
 
@@ -109,27 +170,19 @@
                 <div class="modal-body">
                     <div class="detail-box mb-3">
                         <span class="detail-label">Action</span>
-                        <span class="detail-value"><span class="badge bg-dark" id="logDetailAction"></span></span>
+                        <span class="detail-value" id="logDetailAction"></span>
                     </div>
                     <div class="detail-box mb-3">
-                        <span class="detail-label">Actor</span>
+                        <span class="detail-label" id="logDetailType"></span>
                         <span class="detail-value" id="logDetailActor"></span>
-                    </div>
-                    <div class="detail-box mb-3">
-                        <span class="detail-label">User Type</span>
-                        <span class="detail-value" id="logDetailType"></span>
                     </div>
                     <div class="detail-box mb-3">
                         <span class="detail-label">Timestamp</span>
                         <span class="detail-value" id="logDetailTime"></span>
                     </div>
-                    <div class="detail-box mb-3">
+                    <div class="detail-box mb-0">
                         <span class="detail-label">Description</span>
                         <span class="detail-value" id="logDetailDescription"></span>
-                    </div>
-                    <div class="detail-box mb-0" id="logDetailContextWrap" style="display:none;">
-                        <span class="detail-label">Context</span>
-                        <pre class="log-context mt-2 mb-0" id="logDetailContext"></pre>
                     </div>
                 </div>
                 <div class="modal-footer">
