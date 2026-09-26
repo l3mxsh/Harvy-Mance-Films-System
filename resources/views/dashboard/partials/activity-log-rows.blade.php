@@ -5,7 +5,7 @@
                 <div class="list-avatar me-2 avatar-{{ $log->user_type ?? 'system' }}">
                     {{ strtoupper(substr($log->actor_name ?? 'System', 0, 1)) }}
                 </div>
-                <div class="fw-semibold">{{ $log->actor_label }}</div>
+                <div class="fw-semibold">{{ $log->actor_name ?? 'System' }}</div>
             </div>
         </td>
         <td>

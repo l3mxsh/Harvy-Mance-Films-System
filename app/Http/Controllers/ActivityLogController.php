@@ -11,8 +11,9 @@ class ActivityLogController extends Controller
     {
         $query = ActivityLog::query();
 
-        if ($request->filled('search')) {
-            $search = trim($request->search);
+        $search = trim((string) $request->input('search', ''));
+
+        if ($search !== '') {
             $query->where(function ($q) use ($search) {
                 $q->where('action', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%")
@@ -21,19 +22,19 @@ class ActivityLogController extends Controller
         }
 
         if ($request->filled('action')) {
-            $query->where('action', $request->action);
+            $query->where('action', $request->input('action'));
         }
 
         if ($request->filled('user_type')) {
-            $query->where('user_type', $request->user_type);
+            $query->where('user_type', $request->input('user_type'));
         }
 
         if ($request->filled('date_from')) {
-            $query->whereDate('created_at', '>=', $request->date_from);
+            $query->whereDate('created_at', '>=', $request->input('date_from'));
         }
 
         if ($request->filled('date_to')) {
-            $query->whereDate('created_at', '<=', $request->date_to);
+            $query->whereDate('created_at', '<=', $request->input('date_to'));
         }
 
         $logs = $query->latest()->paginate(20)->withQueryString();

@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @mixin \Illuminate\Database\Eloquent\Builder
+ */
 class ActivityLog extends Model
 {
     protected $fillable = [
@@ -61,15 +64,6 @@ class ActivityLog extends Model
     public function getFriendlyActionAttribute(): string
     {
         return static::labelFor($this->action);
-    }
-
-    /**
-     * Display the entry owner as "Client: Kyla" instead of separate
-     * actor and user type fields.
-     */
-    public function getActorLabelAttribute(): string
-    {
-        return ucfirst($this->user_type ?? 'system') . ': ' . ($this->actor_name ?? 'System');
     }
 
     /**
