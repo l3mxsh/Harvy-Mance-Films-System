@@ -43,27 +43,27 @@
                         </div>
                         <div class="row g-3">
                             <div class="col-md-3">
-                                <div class="detail-box">
-                                    <div class="detail-label">Booking Ref</div>
-                                    <div class="detail-value"><code>{{ $booking->booking_ref }}</code></div>
+                                <div class="detail-box d-flex align-items-center justify-content-between gap-2">
+                                    <div class="detail-label mb-0">Booking Ref</div>
+                                    <div class="detail-value text-nowrap">{{ $booking->booking_ref }}</div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="detail-box">
-                                    <div class="detail-label">Client</div>
-                                    <div class="detail-value">{{ $booking->client_name }}</div>
+                                <div class="detail-box d-flex align-items-center justify-content-between gap-2">
+                                    <div class="detail-label mb-0">Client</div>
+                                    <div class="detail-value text-truncate ps-2" title="{{ $booking->client_name }}">{{ $booking->client_name }}</div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="detail-box">
-                                    <div class="detail-label">Event Type</div>
-                                    <div class="detail-value">{{ $booking->event_type ?? 'N/A' }}</div>
+                                <div class="detail-box d-flex align-items-center justify-content-between gap-2">
+                                    <div class="detail-label mb-0">Event Type</div>
+                                    <div class="detail-value text-truncate ps-2" title="{{ $booking->event_type ?? '' }}">{{ $booking->event_type ?? 'N/A' }}</div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="detail-box">
-                                    <div class="detail-label">Event Date</div>
-                                    <div class="detail-value">{{ $booking->event_date->format('M d, Y') }}</div>
+                                <div class="detail-box d-flex align-items-center justify-content-between gap-2">
+                                    <div class="detail-label mb-0">Event Date</div>
+                                    <div class="detail-value text-nowrap">{{ $booking->event_date->format('M d, Y') }}</div>
                                 </div>
                             </div>
                         </div>

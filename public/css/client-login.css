@@ -19,6 +19,13 @@
     font-size: 0.8rem;
 }
 
+.login-logo {
+    height: 44px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
 .landing-navbar {
     position: static;
     background: #fff;

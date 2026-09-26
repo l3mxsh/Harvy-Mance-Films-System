@@ -48,6 +48,7 @@
 
                 <section class="surface-card">
                     <div class="text-center mb-4 login-header">
+                        <img src="{{ asset('storage/images/Black Logo.png') }}" alt="HarvyMance Films" class="login-logo mb-3">
                         <h1 class="section-title fs-4">Login</h1>
                         <p class="section-sub">Log in to monitor your booking, payments, and deliverables.</p>
                     </div>
