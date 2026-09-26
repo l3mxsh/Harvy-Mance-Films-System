@@ -1,0 +1,147 @@
+/* ============================================================
+   HarvyMance Films — Admin Reports
+   ============================================================ */
+
+/* ---------------- Range filter ---------------- */
+.report-range-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: flex-end;
+}
+
+.report-range-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.report-range-presets .btn {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+}
+
+.report-range-presets .btn.active {
+    background: #111111;
+    border-color: #111111;
+    color: #ffffff;
+}
+
+.report-range-note {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-top: 0.6rem;
+    margin-bottom: 0;
+}
+
+/* ---------------- Trend chart ---------------- */
+.report-trend {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.35rem;
+    min-height: 175px;
+    padding: 0.5rem 0.25rem 0;
+    overflow-x: auto;
+}
+
+.report-trend-col {
+    flex: 1 0 34px;
+    min-width: 34px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    justify-content: flex-end;
+}
+
+.report-trend-bar {
+    width: 100%;
+    max-width: 42px;
+    min-height: 3px;
+    background: #111111;
+    border-radius: 6px 6px 0 0;
+}
+
+.report-trend-bar.is-empty {
+    background: #e9ecef;
+}
+
+.report-trend-value {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #111111;
+    line-height: 1;
+}
+
+.report-trend-label {
+    font-size: 0.65rem;
+    color: #6c757d;
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.report-trend-axis {
+    border-top: 1px solid #e9ecef;
+    margin-top: 0.35rem;
+    padding-top: 0.4rem;
+}
+
+/* ---------------- Tables ---------------- */
+.report-rank {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f1f3f5;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #111111;
+}
+
+.report-rank.top {
+    background: #111111;
+    color: #ffffff;
+}
+
+/* ---------------- Print ---------------- */
+@media print {
+    body {
+        background: #ffffff !important;
+    }
+
+    .sidebar,
+    .sidebar-overlay,
+    .sidebar-topnav,
+    .no-print {
+        display: none !important;
+    }
+
+    .sidebar-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+
+    .container-fluid {
+        padding: 0 !important;
+    }
+
+    .surface-card,
+    .summary-card,
+    .report-trend-col,
+    .mobile-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .summary-card {
+        box-shadow: none !important;
+    }
+
+    .table {
+        font-size: 0.75rem;
+    }
+}

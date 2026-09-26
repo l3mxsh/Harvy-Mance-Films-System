@@ -21,6 +21,7 @@ use App\Http\Controllers\OutsourcedStaffController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReportController;
 
 Route::get('/', fn () => view('landing'))->name('home');
 Route::get('/book', [BookingController::class, 'index'])->name('booking.form');
@@ -154,6 +155,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/admin/users/{user}', [UserManagementController::class, 'update'])->name('users.admin.update');
     Route::post('/admin/users/{user}/toggle-status', [UserManagementController::class, 'toggleStatus'])->name('users.admin.toggleStatus');
     Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy'])->name('users.admin.destroy');
+
+    Route::get('/admin/reports', [ReportController::class, 'index'])->middleware('admin.only')->name('reports.index');
 
     Route::get('/admin/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
 });

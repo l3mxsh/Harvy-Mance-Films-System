@@ -13,7 +13,7 @@ $inOperations  = (str_starts_with($currentRoute, 'booking') && $currentRoute !==
 $inPeople      = $currentRoute === 'staff.admin.index'
                  || str_starts_with($currentRoute, 'clients.admin')
                  || str_starts_with($currentRoute, 'users.admin');
-$inSystem      = str_starts_with($currentRoute, 'activity-logs') || $currentRoute === 'settings.index';
+$inSystem      = str_starts_with($currentRoute, 'activity-logs') || str_starts_with($currentRoute, 'reports') || $currentRoute === 'settings.index';
 @endphp
 
 <nav id="sidebar" class="sidebar">
@@ -125,6 +125,13 @@ $inSystem      = str_starts_with($currentRoute, 'activity-logs') || $currentRout
                 <i class="bi bi-chevron-down sidebar-chevron"></i>
             </button>
             <ul class="sidebar-group-items collapse {{ $inSystem ? 'show' : '' }}" id="group-system">
+                @if(Auth::user()->role === 'admin')
+                    <li>
+                        <a href="{{ route('reports.index') }}" class="{{ str_starts_with($currentRoute, 'reports') ? 'active' : '' }}">
+                            <i class="bi bi-graph-up"></i> Reports
+                        </a>
+                    </li>
+                @endif
                 <li>
                     <a href="{{ route('activity-logs.index') }}" class="{{ str_starts_with($currentRoute, 'activity-logs') ? 'active' : '' }}">
                         <i class="bi bi-activity"></i> Activity Logs
