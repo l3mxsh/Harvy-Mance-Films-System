@@ -266,6 +266,11 @@ body {
     color: var(--ink);
 }
 
+.mobile-card-head {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
 .step-actions {
     margin-top: 2rem;
 }

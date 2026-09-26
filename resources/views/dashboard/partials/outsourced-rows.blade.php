@@ -7,7 +7,11 @@
         <td>{{ $os->created_at->format('M d, Y') }}</td>
         <td class="text-center">
             <div class="d-flex justify-content-center gap-2">
-                <button class="btn btn-sm btn-outline-secondary rounded-3"
+                <button class="btn btn-sm btn-outline-secondary rounded-3" title="View Details"
+                    onclick="openViewOutsourcedModal('{{ $os->id }}', '{{ addslashes($os->name) }}', '{{ addslashes($os->email ?? '') }}', '{{ $os->contact_number }}', '{{ addslashes($os->notes ?? '') }}', '{{ $os->created_at->format('M d, Y g:i A') }}')">
+                    <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary rounded-3" title="Edit"
                     onclick="openEditOutsourcedModal('{{ $os->id }}', '{{ addslashes($os->name) }}', '{{ addslashes($os->email ?? '') }}', '{{ $os->contact_number }}', '{{ addslashes($os->notes ?? '') }}')">
                     <i class="bi bi-pencil"></i>
                 </button>

@@ -97,6 +97,30 @@
     </div>
 </div>
 
+{{-- ==================== VIEW OUTSOURCED MODAL ==================== --}}
+<div class="modal fade" id="viewOutsourcedModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-person-lines-fill me-2 text-warning"></i>Outsourced Staff Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-borderless mb-0">
+                    <tr><td class="text-muted" style="width:140px;">Name</td><td class="fw-semibold" id="viewOsName"></td></tr>
+                    <tr><td class="text-muted">Email</td><td id="viewOsEmail"></td></tr>
+                    <tr><td class="text-muted">Contact</td><td id="viewOsContact"></td></tr>
+                    <tr><td class="text-muted">Notes</td><td id="viewOsNotes"></td></tr>
+                    <tr><td class="text-muted">Added</td><td id="viewOsAdded"></td></tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {{-- ==================== VIEW STAFF MODAL ==================== --}}
 <div class="modal fade" id="viewModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -300,8 +324,46 @@
     </div>
 </div>
 
-@if($tab === 'teams')
-    {{-- ==================== CREATE TEAM MODAL ==================== --}}
+{{-- ==================== VIEW TEAM MODAL ==================== --}}
+<div class="modal fade" id="viewTeamModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-people me-2 text-primary"></i>Team Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-borderless mb-0">
+                    <tr>
+                        <td class="text-muted" style="width:140px;">Team Name</td>
+                        <td class="fw-semibold" id="viewTeamName"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Description</td>
+                        <td id="viewTeamDesc"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Members</td>
+                        <td><span id="viewTeamMembers"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Status</td>
+                        <td id="viewTeamStatus"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Created</td>
+                        <td id="viewTeamCreated"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- ==================== CREATE TEAM MODAL ==================== --}}
     <div class="modal fade" id="createTeamModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -368,72 +430,71 @@
                     <h5 class="modal-title"><i class="bi bi-pencil me-2 text-secondary"></i>Edit Team</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form method="POST" id="editTeamForm">
+            <form method="POST" id="editTeamForm">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Team Name <span class="text-danger">*</span></label>
+                        <input type="text" name="name" id="editTeamName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Description</label>
+                        <textarea name="description" id="editTeamDesc" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Select Members</label>
+                        <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;" id="editMembersList">
+                            @foreach($allStaff as $s)
+                                <div class="form-check">
+                                    <input class="form-check-input edit-member-check" type="checkbox" name="member_ids[]" value="{{ $s->id }}" id="edit_member_{{ $s->id }}">
+                                    <label class="form-check-label" for="edit_member_{{ $s->id }}">
+                                        {{ $s->name }} <small class="text-muted">({{ $s->email }})</small>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @if($allOutsourced->isNotEmpty())
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Outsourced Staff</label>
+                        <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                            @foreach($allOutsourced as $os)
+                                <div class="form-check">
+                                    <input class="form-check-input edit-outsourced-check" type="checkbox" name="outsourced_ids[]" value="{{ $os->id }}" id="edit_os_{{ $os->id }}">
+                                    <label class="form-check-label" for="edit_os_{{ $os->id }}">
+                                        {{ $os->name }} <small class="text-warning">(Outsourced)</small>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+                </div>
+            </form>
+
+            <div class="modal-body pt-0">
+                <hr>
+                <h6 class="mb-3"><i class="bi bi-person-check me-2 text-secondary"></i>Team Status</h6>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="fw-semibold" id="editTeamStatusLabel">Active</div>
+                        <small class="text-muted">Inactive teams cannot be assigned to new bookings.</small>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="editTeamStatusSwitch" role="switch">
+                    </div>
+                </div>
+
+                <form method="POST" id="editTeamToggleForm" class="d-none">
                     @csrf
-                    @method('PUT')
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Team Name <span class="text-danger">*</span></label>
-                            <input type="text" name="name" id="editTeamName" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Description</label>
-                            <textarea name="description" id="editTeamDesc" class="form-control" rows="2"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Select Members</label>
-                            <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;" id="editMembersList">
-                                @foreach($allStaff as $s)
-                                    <div class="form-check">
-                                        <input class="form-check-input edit-member-check" type="checkbox" name="member_ids[]" value="{{ $s->id }}" id="edit_member_{{ $s->id }}">
-                                        <label class="form-check-label" for="edit_member_{{ $s->id }}">
-                                            {{ $s->name }} <small class="text-muted">({{ $s->email }})</small>
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        @if($allOutsourced->isNotEmpty())
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Outsourced Staff</label>
-                            <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
-                                @foreach($allOutsourced as $os)
-                                    <div class="form-check">
-                                        <input class="form-check-input edit-outsourced-check" type="checkbox" name="outsourced_ids[]" value="{{ $os->id }}" id="edit_os_{{ $os->id }}">
-                                        <label class="form-check-label" for="edit_os_{{ $os->id }}">
-                                            {{ $os->name }} <small class="text-warning">(Outsourced)</small>
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        @endif
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-dark rounded-pill"><i class="bi bi-check-lg me-1"></i> Update Team</button>
-                    </div>
                 </form>
             </div>
-        </div>
-    </div>
 
-    {{-- ==================== TOGGLE TEAM STATUS MODAL ==================== --}}
-    <div class="modal fade" id="toggleTeamModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header" id="toggleTeamHeader">
-                    <h5 class="modal-title" id="toggleTeamTitle"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form method="POST" id="toggleTeamForm">
-                    @csrf
-                    <div class="modal-body"><p id="toggleTeamMessage"></p></div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn" id="toggleTeamBtn">Confirm</button>
-                    </div>
-                </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" form="editTeamForm" class="btn btn-dark rounded-pill"><i class="bi bi-check-lg me-1"></i> Update Team</button>
+            </div>
             </div>
         </div>
     </div>
@@ -464,4 +525,3 @@
             </div>
         </div>
     </div>
-@endif

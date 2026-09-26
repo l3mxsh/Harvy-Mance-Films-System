@@ -57,7 +57,8 @@
                 </section>
 
                 <section class="surface-card">
-                    <div class="table-responsive">
+                    {{-- Desktop table (hidden on mobile) --}}
+                    <div class="table-responsive d-none d-md-block">
                         <table class="table table-hover align-middle mb-0">
                             <thead>
                                 <tr>
@@ -73,6 +74,11 @@
                                 @include('dashboard.partials.team-rows', compact('teams'))
                             </tbody>
                         </table>
+                    </div>
+
+                    {{-- Mobile cards (hidden on desktop) --}}
+                    <div class="d-md-none" id="teamMobileBody">
+                        @include('dashboard.partials.team-mobile-rows', compact('teams'))
                     </div>
                     <div id="teamPagination" class="@if(!$teams->hasPages()) d-none @endif">
                         @if($teams->hasPages())

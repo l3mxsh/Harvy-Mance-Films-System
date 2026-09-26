@@ -77,6 +77,17 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('editToggleForm').submit();
         });
     }
+
+    var teamStatusSwitch = document.getElementById('editTeamStatusSwitch');
+    if (teamStatusSwitch) {
+        teamStatusSwitch.addEventListener('change', function () {
+            var wrap = teamStatusSwitch.closest('.form-check');
+            if (wrap) {
+                wrap.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+            }
+            document.getElementById('editTeamToggleForm').submit();
+        });
+    }
 });
 
 function applyButtonSpinner(btn) {
@@ -115,6 +126,15 @@ function openCreateOutsourcedModal() {
     new bootstrap.Modal(document.getElementById('createOutsourcedModal')).show();
 }
 
+function openViewOutsourcedModal(id, name, email, contact, notes, added) {
+    document.getElementById('viewOsName').textContent = name;
+    document.getElementById('viewOsEmail').textContent = email || '—';
+    document.getElementById('viewOsContact').textContent = contact || '—';
+    document.getElementById('viewOsNotes').textContent = notes || '—';
+    document.getElementById('viewOsAdded').textContent = added;
+    new bootstrap.Modal(document.getElementById('viewOutsourcedModal')).show();
+}
+
 function openEditOutsourcedModal(id, name, email, contact, notes) {
     document.getElementById('editOutsourcedForm').action = '/admin/outsourced-staff/' + id;
     document.getElementById('editOsName').value = name;
@@ -131,12 +151,18 @@ function openDeleteOutsourcedModal(id, name) {
 }
 
 // ---- Teams: modal helpers ----
+function escapeHtml(value) {
+    var el = document.createElement('div');
+    el.textContent = value == null ? '' : String(value);
+    return el.innerHTML;
+}
+
 function openCreateTeamModal() {
     document.querySelector('#createTeamModal form').reset();
     new bootstrap.Modal(document.getElementById('createTeamModal')).show();
 }
 
-function openEditTeamModal(id, name, desc, memberIds, outsourcedIds) {
+function openEditTeamModal(id, name, desc, memberIds, outsourcedIds, status) {
     document.getElementById('editTeamForm').action = '/admin/team/' + id;
     document.getElementById('editTeamName').value = name;
     document.getElementById('editTeamDesc').value = desc;
@@ -146,21 +172,41 @@ function openEditTeamModal(id, name, desc, memberIds, outsourcedIds) {
     document.querySelectorAll('.edit-outsourced-check').forEach(cb => {
         cb.checked = outsourcedIds.includes(parseInt(cb.value));
     });
+
+    var isActive = status === 'active';
+    document.getElementById('editTeamStatusLabel').textContent = isActive ? 'Active' : 'Inactive';
+    document.getElementById('editTeamStatusSwitch').checked = isActive;
+    document.getElementById('editTeamToggleForm').action = '/admin/team/' + id + '/toggle-status';
+
     new bootstrap.Modal(document.getElementById('editTeamModal')).show();
 }
 
-function openToggleTeamModal(id, name, status) {
-    var isDeactivating = status === 'active';
-    document.getElementById('toggleTeamHeader').className = 'modal-header';
-    document.getElementById('toggleTeamTitle').innerHTML = isDeactivating
-        ? '<i class="bi bi-pause-circle me-2"></i>Deactivate Team'
-        : '<i class="bi bi-play-circle me-2"></i>Activate Team';
-    document.getElementById('toggleTeamMessage').innerHTML = isDeactivating
-        ? 'Deactivate <strong>' + name + '</strong>? It cannot be assigned to new bookings while inactive.'
-        : 'Activate <strong>' + name + '</strong>? It will be available for booking assignments.';
-    document.getElementById('toggleTeamBtn').className = 'btn rounded-pill ' + (isDeactivating ? 'btn-warning' : 'btn-success');
-    document.getElementById('toggleTeamForm').action = '/admin/team/' + id + '/toggle-status';
-    new bootstrap.Modal(document.getElementById('toggleTeamModal')).show();
+function openViewTeamModal(args) {
+    var name = args[1];
+    var desc = args[2];
+    var members = args[3];
+    var status = args[4];
+    var created = args[5];
+
+    document.getElementById('viewTeamName').textContent = name;
+    document.getElementById('viewTeamDesc').textContent = desc || '—';
+
+    var wrap = document.getElementById('viewTeamMembers');
+    if (!members || !members.length) {
+        wrap.innerHTML = '<span class="text-muted fst-italic">No members</span>';
+    } else {
+        wrap.innerHTML = members.map(function (m) {
+            var chip = '<span class="member-chip' + (m.o ? ' member-chip-os' : '') + '">' + escapeHtml(m.n);
+            if (m.o) chip += ' <small>(OS)</small>';
+            return chip + '</span>';
+        }).join(' ');
+    }
+
+    document.getElementById('viewTeamStatus').innerHTML = status === 'active'
+        ? '<span class="badge bg-success">Active</span>'
+        : '<span class="badge bg-secondary">Inactive</span>';
+    document.getElementById('viewTeamCreated').textContent = created;
+    new bootstrap.Modal(document.getElementById('viewTeamModal')).show();
 }
 
 function openDeleteTeamModal(id, name) {
@@ -205,9 +251,11 @@ function openDeleteTeamModal(id, name) {
             .then(function (data) {
                 var isTeams = currentTab() === 'teams';
                 var tableBody = document.getElementById(isTeams ? 'teamTableBody' : 'staffTableBody');
+                var mobileBody = document.getElementById(isTeams ? 'teamMobileBody' : 'staffMobileBody');
                 var paginationWrap = document.getElementById(isTeams ? 'teamPagination' : 'staffPagination');
                 var totalBadge = document.getElementById(isTeams ? 'teamTotalBadge' : 'staffTotalBadge');
                 if (data.rows !== undefined && tableBody) tableBody.innerHTML = data.rows;
+                if (data.mobileRows !== undefined && mobileBody) mobileBody.innerHTML = data.mobileRows;
                 if (data.pagination !== undefined && paginationWrap) {
                     paginationWrap.innerHTML = data.pagination;
                     if (data.pagination.trim() === '') {

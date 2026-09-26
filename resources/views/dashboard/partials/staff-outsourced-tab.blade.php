@@ -77,7 +77,8 @@
                         </h2>
                         <span class="badge bg-light text-dark border" id="staffTotalBadge">{{ $outsourcedStaff->total() }} total</span>
                     </div>
-                    <div class="table-responsive">
+                    {{-- Desktop table (hidden on mobile) --}}
+                    <div class="table-responsive d-none d-md-block">
                         <table class="table table-hover align-middle mb-0">
                             <thead>
                                 <tr>
@@ -93,6 +94,11 @@
                                 @include('dashboard.partials.outsourced-rows', compact('outsourcedStaff'))
                             </tbody>
                         </table>
+                    </div>
+
+                    {{-- Mobile cards (hidden on desktop) --}}
+                    <div class="d-md-none" id="staffMobileBody">
+                        @include('dashboard.partials.outsourced-mobile-rows', compact('outsourcedStaff'))
                     </div>
                     <div id="staffPagination" class="@if(!$outsourcedStaff->hasPages()) d-none @endif">
                         @if($outsourcedStaff->hasPages())

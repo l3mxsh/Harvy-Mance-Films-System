@@ -22,6 +22,9 @@ class StaffController extends Controller
         $inactiveStaff = Staff::where('status', 'inactive')->count();
         $totalOutsourced = OutsourcedStaff::count();
 
+        $allStaff = Staff::where('status', 'active')->orderBy('name')->get();
+        $allOutsourced = OutsourcedStaff::orderBy('name')->get();
+
         if ($tab === 'teams') {
             $query = Team::with('members', 'outsourcedMembers');
 
@@ -37,8 +40,6 @@ class StaffController extends Controller
                 $query->where('status', $request->status);
             }
 
-            $allStaff = Staff::where('status', 'active')->orderBy('name')->get();
-            $allOutsourced = OutsourcedStaff::orderBy('name')->get();
             $totalTeams = Team::count();
             $activeTeams = Team::where('status', 'active')->count();
 
@@ -52,10 +53,12 @@ class StaffController extends Controller
                 }
 
                 $rowsHtml = view('dashboard.partials.team-rows', compact('teams'))->render();
+                $mobileRowsHtml = view('dashboard.partials.team-mobile-rows', compact('teams'))->render();
                 $paginationHtml = $teams->hasPages() ? $teams->links('vendor.pagination.bootstrap-5')->render() : '';
 
                 return response()->json([
                     'rows' => $rowsHtml,
+                    'mobileRows' => $mobileRowsHtml,
                     'pagination' => $paginationHtml,
                     'total' => $teams->total(),
                 ]);
@@ -87,16 +90,18 @@ class StaffController extends Controller
                 }
 
                 $rowsHtml = view('dashboard.partials.outsourced-rows', compact('outsourcedStaff'))->render();
+                $mobileRowsHtml = view('dashboard.partials.outsourced-mobile-rows', compact('outsourcedStaff'))->render();
                 $paginationHtml = $outsourcedStaff->hasPages() ? $outsourcedStaff->links('vendor.pagination.bootstrap-5')->render() : '';
 
                 return response()->json([
                     'rows' => $rowsHtml,
+                    'mobileRows' => $mobileRowsHtml,
                     'pagination' => $paginationHtml,
                     'total' => $outsourcedStaff->total(),
                 ]);
             }
 
-            return view('dashboard.staff', compact('outsourcedStaff', 'totalStaff', 'activeStaff', 'inactiveStaff', 'totalOutsourced', 'tab'));
+            return view('dashboard.staff', compact('outsourcedStaff', 'allStaff', 'allOutsourced', 'totalStaff', 'activeStaff', 'inactiveStaff', 'totalOutsourced', 'tab'));
         }
 
         $query = Staff::query();
@@ -127,16 +132,18 @@ class StaffController extends Controller
             }
 
             $rowsHtml = view('dashboard.partials.staff-rows', compact('staff'))->render();
+            $mobileRowsHtml = view('dashboard.partials.staff-mobile-rows', compact('staff'))->render();
             $paginationHtml = $staff->hasPages() ? $staff->links('vendor.pagination.bootstrap-5')->render() : '';
 
             return response()->json([
                 'rows' => $rowsHtml,
+                'mobileRows' => $mobileRowsHtml,
                 'pagination' => $paginationHtml,
                 'total' => $staff->total(),
             ]);
         }
 
-        return view('dashboard.staff', compact('staff', 'totalOutsourced', 'totalStaff', 'activeStaff', 'inactiveStaff', 'tab'));
+        return view('dashboard.staff', compact('staff', 'allStaff', 'allOutsourced', 'totalOutsourced', 'totalStaff', 'activeStaff', 'inactiveStaff', 'tab'));
     }
 
     public function store(Request $request)

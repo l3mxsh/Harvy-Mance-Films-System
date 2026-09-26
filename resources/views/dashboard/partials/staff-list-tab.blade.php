@@ -85,7 +85,8 @@
                             </button>
                         </div>
                     </div>
-                    <div class="table-responsive">
+                    {{-- Desktop table (hidden on mobile) --}}
+                    <div class="table-responsive d-none d-md-block">
                         <table class="table table-hover align-middle mb-0">
                             <thead>
                                 <tr>
@@ -101,6 +102,11 @@
                                 @include('dashboard.partials.staff-rows', compact('staff'))
                             </tbody>
                         </table>
+                    </div>
+
+                    {{-- Mobile cards (hidden on desktop) --}}
+                    <div class="d-md-none" id="staffMobileBody">
+                        @include('dashboard.partials.staff-mobile-rows', compact('staff'))
                     </div>
                     <div id="staffPagination" class="@if(!$staff->hasPages()) d-none @endif">
                         @if($staff->hasPages())

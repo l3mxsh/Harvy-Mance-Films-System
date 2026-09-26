@@ -1,4 +1,17 @@
 @forelse($teams as $team)
+    @php
+        $viewTeamArgs = json_encode([
+            $team->id,
+            $team->name,
+            $team->description,
+            $team->members
+                ->map(fn ($m) => ['n' => $m->name, 'o' => false])
+                ->concat($team->outsourcedMembers->map(fn ($o) => ['n' => $o->name, 'o' => true]))
+                ->values(),
+            $team->status,
+            $team->created_at->format('M d, Y g:i A'),
+        ], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP);
+    @endphp
     <tr>
         <td class="fw-semibold">{{ $team->name }}</td>
         <td class="text-muted">{{ $team->description ?? '—' }}</td>
@@ -20,15 +33,13 @@
         <td>{{ $team->created_at->format('M d, Y') }}</td>
         <td class="text-center">
             <div class="d-flex justify-content-center gap-2">
-                <button class="btn btn-sm btn-outline-secondary rounded-3" title="Edit"
-                    onclick="openEditTeamModal('{{ $team->id }}', '{{ addslashes($team->name) }}', '{{ addslashes($team->description ?? '') }}', {!! json_encode($team->members->pluck('id')->toArray()) !!}, {!! json_encode($team->outsourcedMembers->pluck('id')->toArray()) !!})">
-                    <i class="bi bi-pencil"></i>
+                <button class="btn btn-sm btn-outline-secondary rounded-3" title="View Details"
+                    onclick='openViewTeamModal({!! $viewTeamArgs !!})'>
+                    <i class="bi bi-eye"></i>
                 </button>
-                <button
-                    class="btn btn-sm btn-outline-{{ $team->status === 'active' ? 'warning' : 'success' }} rounded-3"
-                    title="{{ $team->status === 'active' ? 'Deactivate' : 'Activate' }}"
-                    onclick="openToggleTeamModal('{{ $team->id }}', '{{ addslashes($team->name) }}', '{{ $team->status }}')">
-                    <i class="bi bi-{{ $team->status === 'active' ? 'pause-circle' : 'play-circle' }}"></i>
+                <button class="btn btn-sm btn-outline-secondary rounded-3" title="Edit"
+                    onclick="openEditTeamModal('{{ $team->id }}', '{{ addslashes($team->name) }}', '{{ addslashes($team->description ?? '') }}', {!! json_encode($team->members->pluck('id')->toArray()) !!}, {!! json_encode($team->outsourcedMembers->pluck('id')->toArray()) !!}, '{{ $team->status }}')">
+                    <i class="bi bi-pencil"></i>
                 </button>
                 <button class="btn btn-sm btn-outline-danger rounded-3" title="Delete"
                     onclick="openDeleteTeamModal('{{ $team->id }}', '{{ addslashes($team->name) }}')">
