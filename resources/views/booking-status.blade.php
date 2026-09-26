@@ -48,32 +48,30 @@
 
                 {{-- ==================== REFERENCE + STATUS ==================== --}}
                 <div class="confirm-total-banner mx-2 mb-3">
-                    <div>
+                    <div class="w-100 d-flex align-items-center justify-content-between gap-2 flex-wrap">
                         <span class="confirm-total-label">Booking Reference</span>
-                        <div class="confirm-total-price" style="font-size: 1.15rem;">{{ $booking->booking_ref }}</div>
-                    </div>
-                    <div>
                         @switch($booking->status)
                             @case('pending')
-                                <span class="badge bg-warning text-dark fs-6">Pending Approval</span>
+                                <span class="badge bg-warning text-dark">Pending Approval</span>
                                 @break
                             @case('approved')
-                                <span class="badge bg-info fs-6">Awaiting Payment</span>
+                                <span class="badge bg-info">Awaiting Payment</span>
                                 @break
                             @case('ongoing')
-                                <span class="badge bg-primary fs-6">Confirmed</span>
+                                <span class="badge bg-primary">Confirmed</span>
                                 @break
                             @case('completed')
-                                <span class="badge bg-success fs-6">Completed</span>
+                                <span class="badge bg-success">Completed</span>
                                 @break
                             @case('rejected')
-                                <span class="badge bg-danger fs-6">Rejected</span>
+                                <span class="badge bg-danger">Rejected</span>
                                 @break
                             @case('cancelled')
-                                <span class="badge bg-danger fs-6">Cancelled</span>
+                                <span class="badge bg-danger">Cancelled</span>
                                 @break
                         @endswitch
                     </div>
+                    <div class="confirm-total-price" style="font-size: 1.15rem;">{{ $booking->booking_ref }}</div>
                 </div>
 
                 @if($booking->status === 'rejected' && $booking->rejection_reason)
@@ -222,25 +220,25 @@
                 <div class="confirm-card mx-2 mb-3">
                     <h6 class="confirm-card-title">Next Steps</h6>
                     <div class="row g-3">
-                        <div class="col-md-3 col-6">
+                        <div class="col-12 col-md-3">
                             <div class="confirm-field">
                                 <span class="confirm-label">1. Admin Review</span>
                                 <span class="confirm-value" style="font-size:0.82rem; font-weight:500;">Your booking will be reviewed within 24–48 hours.</span>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6">
+                        <div class="col-12 col-md-3">
                             <div class="confirm-field">
                                 <span class="confirm-label">2. Client Account</span>
                                 <span class="confirm-value" style="font-size:0.82rem; font-weight:500;">Once approved, we'll email your client login credentials.</span>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6">
+                        <div class="col-12 col-md-3">
                             <div class="confirm-field">
                                 <span class="confirm-label">3. Downpayment</span>
                                 <span class="confirm-value" style="font-size:0.82rem; font-weight:500;">Log in and complete the required downpayment to secure your booking.</span>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6">
+                        <div class="col-12 col-md-3">
                             <div class="confirm-field">
                                 <span class="confirm-label">4. Event & Delivery</span>
                                 <span class="confirm-value" style="font-size:0.82rem; font-weight:500;">Track your booking and download final files from your dashboard.</span>
