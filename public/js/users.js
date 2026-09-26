@@ -89,6 +89,7 @@ document.addEventListener('submit', function (e) {
     var input = document.getElementById('userSearchInput');
     var statusSelect = document.getElementById('userStatusFilter');
     var tableBody = document.getElementById('userTableBody');
+    var mobileBody = document.getElementById('userMobileBody');
     var paginationWrap = document.getElementById('userPagination');
     var totalBadge = document.getElementById('userTotalBadge');
     var debounceTimer = null;
@@ -115,6 +116,7 @@ document.addEventListener('submit', function (e) {
             .then(function (r) { return r.json(); })
             .then(function (data) {
                 if (data.rows !== undefined) tableBody.innerHTML = data.rows;
+                if (data.mobileRows !== undefined && mobileBody) mobileBody.innerHTML = data.mobileRows;
                 if (data.pagination !== undefined) {
                     paginationWrap.innerHTML = data.pagination;
                     if (data.pagination.trim() === '') {

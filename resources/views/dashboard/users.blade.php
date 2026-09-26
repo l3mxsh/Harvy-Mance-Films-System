@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/booking.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/booking.css') }}?v=7">
 </head>
 
 <body>
@@ -27,24 +27,62 @@
 
         <div class="container-fluid p-4">
 
-            {{-- ==================== ADMIN USERS ==================== --}}
-            <section class="surface-card">
-                <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <h2 class="section-title"><i class="bi bi-shield-lock me-2"></i>Admin Accounts</h2>
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="badge bg-light text-dark border" id="userTotalBadge">{{ $users->total() }} total</span>
-                        <button type="button" class="btn btn-dark rounded-pill" onclick="openCreateModal()">
-                            <i class="bi bi-plus-circle me-1"></i> Add Admin
-                        </button>
+            {{-- ==================== SUMMARY CARDS ==================== --}}
+            <div class="row g-3 mb-4">
+                <div class="col-lg-3 col-md-4 col-12">
+                    <div class="summary-card">
+                        <div class="d-flex align-items-center">
+                            <div class="summary-icon bg-primary bg-opacity-10 text-primary">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="text-muted mb-1 small">Total Admins</h6>
+                                <h4 class="mb-0 fw-bold">{{ $summary['total'] }}</h4>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="row g-2 align-items-end mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label small text-muted mb-1">Search</label>
-                        <input type="text" id="userSearchInput" class="form-control" placeholder="Search by name or email..." value="{{ request('search') }}" autocomplete="off">
+                <div class="col-lg-3 col-md-4 col-12">
+                    <div class="summary-card">
+                        <div class="d-flex align-items-center">
+                            <div class="summary-icon bg-success bg-opacity-10 text-success">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="text-muted mb-1 small">Active</h6>
+                                <h4 class="mb-0 fw-bold">{{ $summary['active'] }}</h4>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-4">
+                </div>
+                <div class="col-lg-3 col-md-4 col-12">
+                    <div class="summary-card">
+                        <div class="d-flex align-items-center">
+                            <div class="summary-icon bg-danger bg-opacity-10 text-danger">
+                                <i class="bi bi-person-x"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="text-muted mb-1 small">Inactive</h6>
+                                <h4 class="mb-0 fw-bold">{{ $summary['inactive'] }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ==================== FILTERS ==================== --}}
+            <section class="surface-card mb-4">
+                <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <h2 class="section-title">Admin Accounts</h2>
+                    <span class="badge bg-light text-dark border" id="userTotalBadge">{{ $users->total() }} total</span>
+                </div>
+                <div class="row g-2 align-items-end">
+                    <div class="col-12 col-md-6">
+                        <label class="form-label small text-muted mb-1">Search</label>
+                        <input type="text" id="userSearchInput" class="form-control" placeholder="Search by name or email..."
+                            value="{{ request('search') }}" autocomplete="off">
+                    </div>
+                    <div class="col-12 col-md-4">
                         <label class="form-label small text-muted mb-1">Status</label>
                         <select id="userStatusFilter" class="form-select">
                             <option value="">All Status</option>
@@ -52,9 +90,16 @@
                             <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
                         </select>
                     </div>
+                    <div class="col-12 col-md-2 mb-1">
+                        <button type="button" class="btn btn-dark w-100 rounded-3" onclick="openCreateModal()">Add Admin</button>
+                    </div>
                 </div>
+            </section>
 
-                <div class="table-responsive">
+            {{-- ==================== LIST ==================== --}}
+            <section class="surface-card">
+                {{-- Desktop table (hidden on mobile) --}}
+                <div class="table-responsive d-none d-md-block">
                     <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
@@ -72,7 +117,12 @@
                     </table>
                 </div>
 
-                <div id="userPagination" class="border-top pt-3 mt-3 @if(!$users->hasPages()) d-none @endif">
+                {{-- Mobile cards (hidden on desktop) --}}
+                <div class="d-md-none" id="userMobileBody">
+                    @include('dashboard.partials.user-mobile-rows', compact('users'))
+                </div>
+
+                <div id="userPagination" class="@if(!$users->hasPages()) d-none @endif">
                     @if($users->hasPages())
                         {{ $users->links('vendor.pagination.bootstrap-5') }}
                     @endif

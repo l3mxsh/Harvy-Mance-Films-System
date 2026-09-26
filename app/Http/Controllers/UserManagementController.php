@@ -26,18 +26,26 @@ class UserManagementController extends Controller
 
         $users = $query->orderByDesc('created_at')->paginate(10)->withQueryString();
 
+        $summary = [
+            'total' => User::count(),
+            'active' => User::where('status', 'active')->count(),
+            'inactive' => User::where('status', 'inactive')->count(),
+        ];
+
         if ($request->ajax()) {
             $rowsHtml = view('dashboard.partials.user-rows', compact('users'))->render();
+            $mobileRowsHtml = view('dashboard.partials.user-mobile-rows', compact('users'))->render();
             $paginationHtml = $users->hasPages() ? $users->links('vendor.pagination.bootstrap-5')->render() : '';
 
             return response()->json([
                 'rows' => $rowsHtml,
+                'mobileRows' => $mobileRowsHtml,
                 'pagination' => $paginationHtml,
                 'total' => $users->total(),
             ]);
         }
 
-        return view('dashboard.users', compact('users'));
+        return view('dashboard.users', compact('users', 'summary'));
     }
 
     public function store(Request $request)

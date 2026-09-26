@@ -1,10 +1,17 @@
 @forelse($users as $user)
     <tr>
-        <td class="fw-semibold">
-            {{ $user->name }}
-            @if($user->id === auth()->id())
-                <span class="badge bg-primary ms-1">You</span>
-            @endif
+        <td>
+            <div class="d-flex align-items-center">
+                <div class="list-avatar me-2">
+                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                </div>
+                <div class="fw-semibold">
+                    {{ $user->name }}
+                    @if($user->id === auth()->id())
+                        <span class="badge bg-primary ms-1">You</span>
+                    @endif
+                </div>
+            </div>
         </td>
         <td>{{ $user->email }}</td>
         <td><span class="badge bg-dark">Admin</span></td>
