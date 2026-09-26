@@ -6,10 +6,26 @@ function initPaymentForm(fileId, previewId, imgId, removeId, btnId, formEl, moda
     var removeBtn = document.getElementById(removeId);
     var submitBtn = document.getElementById(btnId);
 
+    var uploadWrap = fileInput ? fileInput.closest('.proof-upload') : null;
+    var dropTitle = uploadWrap ? uploadWrap.querySelector('.proof-upload-title') : null;
+    var defaultTitle = dropTitle ? dropTitle.textContent.trim() : '';
+
+    function setDropState(file) {
+        if (!uploadWrap) return;
+        if (file) {
+            uploadWrap.classList.add('has-file');
+            if (dropTitle) dropTitle.textContent = file.name;
+        } else {
+            uploadWrap.classList.remove('has-file');
+            if (dropTitle) dropTitle.textContent = defaultTitle;
+        }
+    }
+
     function clearPreview() {
         if (fileInput) fileInput.value = '';
         if (imagePreview) imagePreview.src = '';
         if (previewContainer) previewContainer.style.display = 'none';
+        setDropState(null);
     }
 
     if (fileInput) {
@@ -29,12 +45,46 @@ function initPaymentForm(fileId, previewId, imgId, removeId, btnId, formEl, moda
                 return;
             }
 
+            setDropState(file);
+
             var reader = new FileReader();
             reader.onload = function (e) {
                 imagePreview.src = e.target.result;
                 previewContainer.style.display = 'block';
             };
             reader.readAsDataURL(file);
+        });
+    }
+
+    if (uploadWrap) {
+        ['dragenter', 'dragover'].forEach(function (evt) {
+            uploadWrap.addEventListener(evt, function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadWrap.classList.add('is-dragging');
+            });
+        });
+
+        ['dragleave', 'dragend', 'drop'].forEach(function (evt) {
+            uploadWrap.addEventListener(evt, function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadWrap.classList.remove('is-dragging');
+            });
+        });
+
+        uploadWrap.addEventListener('drop', function (e) {
+            var files = e.dataTransfer && e.dataTransfer.files;
+            if (!files || !files.length) return;
+
+            try {
+                fileInput.files = files;
+            } catch (err) {
+                alert('Please tap the upload area and select the file.');
+                return;
+            }
+
+            fileInput.dispatchEvent(new Event('change', { bubbles: true }));
         });
     }
 

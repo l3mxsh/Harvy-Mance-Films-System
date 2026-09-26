@@ -17,23 +17,23 @@
                 @csrf
                 <input type="hidden" name="payment_context" value="final">
                 <div class="modal-body py-3">
-                    <div class="row g-2 mb-2">
+                    <div class="row g-2 mb-3">
                         <div class="col-12 col-sm-4">
-                            <div class="border rounded p-2 text-center h-100">
-                                <div class="text-muted" style="font-size:0.7rem;">Total</div>
-                                <div class="fw-bold">&#8369;{{ number_format($booking->total_price, 2) }}</div>
+                            <div class="amount-tile">
+                                <div class="amount-tile-label">Total</div>
+                                <div class="amount-tile-value">&#8369;{{ number_format($booking->total_price, 2) }}</div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-4">
-                            <div class="border rounded p-2 text-center h-100">
-                                <div class="text-muted" style="font-size:0.7rem;">Paid</div>
-                                <div class="fw-bold text-success">&#8369;{{ number_format($fpTotalPaid, 2) }}</div>
+                            <div class="amount-tile">
+                                <div class="amount-tile-label">Paid</div>
+                                <div class="amount-tile-value text-success">&#8369;{{ number_format($fpTotalPaid, 2) }}</div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-4">
-                            <div class="border rounded p-2 text-center h-100 border-dark">
-                                <div class="text-muted" style="font-size:0.7rem;">Balance</div>
-                                <div class="fw-bold text-danger">&#8369;{{ number_format($fpRemaining, 2) }}</div>
+                            <div class="amount-tile">
+                                <div class="amount-tile-label">Balance</div>
+                                <div class="amount-tile-value text-danger">&#8369;{{ number_format($fpRemaining, 2) }}</div>
                             </div>
                         </div>
                     </div>
@@ -60,12 +60,19 @@
 
                     <div class="mb-2">
                         <label for="fp_payment_proof" class="form-label">Payment Proof <span class="text-danger">*</span></label>
-                        <input type="file" class="form-control @error('payment_proof') is-invalid @enderror"
-                               id="fp_payment_proof" name="payment_proof" accept="image/*" required>
+                        <div class="proof-upload @error('payment_proof') is-invalid @enderror">
+                            <input type="file" class="proof-upload-input" id="fp_payment_proof" name="payment_proof"
+                                accept="image/*" required>
+                            <label class="proof-upload-drop" for="fp_payment_proof">
+                                <span class="proof-upload-icon"><i class="bi bi-cloud-arrow-up"></i></span>
+                                <span class="proof-upload-title">Tap to upload</span>
+                                <span class="proof-upload-hint">or drag &amp; drop your receipt here</span>
+                                <span class="proof-upload-meta">JPEG, PNG, JPG or GIF &middot; Max 5MB</span>
+                            </label>
+                        </div>
                         @error('payment_proof')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                        <div class="form-text">Upload a screenshot or receipt (JPEG, PNG, JPG, GIF - Max 5MB)</div>
                     </div>
 
                     <div class="mb-2" id="fp_previewContainer" style="display: none;">
@@ -78,9 +85,9 @@
                         </div>
                     </div>
 
-                    <div class="bg-light rounded p-2 small" style="font-size:0.78rem;">
-                        <h6 class="fw-semibold mb-1" style="font-size:0.8rem;"><i class="bi bi-info-circle me-1"></i>How to pay</h6>
-                        <ol class="mb-0 ps-3">
+                    <div class="how-to-pay">
+                        <h6><i class="bi bi-info-circle me-1"></i>How to pay</h6>
+                        <ol>
                             <li>Transfer <strong>&#8369;{{ number_format($fpRemaining, 2) }}</strong> to our designated payment account.</li>
                             <li>Take a screenshot/photo of the payment confirmation.</li>
                             <li>Upload the proof and submit. We'll review within 24-48 hours.</li>
