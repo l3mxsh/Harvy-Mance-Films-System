@@ -6,7 +6,7 @@
                 <h5 class="modal-title"><i class="bi bi-eye me-2"></i>Booking Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body view-details-body">
                 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4 pb-3 border-bottom">
                     <div>
                         <div class="text-muted small">Booking Reference</div>
@@ -36,11 +36,11 @@
                 <div class="mb-4">
                     <h6 class="fw-semibold small text-uppercase text-muted mb-2">Package & Add-Ons</h6>
                     <div class="row g-3">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="text-muted small">Package</div>
                             <div class="fw-medium" id="viewPackageName">—</div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="text-muted small">Package Price</div>
                             <div class="fw-medium" id="viewPackagePrice">—</div>
                         </div>
@@ -72,11 +72,11 @@
                             <div class="text-muted small">Time</div>
                             <div class="fw-medium" id="viewEventTime">—</div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="text-muted small">Venue</div>
                             <div class="fw-medium" id="viewVenue">—</div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-8">
                             <div class="text-muted small">Address</div>
                             <div class="fw-medium" id="viewAddress">—</div>
                         </div>
@@ -105,11 +105,11 @@
                             <div class="text-muted small">Remaining Balance</div>
                             <div class="fw-medium" id="viewBalance">—</div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="text-muted small">Assigned Team</div>
                             <div class="fw-medium" id="viewTeam">—</div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="text-muted small">Payment Status</div>
                             <div id="viewPaymentStatus">—</div>
                         </div>
