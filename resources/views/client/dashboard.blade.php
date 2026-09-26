@@ -407,7 +407,7 @@
 
                     {{-- DOWNPAYMENT STATUS --}}
                     @if($latestDownpayment)
-                        <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center justify-content-between mb-2 mt-3">
                             <small class="text-muted">Downpayment</small>
                             @if($latestDownpayment->status === 'pending')
                                 <span class="badge bg-warning text-dark">Pending Verification</span>
