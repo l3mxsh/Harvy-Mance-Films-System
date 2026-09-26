@@ -32,7 +32,7 @@
                 <form method="POST" action="{{ route('staff.logout') }}">
                     @csrf
                     <button type="submit" class="btn btn-sm btn-outline-dark rounded-pill">
-                        <i class="bi bi-box-arrow-left me-1"></i>Logout
+                        Logout
                     </button>
                 </form>
             </div>
@@ -54,7 +54,7 @@
 
         {{-- ==================== SUMMARY CARDS ==================== --}}
         <div class="row g-3 mb-4">
-            <div class="col-lg-3 col-md-6">
+            <div class="col-12 col-md-6 col-lg-3">
                 <div class="summary-card">
                     <div class="d-flex align-items-center">
                         <div class="summary-icon bg-dark bg-opacity-10 text-dark">
@@ -67,7 +67,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-12 col-md-6 col-lg-3">
                 <div class="summary-card">
                     <div class="d-flex align-items-center">
                         <div class="summary-icon bg-secondary bg-opacity-10 text-secondary">
@@ -80,7 +80,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-12 col-md-6 col-lg-3">
                 <div class="summary-card">
                     <div class="d-flex align-items-center">
                         <div class="summary-icon bg-warning bg-opacity-10 text-warning">
@@ -93,7 +93,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-12 col-md-6 col-lg-3">
                 <div class="summary-card">
                     <div class="d-flex align-items-center">
                         <div class="summary-icon bg-success bg-opacity-10 text-success">
@@ -114,7 +114,8 @@
                 <h2 class="section-title"><i class="bi bi-list-check me-2"></i>Assigned Tasks</h2>
                 <span class="badge bg-light text-dark border">{{ $tasks->count() }} total</span>
             </div>
-            <div class="table-responsive">
+            {{-- Desktop table (hidden on mobile) --}}
+            <div class="table-responsive d-none d-md-block">
                 <table class="table table-hover align-middle mb-0">
                     <thead>
                         <tr>
@@ -158,6 +159,54 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            {{-- Mobile cards (hidden on desktop) --}}
+            <div class="d-md-none">
+                @forelse($tasks as $task)
+                    <div class="mobile-card">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="mobile-card-head">
+                                <div class="fw-semibold text-truncate">
+                                    {{ $task->postProduction->booking->client_name ?? 'N/A' }}
+                                </div>
+                                <small class="text-muted"><code>{{ $task->postProduction->booking->clientAccount->control_number ?? 'N/A' }}</code></small>
+                            </div>
+                            <div class="flex-shrink-0 ms-2">
+                                @include('partials.status-badge', ['status' => $task->status])
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="mobile-card-label">Event</div>
+                            <div class="mobile-card-value">{{ $task->postProduction->booking->event_type ?? 'N/A' }}</div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="mobile-card-label">Event Date</div>
+                            <div class="mobile-card-value">{{ $task->postProduction->booking->event_date ? $task->postProduction->booking->event_date->format('M d, Y') : 'N/A' }}</div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="mobile-card-label">Task Type</div>
+                            <div class="mobile-card-value">
+                                <span class="badge bg-dark rounded-pill">{{ str_replace('_', ' ', ucfirst($task->task_type)) }}</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="mobile-card-label">Due Date</div>
+                            <div class="mobile-card-value">{{ $task->postProduction->expected_completion_date ? $task->postProduction->expected_completion_date->format('M d, Y') : '—' }}</div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('staff.task.show', $task->id) }}"
+                                class="btn btn-sm btn-outline-dark rounded-3 flex-fill">
+                                <i class="bi bi-eye me-1"></i> View
+                            </a>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center py-5 text-muted">
+                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                        No tasks assigned to you.
+                    </div>
+                @endforelse
             </div>
         </section>
     </main>
