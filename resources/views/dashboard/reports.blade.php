@@ -13,7 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/booking.css') }}?v=9">
-    <link rel="stylesheet" href="{{ asset('css/reports.css') }}?v=4">
+    <link rel="stylesheet" href="{{ asset('css/reports.css') }}?v=6">
 </head>
 
 <body>
@@ -51,16 +51,11 @@
         <div class="container-fluid p-4">
 
             {{-- ==================== HEADER ==================== --}}
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
-                <div>
-                    <h1 class="section-title fs-3 mb-1">Business Reports</h1>
-                    <p class="section-sub mb-0">
-                        <span id="reportRangeLabel">{{ $rangeLabel }}</span>
-                    </p>
-                </div>
-                <button type="button" class="btn btn-outline-dark rounded-pill no-print" onclick="window.print()">
-                    <i class="bi bi-printer me-1"></i>Print Report
-                </button>
+            <div class="mb-4">
+                <h1 class="section-title fs-3 mb-1">Business Reports</h1>
+                <p class="section-sub mb-0">
+                    <span id="reportRangeLabel">{{ $rangeLabel }}</span>
+                </p>
             </div>
 
             @include('dashboard.partials.report-range-filter')

@@ -17,18 +17,23 @@
     </div>
 
     <div class="report-range-dates">
-        <div>
+        <div class="report-range-field">
             <label class="form-label small text-muted mb-1" for="reportFrom">From</label>
             <input type="date" class="form-control form-control-sm" id="reportFrom" name="from"
                 value="{{ request('from', $from->format('Y-m-d')) }}">
         </div>
-        <div>
+        <div class="report-range-field">
             <label class="form-label small text-muted mb-1" for="reportTo">To</label>
             <input type="date" class="form-control form-control-sm" id="reportTo" name="to"
                 value="{{ request('to', $to->format('Y-m-d')) }}">
         </div>
-        <button type="submit" name="range" value="custom"
-            class="btn btn-dark btn-sm rounded-pill {{ $range === 'custom' ? 'active' : '' }}">Apply</button>
+        <div class="report-range-actions">
+            <button type="submit" name="range" value="custom"
+                class="btn btn-dark btn-sm rounded-3 {{ $range === 'custom' ? 'active' : '' }}">Apply</button>
+            <button type="button" class="btn btn-dark btn-sm rounded-3" onclick="window.print()">
+                <i class="bi bi-printer me-1"></i>Print Report
+            </button>
+        </div>
     </div>
 </form>
 
