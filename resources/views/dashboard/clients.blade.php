@@ -12,8 +12,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/booking.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/clients.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/booking.css') }}?v=7">
+    <link rel="stylesheet" href="{{ asset('css/clients.css') }}?v=2">
 </head>
 
 <body>
@@ -26,11 +26,30 @@
             <span></span>
         </div>
 
+        {{-- ==================== TABS ==================== --}}
+        <ul class="nav nav-pills mb-0 px-4 pt-4 justify-content-start" id="clientTabs">
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-active" type="button">
+                    <i class="bi bi-people me-1"></i> Client Accounts
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-archived" type="button">
+                    <i class="bi bi-archive me-1"></i> Archived Accounts
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-upcoming" type="button">
+                    <i class="bi bi-clock-history me-1"></i> Upcoming Archiving
+                </button>
+            </li>
+        </ul>
+
         <div class="container-fluid p-4">
 
             {{-- ==================== SUMMARY CARDS ==================== --}}
             <div class="row g-3 mb-4">
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-lg-3 col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-primary bg-opacity-10 text-primary">
@@ -43,7 +62,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-lg-3 col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-success bg-opacity-10 text-success">
@@ -56,7 +75,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-lg-3 col-md-4 col-12">
                     <div class="summary-card">
                         <div class="d-flex align-items-center">
                             <div class="summary-icon bg-secondary bg-opacity-10 text-secondary">
@@ -69,49 +88,35 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            {{-- ==================== TABBED CLIENT SECTIONS ==================== --}}
-            <section class="surface-card">
-                <ul class="nav nav-pills mb-4" id="clientTabs">
-                    <li class="nav-item">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-active" type="button">
-                            <i class="bi bi-people me-1"></i> Client Accounts
-                            <span class="badge ms-1" id="clientTotalBadge">{{ $accounts->total() }}</span>
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-archived" type="button">
-                            <i class="bi bi-archive me-1"></i> Archived Accounts
-                            <span class="badge ms-1">{{ $archivedAccounts->count() }}</span>
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-upcoming" type="button">
-                            <i class="bi bi-clock-history me-1"></i> Upcoming Archiving
-                            <span class="badge ms-1">{{ $upcomingDeletions->count() }}</span>
-                        </button>
-                    </li>
-                </ul>
-
-                <div class="tab-content" id="clientTabsContent">
-                    {{-- Active Accounts Tab --}}
-                    <div class="tab-pane fade show active" id="tab-active" role="tabpanel">
-                        <div class="d-flex align-items-end flex-wrap gap-2 mb-3">
-                            <div class="flex-grow-1" style="min-width: 220px;">
+            <div class="tab-content" id="clientTabsContent">
+                {{-- Active Accounts Tab --}}
+                <div class="tab-pane fade show active" id="tab-active" role="tabpanel">
+                    <section class="surface-card mb-4">
+                        <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <h2 class="section-title">Client Accounts</h2>
+                            <span class="badge bg-light text-dark border" id="clientTotalBadge">{{ $accounts->total() }} total</span>
+                        </div>
+                        <div class="row g-2 align-items-end">
+                            <div class="col-12 col-md-10">
                                 <label class="form-label small text-muted mb-1">Search</label>
-                                <input type="text" id="clientSearchInput" class="form-control form-control-sm" placeholder="Control number, name, email, phone or booking ref..." value="{{ request('search') }}" autocomplete="off">
+                                <input type="text" id="clientSearchInput" class="form-control"
+                                    placeholder="Control number, name, email, phone or booking ref..." value="{{ request('search') }}" autocomplete="off">
                             </div>
                         </div>
-                        <div class="table-responsive">
+                    </section>
+
+                    <section class="surface-card">
+                        {{-- Desktop table (hidden on mobile) --}}
+                        <div class="table-responsive d-none d-md-block">
                             <table class="table table-hover align-middle mb-0">
                                 <thead>
                                     <tr>
                                         <th>Control Number</th>
                                         <th>Client</th>
                                         <th>Booking Ref</th>
-                                        <th>Phone</th>
+                                        <th>Contact</th>
                                         <th>Last Login</th>
                                         <th>Created</th>
                                         <th>Status</th>
@@ -123,131 +128,166 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div id="clientPagination" class="mt-3 @if(!$accounts->hasPages()) d-none @endif">
+
+                        {{-- Mobile cards (hidden on desktop) --}}
+                        <div class="d-md-none" id="clientMobileBody">
+                            @include('dashboard.partials.client-mobile-rows', compact('accounts'))
+                        </div>
+                        <div id="clientPagination" class="@if(!$accounts->hasPages()) d-none @endif">
                             {{ $accounts->links('vendor.pagination.bootstrap-5') }}
                         </div>
-                    </div>
-
-                    {{-- Archived Accounts Tab --}}
-                    <div class="tab-pane fade" id="tab-archived" role="tabpanel">
-                        @if($archivedAccounts->isEmpty())
-                            <div class="text-center py-5 text-muted">
-                                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                                No archived client accounts.
-                            </div>
-                        @else
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Control Number</th>
-                                            <th>Client</th>
-                                            <th>Booking Ref</th>
-                                            <th>Delivered</th>
-                                            <th>Archived</th>
-                                            <th>Days Since Archive</th>
-                                            <th class="text-end">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($archivedAccounts as $archived)
-                                            <tr>
-                                                <td><code>{{ $archived->control_number }}</code></td>
-                                                <td>
-                                                    <div>{{ $archived->client_name }}</div>
-                                                    <small class="text-muted">{{ $archived->client_email }}</small>
-                                                </td>
-                                                <td>
-                                                    @if($archived->booking)
-                                                        <code>{{ $archived->booking->booking_ref }}</code>
-                                                    @else
-                                                        <span class="text-muted fst-italic">&mdash;</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{ $archived->booking?->delivered_at?->format('M d, Y') ?? '—' }}</td>
-                                                <td>{{ $archived->archived_at->format('M d, Y') }}</td>
-                                                <td>
-                                                    @if((int) round($archived->archived_at->diffInDays(now())) === 0)
-                                                        <span class="badge bg-secondary">Today</span>
-                                                    @else
-                                                        <span class="badge bg-secondary">{{ (int) round($archived->archived_at->diffInDays(now())) }} day(s)</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-end">
-                                                    <button type="button"
-                                                            class="btn btn-sm btn-outline-dark rounded-pill"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#restoreModal"
-                                                            data-id="{{ $archived->id }}"
-                                                            data-name="{{ $archived->client_name }}"
-                                                            data-control="{{ $archived->control_number }}">
-                                                        <i class="bi bi-arrow-counterclockwise me-1"></i>Restore
-                                                    </button>
-                                                    <button type="button"
-                                                            class="btn btn-sm btn-outline-danger rounded-pill"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#deleteModal"
-                                                            data-id="{{ $archived->id }}"
-                                                            data-name="{{ $archived->client_name }}"
-                                                            data-control="{{ $archived->control_number }}">
-                                                        <i class="bi bi-trash me-1"></i>Delete
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        @endif
-                    </div>
-
-                    {{-- Upcoming Archiving Tab --}}
-                    <div class="tab-pane fade" id="tab-upcoming" role="tabpanel">
-                        @if($upcomingDeletions->isEmpty())
-                            <div class="text-center py-5 text-muted">
-                                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                                No delivered bookings with active client accounts.
-                            </div>
-                        @else
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Client</th>
-                                            <th>Booking Ref</th>
-                                            <th>Delivered</th>
-                                            <th>Auto-Archive</th>
-                                            <th class="text-end">Days Left</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($upcomingDeletions as $item)
-                                            <tr>
-                                                <td>
-                                                    <div>{{ $item['booking']->client_name }}</div>
-                                                    <small class="text-muted">{{ $item['booking']->client_email }}</small>
-                                                </td>
-                                                <td><code>{{ $item['booking']->booking_ref }}</code></td>
-                                                <td>{{ $item['delivered_at']->format('M d, Y') }}</td>
-                                                <td>{{ $item['delete_at']->format('M d, Y') }}</td>
-                                                <td class="text-end">
-                                                    @if($item['days_remaining'] <= 3)
-                                                        <span class="badge bg-danger">{{ $item['days_remaining'] }} day(s)</span>
-                                                    @elseif($item['days_remaining'] <= 7)
-                                                        <span class="badge bg-warning text-dark">{{ $item['days_remaining'] }} day(s)</span>
-                                                    @else
-                                                        <span class="badge bg-success">{{ $item['days_remaining'] }} day(s)</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        @endif
-                    </div>
+                    </section>
                 </div>
-            </section>
+
+                {{-- Archived Accounts Tab --}}
+                <div class="tab-pane fade" id="tab-archived" role="tabpanel">
+                    <section class="surface-card mb-4">
+                        <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <h2 class="section-title">Archived Accounts</h2>
+                            <span class="badge bg-light text-dark border">{{ $archivedAccounts->count() }} total</span>
+                        </div>
+                    </section>
+
+                    <section class="surface-card">
+                        {{-- Desktop table (hidden on mobile) --}}
+                        <div class="table-responsive d-none d-md-block">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Control Number</th>
+                                        <th>Client</th>
+                                        <th>Booking Ref</th>
+                                        <th>Delivered</th>
+                                        <th>Archived</th>
+                                        <th>Days Since Archive</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($archivedAccounts as $archived)
+                                        <tr>
+                                            <td><code>{{ $archived->control_number }}</code></td>
+                                            <td>
+                                                <div>{{ $archived->client_name }}</div>
+                                                <small class="text-muted">{{ $archived->client_email }}</small>
+                                            </td>
+                                            <td>
+                                                @if($archived->booking)
+                                                    <code>{{ $archived->booking->booking_ref }}</code>
+                                                @else
+                                                    <span class="text-muted fst-italic">&mdash;</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $archived->booking?->delivered_at?->format('M d, Y') ?? '—' }}</td>
+                                            <td>{{ $archived->archived_at->format('M d, Y') }}</td>
+                                            <td>
+                                                @if((int) round($archived->archived_at->diffInDays(now())) === 0)
+                                                    <span class="badge bg-secondary">Today</span>
+                                                @else
+                                                    <span class="badge bg-secondary">{{ (int) round($archived->archived_at->diffInDays(now())) }} day(s)</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-end">
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-secondary rounded-pill"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#restoreModal"
+                                                        data-id="{{ $archived->id }}"
+                                                        data-name="{{ $archived->client_name }}"
+                                                        data-control="{{ $archived->control_number }}">
+                                                    <i class="bi bi-arrow-counterclockwise me-1"></i>Restore
+                                                </button>
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-danger rounded-pill"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#deleteModal"
+                                                        data-id="{{ $archived->id }}"
+                                                        data-name="{{ $archived->client_name }}"
+                                                        data-control="{{ $archived->control_number }}">
+                                                    <i class="bi bi-trash me-1"></i>Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center py-5 text-muted">
+                                                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                                No archived client accounts.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {{-- Mobile cards (hidden on desktop) --}}
+                        <div class="d-md-none">
+                            @include('dashboard.partials.client-archived-mobile-rows', compact('archivedAccounts'))
+                        </div>
+                    </section>
+                </div>
+
+                {{-- Upcoming Archiving Tab --}}
+                <div class="tab-pane fade" id="tab-upcoming" role="tabpanel">
+                    <section class="surface-card mb-4">
+                        <div class="section-head d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <h2 class="section-title">Upcoming Archiving</h2>
+                            <span class="badge bg-light text-dark border">{{ $upcomingDeletions->count() }} total</span>
+                        </div>
+                    </section>
+
+                    <section class="surface-card">
+                        {{-- Desktop table (hidden on mobile) --}}
+                        <div class="table-responsive d-none d-md-block">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Client</th>
+                                        <th>Booking Ref</th>
+                                        <th>Delivered</th>
+                                        <th>Auto-Archive</th>
+                                        <th class="text-end">Days Left</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($upcomingDeletions as $item)
+                                        <tr>
+                                            <td>
+                                                <div>{{ $item['booking']->client_name }}</div>
+                                                <small class="text-muted">{{ $item['booking']->client_email }}</small>
+                                            </td>
+                                            <td><code>{{ $item['booking']->booking_ref }}</code></td>
+                                            <td>{{ $item['delivered_at']->format('M d, Y') }}</td>
+                                            <td>{{ $item['delete_at']->format('M d, Y') }}</td>
+                                            <td class="text-end">
+                                                @if($item['days_remaining'] <= 3)
+                                                    <span class="badge bg-danger">{{ $item['days_remaining'] }} day(s)</span>
+                                                @elseif($item['days_remaining'] <= 7)
+                                                    <span class="badge bg-warning text-dark">{{ $item['days_remaining'] }} day(s)</span>
+                                                @else
+                                                    <span class="badge bg-success">{{ $item['days_remaining'] }} day(s)</span>
+                                                @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center py-5 text-muted">
+                                                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                                    No delivered bookings with active client accounts.
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                            </table>
+                        </div>
+
+                        {{-- Mobile cards (hidden on desktop) --}}
+                        <div class="d-md-none">
+                            @include('dashboard.partials.client-upcoming-mobile-rows', compact('upcomingDeletions'))
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
     </div>
 
