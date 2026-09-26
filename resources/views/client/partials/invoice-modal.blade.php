@@ -49,7 +49,17 @@
             </div>
             <div class="modal-body invoice-modal-body">
 
-                <div id="invoiceArea" class="invoice-sheet" data-invoice-filename="invoice-{{ $booking->booking_ref }}.pdf">
+                <div class="invoice-preview-wrap">
+                    <div id="invoicePreviewLoading" class="invoice-preview-loading">
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Preparing invoice preview&hellip;
+                    </div>
+                    <img id="invoicePreviewImg" class="invoice-preview-img d-none"
+                        alt="Invoice preview for booking {{ $booking->booking_ref }}">
+                </div>
+
+                <div id="invoiceArea" class="invoice-sheet invoice-source-offscreen"
+                    data-invoice-filename="invoice-{{ $booking->booking_ref }}.png">
 
                     {{-- HEADER --}}
                     <div class="invoice-head">
@@ -196,12 +206,9 @@
                 </div>
 
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer flex-wrap">
                 <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-dark-soft rounded-pill" id="invoicePrintBtn">
-                    <i class="bi bi-printer me-1"></i>Print Invoice
-                </button>
-                <button type="button" class="btn btn-primary-dark rounded-pill" id="invoiceDownloadBtn">
+                <button type="button" class="btn btn-primary-dark rounded-pill" id="invoicePngBtn">
                     <i class="bi bi-download me-1"></i>Download Invoice
                 </button>
             </div>

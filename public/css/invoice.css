@@ -294,6 +294,39 @@
     pointer-events: none;
 }
 
+/* ---------------- Rendered PNG preview ---------------- */
+.invoice-source-offscreen {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    width: 820px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.invoice-preview-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.invoice-preview-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--inv-ink-soft);
+    font-size: 0.85rem;
+    padding: 3rem 0;
+}
+
+.invoice-preview-img {
+    width: 100%;
+    max-width: 820px;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(17, 17, 17, 0.08);
+    background: #ffffff;
+}
+
 /* ---------------- Responsive ---------------- */
 @media (max-width: 991.98px) {
     .invoice-summary {
@@ -330,37 +363,34 @@
     }
 }
 
-/* ---------------- Print ---------------- */
-@page {
-    size: A4 portrait;
-    margin: 12mm;
+/* ---------------- Capture area always renders the full A4-width layout ---------------- */
+/* The mobile media queries below are viewport-based, so a capture taken on a phone
+   would otherwise be laid out in the cramped single-column version. ID specificity
+   wins over those class rules, so the off-screen clone always renders wide. */
+#invoicePrintArea .invoice-sheet {
+    padding: 2.25rem 2.5rem;
+    max-width: 820px;
 }
 
-@media print {
-    body > :not(#invoicePrintArea) {
-        display: none !important;
-    }
+#invoicePrintArea .invoice-head {
+    flex-direction: row;
+    gap: 1.5rem;
+}
 
-    body {
-        background: #fff !important;
-        overflow: visible !important;
-    }
+#invoicePrintArea .invoice-title {
+    text-align: right;
+}
 
-    #invoicePrintArea {
-        position: static;
-        left: auto;
-        top: auto;
-        width: auto;
-        z-index: auto;
-        pointer-events: auto;
-    }
+#invoicePrintArea .invoice-meta {
+    min-width: 230px;
+    width: auto;
+}
 
-    #invoicePrintArea .invoice-sheet {
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
-        max-width: 100%;
-        padding: 0;
-        margin: 0;
-    }
+#invoicePrintArea .invoice-parties {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+#invoicePrintArea .invoice-summary {
+    grid-template-columns: 1fr auto;
 }
