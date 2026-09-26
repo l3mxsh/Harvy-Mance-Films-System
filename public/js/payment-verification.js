@@ -78,7 +78,6 @@ function openViewModal(data) {
             row.appendChild(price);
             addonsList.appendChild(row);
         });
-        document.getElementById('viewAddonsTotal').textContent = formatPeso(data.addons_total);
     } else {
         addonsSection.style.display = 'none';
     }

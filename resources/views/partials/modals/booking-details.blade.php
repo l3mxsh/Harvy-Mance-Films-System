@@ -51,8 +51,6 @@
                         <div class="col-12" id="viewAddonsSection" style="display:none;">
                             <div class="text-muted small mb-1">Add-Ons</div>
                             <div id="viewAddonsList" class="mb-1"></div>
-                            <div class="small text-muted">Add-On Charges: <span class="fw-medium text-dark"
-                                    id="viewAddonsTotal">—</span></div>
                         </div>
                     </div>
                 </div>
