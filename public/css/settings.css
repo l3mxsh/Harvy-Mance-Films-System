@@ -9,6 +9,25 @@
     box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.06);
 }
 
+/* ---------------- Scrollable single-row tabs ---------------- */
+#settingsTabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-shrink: 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+#settingsTabs::-webkit-scrollbar {
+    display: none;
+}
+
+#settingsTabs .nav-link {
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+
 .form-select {
     border-radius: 12px;
     padding: 0.55rem 2.5rem 0.55rem 1rem;

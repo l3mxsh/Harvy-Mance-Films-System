@@ -12,8 +12,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/booking.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/settings.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/booking.css') }}?v=7">
+    <link rel="stylesheet" href="{{ asset('css/settings.css') }}?v=2">
 </head>
 
 <body>
@@ -26,16 +26,46 @@
             <span></span>
         </div>
 
+        {{-- ==================== TABS ==================== --}}
+        @php
+            $activeTab = 'preferences';
+            if ($errors->has('current_password') || $errors->has('new_password')) {
+                $activeTab = 'password';
+            } elseif ($errors->has('client_auto_delete_days') || $errors->has('reschedule_lead_time_days') || $errors->has('refund_tiers')) {
+                $activeTab = 'general';
+            }
+        @endphp
+        <ul class="nav nav-pills mb-0 px-4 pt-4 justify-content-start" id="settingsTabs">
+            <li class="nav-item">
+                <button class="nav-link {{ $activeTab === 'preferences' ? 'active' : '' }}" data-bs-toggle="tab"
+                    data-bs-target="#tab-preferences" type="button">
+                    <i class="bi bi-person-gear me-1"></i> Admin Preferences
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link {{ $activeTab === 'password' ? 'active' : '' }}" data-bs-toggle="tab"
+                    data-bs-target="#tab-password" type="button">
+                    <i class="bi bi-shield-lock me-1"></i> Change Password
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link {{ $activeTab === 'general' ? 'active' : '' }}" data-bs-toggle="tab"
+                    data-bs-target="#tab-general" type="button">
+                    <i class="bi bi-gear me-1"></i> General Settings
+                </button>
+            </li>
+        </ul>
+
         <div class="container-fluid p-4">
 
-            <div class="row g-4">
-                {{-- ==================== LEFT COLUMN ==================== --}}
-                <div class="col-lg-6 d-flex flex-column gap-4">
+            <div class="tab-content" id="settingsTabsContent">
 
-                    {{-- ==================== ADMIN PREFERENCES ==================== --}}
+                {{-- ==================== ADMIN PREFERENCES ==================== --}}
+                <div class="tab-pane fade {{ $activeTab === 'preferences' ? 'show active' : '' }}" id="tab-preferences"
+                    role="tabpanel">
                     <section class="surface-card">
                         <div class="section-head">
-                            <h2 class="section-title"><i class="bi bi-person-gear me-2"></i>Admin Preferences</h2>
+                            <h2 class="section-title">Profile Information</h2>
                         </div>
 
                         <form method="POST" action="{{ route('settings.profile.update') }}">
@@ -45,7 +75,7 @@
                             <div class="setting-item">
                                 <div class="d-flex gap-3">
                                     <div class="flex-grow-1">
-                                        <label class="setting-label">Profile Information</label>
+                                        <label class="setting-label">Name &amp; Email</label>
                                         <p class="setting-hint">Update the name and email address shown on your admin account.</p>
                                         <div class="row g-2">
                                             <div class="col-md-6">
@@ -82,42 +112,49 @@
                             </div>
 
                             <div class="settings-save-bar">
-                                <button type="submit" class="btn btn-dark rounded-pill">Save Profile</button>
+                                <button type="submit" class="btn btn-dark rounded-3">Save Profile</button>
                             </div>
                         </form>
 
                         <hr class="my-3">
 
-                        <div class="d-flex gap-3">
-                            <div class="flex-grow-1">
-                                <label class="setting-label">Account Details</label>
-                                <p class="setting-hint mb-2">Read-only information about your admin account.</p>
-                                <ul class="list-unstyled small mb-0">
-                                    <li class="d-flex justify-content-between py-1 border-bottom">
-                                        <span class="text-muted">Role</span>
-                                        <span class="fw-semibold text-capitalize">{{ $user->role }}</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between py-1 border-bottom">
-                                        <span class="text-muted">Status</span>
-                                        <span class="fw-semibold text-capitalize">{{ $user->status }}</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between py-1 border-bottom">
-                                        <span class="text-muted">Member Since</span>
-                                        <span class="fw-semibold">{{ $user->created_at?->format('M d, Y') }}</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between py-1">
-                                        <span class="text-muted">Last Login</span>
-                                        <span class="fw-semibold">{{ $user->last_login_at?->format('M d, Y h:i A') ?? '—' }}</span>
-                                    </li>
-                                </ul>
+                        <div class="setting-label mb-1">Account Details</div>
+                        <p class="setting-hint mb-3">Read-only information about your admin account.</p>
+                        <div class="row g-2">
+                            <div class="col-12 col-lg-3">
+                                <div class="detail-box">
+                                    <span class="detail-label">Role</span>
+                                    <span class="detail-value text-capitalize">{{ $user->role }}</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                <div class="detail-box">
+                                    <span class="detail-label">Status</span>
+                                    <span class="detail-value text-capitalize">{{ $user->status }}</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                <div class="detail-box">
+                                    <span class="detail-label">Member Since</span>
+                                    <span class="detail-value">{{ $user->created_at?->format('M d, Y') }}</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                <div class="detail-box">
+                                    <span class="detail-label">Last Login</span>
+                                    <span class="detail-value">{{ $user->last_login_at?->format('M d, Y h:i A') ?? '—' }}</span>
+                                </div>
                             </div>
                         </div>
                     </section>
+                </div>
 
-                    {{-- ==================== CHANGE PASSWORD ==================== --}}
+                {{-- ==================== CHANGE PASSWORD ==================== --}}
+                <div class="tab-pane fade {{ $activeTab === 'password' ? 'show active' : '' }}" id="tab-password"
+                    role="tabpanel">
                     <section class="surface-card">
                         <div class="section-head">
-                            <h2 class="section-title"><i class="bi bi-shield-lock me-2"></i>Change Password</h2>
+                            <h2 class="section-title">Change Password</h2>
                         </div>
 
                         <form method="POST" action="{{ route('settings.password.update') }}">
@@ -158,18 +195,18 @@
                             </div>
 
                             <div class="settings-save-bar">
-                                <button type="submit" class="btn btn-dark rounded-pill">Update Password</button>
+                                <button type="submit" class="btn btn-dark rounded-3">Update Password</button>
                             </div>
                         </form>
                     </section>
-
                 </div>
 
-                {{-- ==================== RIGHT COLUMN — GENERAL SETTINGS ==================== --}}
-                <div class="col-lg-6">
+                {{-- ==================== GENERAL SETTINGS ==================== --}}
+                <div class="tab-pane fade {{ $activeTab === 'general' ? 'show active' : '' }}" id="tab-general"
+                    role="tabpanel">
                     <section class="surface-card">
                         <div class="section-head">
-                            <h2 class="section-title"><i class="bi bi-gear me-2"></i>General Settings</h2>
+                            <h2 class="section-title">General Settings</h2>
                         </div>
 
                         <form method="POST" action="{{ route('settings.update') }}">
@@ -239,19 +276,17 @@
                                                 </div>
                                             @endforeach
                                         </div>
-                                        <div class="d-flex justify-content-between align-items-center mt-2">
-                                            <div class="form-text mb-0">Example: 14 days → 100%, 7 days → 50%, 0 days → 0%</div>
-                                            <button type="button" class="btn btn-sm btn-outline-dark rounded-pill" onclick="addRefundTier()">
-                                                <i class="bi bi-plus me-1"></i>Add Tier
-                                            </button>
-                                        </div>
+                                        <div class="form-text mb-2">Example: 14 days → 100%, 7 days → 50%, 0 days → 0%</div>
+                                        <button type="button" class="btn btn-dark rounded-3 w-100 w-sm-auto" onclick="addRefundTier()">
+                                            <i class="bi bi-plus me-1"></i>Add Tier
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="settings-save-bar">
-                                <a href="{{ route('settings.index') }}" class="btn btn-outline-dark rounded-pill">Cancel</a>
-                                <button type="submit" class="btn btn-dark rounded-pill">Save Settings</button>
+                                <a href="{{ route('settings.index') }}" class="btn btn-outline-dark rounded-3">Cancel</a>
+                                <button type="submit" class="btn btn-dark rounded-3">Save Settings</button>
                             </div>
                         </form>
                     </section>
