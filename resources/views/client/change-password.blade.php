@@ -38,7 +38,7 @@
                     <div class="text-center mb-4 login-header">
                         <h1 class="section-title fs-4">Change Password</h1>
                         @if($account->must_change_password)
-                            <p class="section-sub">This is your first login. Please change your temporary password.</p>
+                            <p class="section-sub">You're still using your temporary password. Changing it is optional, but we recommend it for your security.</p>
                         @else
                             <p class="section-sub">Update your password to keep your account secure.</p>
                         @endif

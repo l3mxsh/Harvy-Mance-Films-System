@@ -237,6 +237,104 @@
     background: #c0c4c9;
 }
 
+/* ---------------- Header card ---------------- */
+.client-header-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.client-header-id {
+    min-width: 0;
+    flex: 1 1 260px;
+}
+
+.client-header-name {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+}
+
+.client-header-name .badge {
+    margin-left: auto;
+}
+
+.client-header-name .section-title {
+    font-size: 1.25rem;
+    overflow-wrap: anywhere;
+}
+
+.client-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem 0.9rem;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
+.client-meta-ref {
+    font-weight: 600;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+}
+
+.client-meta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
+    min-width: 0;
+}
+
+.client-meta-item .bi {
+    width: 1rem;
+    flex-shrink: 0;
+    text-align: center;
+    line-height: 1.35;
+}
+
+.client-header-total {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.1rem;
+    text-align: right;
+}
+
+.client-header-total-label {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+}
+
+.client-header-total-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+}
+
+/* ---------------- Your Booking: aligned key/value grid ---------------- */
+.client-booking-details .detail-row {
+    display: grid;
+    grid-template-columns: minmax(120px, 38%) 1fr;
+    align-items: baseline;
+    column-gap: 1rem;
+    padding: 8px 0;
+}
+
+.client-booking-details .detail-value {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
 @media (max-width: 991.98px) {
     .sticky-side {
         position: static;
@@ -250,4 +348,224 @@
     .timeline-dot { left: 4px; width: 20px; height: 20px; }
     .detail-row { flex-direction: column; gap: 0; }
     .detail-value { text-align: left; margin-top: 2px; }
+
+    /* Your Booking keeps a tidy two-column layout on phones */
+    .client-booking-details .detail-row {
+        grid-template-columns: minmax(92px, 34%) 1fr;
+        column-gap: 0.6rem;
+        padding: 7px 0;
+    }
+
+    .client-booking-details .detail-value {
+        text-align: left;
+        margin-top: 0;
+        justify-content: flex-start;
+    }
+
+    .client-booking-details h6 {
+        margin-top: 0.5rem;
+    }
+}
+
+/* ---------------- Mobile responsiveness ---------------- */
+@media (max-width: 767.98px) {
+
+    /* Navbar */
+    .booking-navbar {
+        padding: 0.6rem 0;
+    }
+
+    .booking-navbar .container {
+        padding-left: 0.85rem;
+        padding-right: 0.85rem;
+    }
+
+    .booking-navbar img {
+        height: 28px;
+    }
+
+    .booking-navbar .fw-semibold {
+        font-size: 0.85rem;
+        text-align: right;
+    }
+
+    /* Page rhythm */
+    .client-dashboard {
+        padding-top: 0.9rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .client-dashboard .surface-card {
+        padding: 15px;
+        margin-bottom: 0.9rem;
+    }
+
+    .client-dashboard .section-head {
+        margin-bottom: 0.9rem;
+    }
+
+    .client-dashboard .section-title {
+        font-size: 0.95rem;
+    }
+
+    .client-dashboard .section-title .bi {
+        font-size: 0.9rem;
+    }
+
+    .client-dashboard .row {
+        --bs-gutter-x: 0.75rem;
+        --bs-gutter-y: 0.75rem;
+    }
+
+    /* Download window banner */
+    .download-window-banner {
+        padding: 0.85rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    /* Header card */
+    .client-header-top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .client-header-id {
+        flex: 1 1 auto;
+    }
+
+    .client-header-name .section-title {
+        font-size: 1.1rem;
+    }
+
+    .client-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+        font-size: 0.78rem;
+    }
+
+    .client-header-total {
+        flex-direction: row;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.75rem;
+        text-align: left;
+        border-top: 1px solid var(--line);
+        padding-top: 0.7rem;
+    }
+
+    .client-header-total-value {
+        font-size: 1.1rem;
+    }
+
+    /* Timeline */
+    .timeline::before {
+        left: 13px;
+    }
+
+    .timeline-item {
+        padding: 0 0 1.1rem 36px;
+    }
+
+    .timeline-dot {
+        left: 4px;
+        width: 18px;
+        height: 18px;
+        font-size: 0.58rem;
+    }
+
+    .timeline-content h6 {
+        font-size: 0.85rem;
+    }
+
+    .timeline-content p {
+        font-size: 0.75rem;
+    }
+
+    /* Detail rows - long values wrap, badges flow */
+    .detail-row {
+        padding: 7px 0;
+    }
+
+    .detail-label {
+        font-size: 0.8rem;
+    }
+
+    .detail-value {
+        font-size: 0.82rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        word-break: break-word;
+    }
+
+    /* Summary cards */
+    .summary-card {
+        padding: 12px;
+    }
+
+    /* Payment + actions */
+    .payment-row {
+        font-size: 0.82rem;
+    }
+
+    .btn-action {
+        min-height: 46px;
+        font-size: 0.9rem;
+    }
+
+    /* Team chips */
+    .team-member-chip {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+    }
+
+    /* Modals */
+    .modal-dialog {
+        margin: 0.6rem;
+    }
+
+    .modal-header,
+    .modal-footer {
+        padding: 0.7rem 0.9rem;
+    }
+
+    .modal-body {
+        padding: 0.9rem;
+    }
+
+    .modal-title {
+        font-size: 1rem;
+    }
+
+    .modal-footer {
+        gap: 0.5rem;
+    }
+
+    .modal-footer .btn {
+        flex: 1 1 auto;
+    }
+
+    /* 16px keeps iOS from zooming when a field is focused */
+    .modal .form-control,
+    .modal .form-select,
+    .modal .input-group-text,
+    .modal textarea {
+        font-size: 1rem;
+    }
+
+    /* Toasts */
+    .toast-container {
+        padding: 0.5rem;
+    }
+
+    .toast {
+        font-size: 0.85rem;
+    }
+
+    /* Footer */
+    .booking-footer {
+        padding: 1rem 0;
+    }
 }

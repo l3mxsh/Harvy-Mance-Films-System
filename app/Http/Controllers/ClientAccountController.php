@@ -51,10 +51,6 @@ class ClientAccountController extends Controller
 
         $account->update(['last_login_at' => now()]);
 
-        if ($account->must_change_password) {
-            return redirect()->route('client.change-password');
-        }
-
         return redirect()->route('client.dashboard');
     }
 

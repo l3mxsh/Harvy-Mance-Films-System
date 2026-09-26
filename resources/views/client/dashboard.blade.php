@@ -27,7 +27,7 @@
         </div>
     </nav>
 
-    <main class="container py-4">
+    <main class="container py-4 client-dashboard">
 
         @if($daysUntilDeletion !== null && $deleteAt !== null)
             @php
@@ -53,26 +53,30 @@
                 default => 'bg-secondary',
             };
         @endphp
-        <section class="surface-card mb-4">
-            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-                <div>
-                    <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                        <h1 class="section-title fs-4 mb-0">{{ $account->client_name }}</h1>
+        <section class="surface-card mb-4 client-header">
+            <div class="client-header-top">
+                <div class="client-header-id">
+                    <div class="client-header-name">
+                        <h1 class="section-title">{{ $account->client_name }}</h1>
                         <span class="badge {{ $statusBadgeClass }}">{{ ucfirst($booking->status) }}</span>
                     </div>
-                    <div class="text-muted small">
-                        <code>{{ $booking->booking_ref }}</code>
-                        <span class="mx-1">•</span>
-                        <i class="bi bi-calendar-event me-1"></i>{{ $booking->event_date->format('l, M d, Y') }}
+                    <div class="client-meta">
+                        <div class="client-meta-ref">{{ $booking->booking_ref }}</div>
+                        <div class="client-meta-item">
+                            <i class="bi bi-calendar-event"></i>
+                            <span>{{ $booking->event_date->format('l, M d, Y') }}</span>
+                        </div>
                         @if($booking->team)
-                            <span class="mx-1">•</span>
-                            <i class="bi bi-people me-1"></i>{{ $booking->team->name }}
+                            <div class="client-meta-item">
+                                <i class="bi bi-people"></i>
+                                <span>{{ $booking->team->name }}</span>
+                            </div>
                         @endif
                     </div>
                 </div>
-                <div class="text-end">
-                    <div class="text-muted small">Total Amount</div>
-                    <div class="fw-bold fs-5">&#8369;{{ number_format($booking->total_price, 2) }}</div>
+                <div class="client-header-total">
+                    <span class="client-header-total-label">Total Amount</span>
+                    <span class="client-header-total-value">&#8369;{{ number_format($booking->total_price, 2) }}</span>
                 </div>
             </div>
         </section>
@@ -185,7 +189,7 @@
                 </section>
 
                 {{-- YOUR BOOKING --}}
-                <section class="surface-card mb-4">
+                <section class="surface-card mb-4 client-booking-details">
                     <div class="section-head">
                         <h2 class="section-title"><i class="bi bi-journal-check me-2"></i>Your Booking</h2>
                     </div>
@@ -281,7 +285,7 @@
                         @endphp
 
                         <div class="row g-3 mb-3">
-                            <div class="col-md-3 col-6">
+                            <div class="col-12 col-sm-6 col-md-3">
                                 <div class="summary-card h-100 text-center">
                                     <div class="small text-muted mb-1">Status</div>
                                     <div>
@@ -295,7 +299,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3 col-6">
+                            <div class="col-12 col-sm-6 col-md-3">
                                 <div class="summary-card h-100 text-center">
                                     <div class="small text-muted mb-1">Tasks</div>
                                     <div>
@@ -304,7 +308,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3 col-6">
+                            <div class="col-12 col-sm-6 col-md-3">
                                 <div class="summary-card h-100 text-center">
                                     <div class="small text-muted mb-1">File Access</div>
                                     <div>
@@ -316,7 +320,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3 col-6">
+                            <div class="col-12 col-sm-6 col-md-3">
                                 <div class="summary-card h-100 text-center">
                                     <div class="small text-muted mb-1">Payment</div>
                                     <div>

@@ -49,14 +49,18 @@ function generateRandomPassword() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    var btn = document.getElementById('editGeneratePwBtn');
-    if (btn) {
-        btn.addEventListener('click', function () {
-            var password = generateRandomPassword();
-            document.getElementById('editNewPassword').value = password;
-            document.getElementById('editNewPasswordConfirmation').value = password;
-        });
-    }
+    [document.getElementById('editGeneratePwBtn'), document.getElementById('createGeneratePwBtn')].forEach(function (btn) {
+        if (btn) {
+            btn.addEventListener('click', function () {
+                var password = generateRandomPassword();
+                var isEdit = btn.id === 'editGeneratePwBtn';
+                var passwordId = isEdit ? 'editNewPassword' : 'createPassword';
+                var confirmationId = isEdit ? 'editNewPasswordConfirmation' : 'createPasswordConfirmation';
+                document.getElementById(passwordId).value = password;
+                document.getElementById(confirmationId).value = password;
+            });
+        }
+    });
 
     var emailBtn = document.getElementById('editEmailPwBtn');
     if (emailBtn) {

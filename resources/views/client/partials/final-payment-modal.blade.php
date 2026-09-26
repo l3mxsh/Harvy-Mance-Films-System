@@ -18,19 +18,19 @@
                 <input type="hidden" name="payment_context" value="final">
                 <div class="modal-body py-3">
                     <div class="row g-2 mb-2">
-                        <div class="col-4">
+                        <div class="col-12 col-sm-4">
                             <div class="border rounded p-2 text-center h-100">
                                 <div class="text-muted" style="font-size:0.7rem;">Total</div>
                                 <div class="fw-bold">&#8369;{{ number_format($booking->total_price, 2) }}</div>
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-12 col-sm-4">
                             <div class="border rounded p-2 text-center h-100">
                                 <div class="text-muted" style="font-size:0.7rem;">Paid</div>
                                 <div class="fw-bold text-success">&#8369;{{ number_format($fpTotalPaid, 2) }}</div>
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-12 col-sm-4">
                             <div class="border rounded p-2 text-center h-100 border-dark">
                                 <div class="text-muted" style="font-size:0.7rem;">Balance</div>
                                 <div class="fw-bold text-danger">&#8369;{{ number_format($fpRemaining, 2) }}</div>

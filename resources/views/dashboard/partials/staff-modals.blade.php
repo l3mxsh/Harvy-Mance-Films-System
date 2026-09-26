@@ -187,6 +187,9 @@
                             </button>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" id="createGeneratePwBtn">
+                        Generate Password
+                    </button>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-dark rounded-pill" data-bs-dismiss="modal">Cancel</button>
