@@ -1,23 +1,52 @@
-/.phpunit.cache
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/storage/pail
+# Dependencies
 /vendor
+/node_modules
+
+# Environment & secrets
 .env
 .env.backup
 .env.production
-.phpactor.json
+/auth.json
+/storage/*.key
+
+# Laravel runtime / generated
+/bootstrap/cache/*.php
+/storage/framework/cache/data/
+/storage/framework/sessions/
+/storage/framework/testing/
+/storage/framework/views/
+/storage/logs/*.log
+/storage/pail
+/public/hot
+/public/storage
+/public/build
+
+# Testing
+/.phpunit.cache
 .phpunit.result.cache
+
+# IDE / editor
+/.idea
+/.vscode
+/.fleet
+/.nova
+/.zed
+/.phpstorm.meta.php
+.phpactor.json
+_ide_helper.php
+_ide_helper_models.php
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local dev scripts (one-off utility files)
+delete_client.php
+delete_records.php
+simulate_archive.php
+
+# Misc
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-/auth.json
-/.fleet
-/.idea
-/.nova
-/.vscode
-/.zed
